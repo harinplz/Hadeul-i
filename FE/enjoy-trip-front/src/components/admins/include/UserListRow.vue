@@ -1,5 +1,12 @@
 <template>
-  <b-list-group-item class="flex-column align-items-start">
+  <tr>
+    <td>{{ input.no }}</td>
+    <td>{{ input.id }}</td>
+    <td>{{ input.name }}</td>
+    <td>{{ input.pw }}</td>
+    <td>관리</td>
+  </tr>
+  <!-- <b-list-group-item class="flex-column align-items-start">
     <div class="table">
       <div>
         <div class="tr">
@@ -10,7 +17,7 @@
         </div>
       </div>
     </div>
-  </b-list-group-item>
+  </b-list-group-item> -->
 </template>
 
 <script>
