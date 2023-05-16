@@ -48,7 +48,7 @@
       <div class="text-center">
         <b-button-group>
           <b-button variant="outline-secondary" @click="modify">수정</b-button>
-          <b-button variant="secondary">삭제</b-button>
+          <b-button variant="secondary" @click="showModalDelete">삭제</b-button>
         </b-button-group>
       </div>
       </b-modal>
@@ -70,7 +70,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["modifyUser", "getUsers"]),
+    ...mapActions(["modifyUser", "getUsers", "deleteUser"]),
     showModalModify() {
       this.$refs[`user-${this.input.no}`].show();
     },
@@ -101,7 +101,7 @@ export default {
 
           // 수정 완료 Toast 출력
           this.$bvToast.toast("회원 정보가 수정되었습니다." , {
-            title : "회원 정보 수정 알림",
+            title : "회원 관리 알림",
             variant: "success",
             toaster: "b-toaster-bottom-center",
             autoHideDelay: 3000,
@@ -111,7 +111,62 @@ export default {
       };
 
       this.modifyUser(payload);
-    }
+    },
+    // 회원 정보 삭제 구현 시작
+    showModalDelete() {
+      this.hideModalModify(); //수정 모달 창 닫기
+
+      // 삭제 모달 창 띄우기
+      this.$bvModal
+        .msgBoxConfirm(`회원을 삭제하시겠습니까?`, {
+          centered: true,
+          size: 'sm',
+          buttonSize: 'sm',
+          okVariant: 'danger',
+          okTitle: '네',
+          cancelTitle: '아니오',
+        })
+        .then((value) => {
+          if(value){
+            this.delete();
+          }
+        });
+    },
+    delete() {
+      const payload = {
+        id: this.input.id,
+        callback: (status) => {
+          if(status==200){
+            //회원 목록 갱신
+            this.getUsers({
+              no: this.user.no,
+            })
+
+            // 삭제 완료 Toast 출력
+            setTimeout(() => {
+              this.$bvToast.toast(`회원이 삭제되었습니다.`, {
+                title: "회원 관리 알림",
+                variant: "success",
+                toaster: "b-toaster-bottom-center",
+                autoHideDelay: 3000,
+                solid: true,
+              });
+            }, 500);
+          }
+          else if(status == 500) {
+            // 서버 오류 Toast 출력
+            this.$bvToast.toast("서버 오류 발생!", {
+                title: "회원 관리 알림",
+                variant: "danger",
+                toaster: "b-toaster-bottom-center",
+                autoHideDelay: 3000,
+                solid: true,
+              });
+          }
+        }
+      }
+      this.deleteUser(payload);
+    },
   }
 };
 </script>

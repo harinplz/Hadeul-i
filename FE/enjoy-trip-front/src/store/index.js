@@ -19,7 +19,7 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    getUsers(context) {
+    getUsers(context) { //관리자가 회원 정보 가져오기
       http.get(`admin/list`).then((response) => {
         context.commit({
           type: "USERS",
@@ -27,7 +27,7 @@ export default new Vuex.Store({
         });
       });
     },
-    modifyUser(context, payload) {
+    modifyUser(context, payload) { //관리자가 회원 정보를 수정
       http.put(`admin/list/${payload.user.id}`, payload.user)
         .then((response) => {
           payload.callback(response.status);
@@ -35,7 +35,16 @@ export default new Vuex.Store({
         .catch((response) => {
           payload.callback(response.status);
         });
-    }
+    },
+    deleteUser(context, payload) { //관리자가 회원 정보를 삭제
+      http.delete(`admin/list/${payload.id}`)
+        .then((response) => {
+          payload.callback(response.status);
+        })
+        .catch((response) => {
+          payload.callback(response.status);
+        });
+    },
   },
   modules: {},
 });
