@@ -64,6 +64,11 @@ export default {
   props: {
     user: Object,
   },
+  data: function() {
+    return {
+      id: "",
+    }
+  },
   computed: {
     input() {
       return { ...this.user };
@@ -167,7 +172,10 @@ export default {
       }
       this.deleteUser(payload);
     },
-  }
+  },
+  create() {
+    this.id = this.input.id;  
+  },
 };
 </script>
 

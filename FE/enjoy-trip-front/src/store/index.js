@@ -38,7 +38,7 @@ export default new Vuex.Store({
       })
     },
     modifyUser(context, payload) { //관리자가 회원 정보를 수정
-      http.put(`admin/list/${payload.user.id}`, payload.user)
+      http.put(`admin/list/${payload.user.no}`, payload.user)
         .then((response) => {
           payload.callback(response.status);
         })
