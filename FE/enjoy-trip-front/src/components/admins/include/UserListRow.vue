@@ -1,26 +1,65 @@
 <template>
   <tr>
-    <td>{{ input.no }}</td>
+    <th scope="col">{{ input.no }}</th>
     <td>{{ input.id }}</td>
     <td>{{ input.name }}</td>
     <td>{{ input.pw }}</td>
-    <td>관리</td>
-  </tr>
-  <!-- <b-list-group-item class="flex-column align-items-start">
-    <div class="table">
-      <div>
-        <div class="tr">
-          <p class="td">{{ input.no }}</p>
-          <p class="td">{{ input.name }}</p>
-          <p class="td">{{ input.id }}</p>
-          <p class="td">{{ input.pw }}</p>
-        </div>
+    <td>
+      <b-button-group>
+        <b-button variant="secondary" @click="showModalModify">관리</b-button>
+      </b-button-group>
+
+      <!-- 수정 모달창 작성 -->
+      <b-modal
+        :ref="`user-${input.no}`"
+        title="회원 수정"
+        header-bg-variant="dark"
+        header-text-variant="light"
+        centered
+        hide-footer
+      >
+      <!-- 수정 모달 창 Body 작성 -->
+      <div class="text-center">
+        <b-input-group style="width: 400px" prepend="아이디">
+          <b-form-input
+            placeholder="아이디 입력 ..."
+            v-model="input.id">
+          </b-form-input>
+        </b-input-group>
+        <br/>
+        <b-input-group style="width: 400px" prepend="이름">
+          <b-form-input
+            placeholder="이름 입력 ..."
+            v-model="input.name">
+          </b-form-input>
+        </b-input-group>
+        <br/>
+        <b-input-group style="width: 400px" prepend="비밀번호">
+          <b-form-input
+            placeholder="비밀번호 입력 ..."
+            v-model="input.pw">
+          </b-form-input>
+        </b-input-group>
       </div>
-    </div>
-  </b-list-group-item> -->
+
+      <br/>
+
+      <!-- 수정 모달 창 Footer 작성 -->
+      <div class="text-center">
+        <b-button-group>
+          <b-button variant="outline-secondary" @click="modify">수정</b-button>
+          <b-button variant="secondary">삭제</b-button>
+        </b-button-group>
+      </div>
+      </b-modal>
+    </td>
+  </tr>
+
+  
 </template>
 
 <script>
+import {mapActions} from "vuex";
 export default {
   props: {
     user: Object,
@@ -30,6 +69,50 @@ export default {
       return { ...this.user };
     },
   },
+  methods: {
+    ...mapActions(["modifyUser"]),
+    showModalModify() {
+      this.$refs[`user-${this.input.no}`].show();
+    },
+    hideModalModify() {
+      this.$refs[`user-${this.input.no}`].hide();
+    },
+    modify() {
+      const payload = {
+        user: {
+          no: this.input.no,
+          id: this.input.id,
+          name: this.input.name,
+          pw: this.input.pw,
+        },
+        callback: () => {
+          //수정한 내용 지우기
+          this.input.id = "";
+          this.input.name = "";
+          this.input.pw = "";
+
+          //모달 창 닫기
+          this.hideModalModify();
+
+          // 회원 목록 갱신하기
+          // this.getUsers({
+
+          // })
+
+          // 수정 완료 Toast 출력
+          this.$bvToast.toast("회원 정보가 수정되었습니다." , {
+            title : "회원 정보 수정 알림",
+            variant: "success",
+            toaster: "b-toaster-bottom-center",
+            autoHideDelay: 3000,
+            solid: true,
+          });
+        },
+      };
+
+      this.modifyUser(payload);
+    }
+  }
 };
 </script>
 

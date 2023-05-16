@@ -9,14 +9,14 @@
       :items="users"></b-table> -->
 
     <div v-if="users.length > 0">
-      <table>
+      <table class="table table-striped">
         <thead>
           <tr>
-            <th>번호</th>
-            <th>id</th>
-            <th>이름</th>
-            <th>비밀번호</th>
-            <th>관리</th>
+            <th scope="col">번호</th>
+            <th scope="col">id</th>
+            <th scope="col">이름</th>
+            <th scope="col">비밀번호</th>
+            <th scope="col">관리</th>
           </tr>
         </thead>
         <tbody>
