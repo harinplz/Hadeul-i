@@ -70,7 +70,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["modifyUser"]),
+    ...mapActions(["modifyUser", "getUsers"]),
     showModalModify() {
       this.$refs[`user-${this.input.no}`].show();
     },
@@ -95,9 +95,9 @@ export default {
           this.hideModalModify();
 
           // 회원 목록 갱신하기
-          // this.getUsers({
-
-          // })
+          this.getUsers({
+            no: this.user.no,
+          })
 
           // 수정 완료 Toast 출력
           this.$bvToast.toast("회원 정보가 수정되었습니다." , {

@@ -27,6 +27,15 @@ export default new Vuex.Store({
         });
       });
     },
+    modifyUser(context, payload) {
+      http.put(`admin/list/${payload.user.id}`, payload.user)
+        .then((response) => {
+          payload.callback(response.status);
+        })
+        .catch((response) => {
+          payload.callback(response.status);
+        });
+    }
   },
   modules: {},
 });
