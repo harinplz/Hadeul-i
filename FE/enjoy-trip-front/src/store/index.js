@@ -27,6 +27,16 @@ export default new Vuex.Store({
         });
       });
     },
+    createUser(context, payload) { // 관리자가 회원 정보 등록
+      http.post(`admin/list`, payload.user)
+        .then((response) => {
+          console.log("응답: " + response.status)
+          payload.callback(response.status);
+      })
+        .catch((response) => {
+          payload.callback(response.status);
+      })
+    },
     modifyUser(context, payload) { //관리자가 회원 정보를 수정
       http.put(`admin/list/${payload.user.id}`, payload.user)
         .then((response) => {
