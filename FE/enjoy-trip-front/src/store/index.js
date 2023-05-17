@@ -136,6 +136,17 @@ export default new Vuex.Store({
         });
       });
     },
+    //커뮤니티 글 수정
+    modifyCommunity(context, payload) {
+      http
+        .put(`community/`, payload.community)
+        .then((response) => {
+          payload.callback(response.status);
+        })
+        .catch((response) => {
+          payload.callback(response.status);
+        });
+    },
   },
   modules: {},
 });

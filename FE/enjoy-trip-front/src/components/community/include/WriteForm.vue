@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   props: {
@@ -85,7 +85,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["createCommunity"]),
+    ...mapActions(["createCommunity", "modifyCommunity", "getCommunity"]),
     validate() {
       let isValid = true; // 유효하면 true
       let errMsg = "";
@@ -109,6 +109,7 @@ export default {
       } else {
         const payload = {
           community: {
+            boardNo: this.boardNo,
             title: this.title,
             userId: this.userId,
             content: this.content,
@@ -137,7 +138,7 @@ export default {
         if (this.type == "create") {
           this.createCommunity(payload);
         } else {
-          this.modifyBook(payload);
+          this.modifyCommunity(payload);
         }
       }
     },
@@ -147,15 +148,14 @@ export default {
   },
   created: function () {
     if (this.type == "modify") {
-      this.isbn = this.book.isbn;
-      this.title = this.book.title;
-      this.author = this.book.author;
-      this.price = this.book.price;
-      this.content = this.book.content;
+      this.boardNo = this.community.boardNo;
+      this.title = this.community.title;
+      this.userId = this.community.userId;
+      this.content = this.community.content;
     }
   },
   computed: {
-    // ...mapGetters(["book"]),
+    ...mapGetters(["community"]),
     writeFormTitle: function () {
       return this.type == "create" ? "글 등록" : "글 수정";
     },

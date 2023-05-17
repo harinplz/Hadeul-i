@@ -48,6 +48,11 @@ const routes = [
         name: "CommunityDetail",
         component: () => import("@/components/community/CommunityDetail"),
       },
+      {
+        path: "modify/:boardNo",
+        name: "CommunityModify",
+        component: () => import("@/components/community/CommunityModify"),
+      },
     ],
   },
 ];

@@ -38,8 +38,8 @@ export default {
     },
     moveModifyCommuntiy() {
       this.$router.push({
-        name: "BookModify",
-        params: this.book.isbn,
+        name: "CommunityModify",
+        params: this.community.boardNo,
       });
     },
     deleteCommuntiy() {
