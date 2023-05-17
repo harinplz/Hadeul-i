@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     users: [],
     attractions: [],
+    communities: [],
   },
   getters: {
     users(state) {
@@ -16,6 +17,9 @@ export default new Vuex.Store({
     attractions(state) {
       return state.attractions;
     },
+    communities(state) {
+      return state.communities;
+    },
   },
   mutations: {
     USERS(state, payload) {
@@ -23,6 +27,9 @@ export default new Vuex.Store({
     },
     ATTRACTIONS(state, payload) {
       state.attractions = payload.attractions;
+    },
+    COMMUNITIES(state, payload) {
+      state.communities = payload.communities;
     },
   },
   actions: {
@@ -92,6 +99,15 @@ export default new Vuex.Store({
         .catch((response) => {
           payload.callback(response.status);
         });
+    },
+    // 커뮤니티 글 불러오기
+    getCommunities(context) {
+      http.get(`community/list`).then((response) => {
+        context.commit({
+          type: "COMMUNITIES",
+          communities: response.data,
+        });
+      });
     },
   },
   modules: {},

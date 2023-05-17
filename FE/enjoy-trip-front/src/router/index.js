@@ -27,6 +27,19 @@ const routes = [
     name: "attractions",
     component: () => import("@/views/AppAttraction.vue"),
   },
+  {
+    path: "/community",
+    name: "communities",
+    component: () => import("@/views/AppCommunity.vue"),
+    redirect: "/community/list",
+    children: [
+      {
+        path: "list",
+        name: "CommunityList",
+        component: () => import("@/components/community/CommunityList.vue"),
+      },
+    ],
+  },
 ];
 
 const router = new VueRouter({

@@ -16,7 +16,11 @@
             <router-link :to="{ name: 'attractions' }">Attraction</router-link>
           </b-nav-item>
           <b-nav-item href="#">HotPlace</b-nav-item>
-          <b-nav-item href="#">Community</b-nav-item>
+          <b-nav-item href="#">
+            <router-link :to="{ name: 'communities' }"
+              >Community</router-link
+            ></b-nav-item
+          >
           <b-nav-item href="#">Notice</b-nav-item>
         </b-navbar-nav>
 
