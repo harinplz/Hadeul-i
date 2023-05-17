@@ -9,7 +9,9 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item href="#">HOME</b-nav-item>
+          <b-nav-item href="#">
+            <router-link :to="{ name: 'home' }">HOME</router-link>
+          </b-nav-item>
           <b-nav-item href="#">
             <router-link :to="{ name: 'attractions' }">Attraction</router-link>
           </b-nav-item>
@@ -28,7 +30,11 @@
                 로그인&nbsp;
               </div></a
             >
-            <div style="display: inline">회원가입&nbsp;</div>
+            <a class="login-no-link">
+              <div style="display: inline" @click="showSignupModal">
+                회원가입&nbsp;
+              </div>
+            </a>
           </div>
           <!-- 관리자 로그인 했을 때 -->
           <div v-else-if="isLogin == `admin`">
@@ -82,6 +88,45 @@
               </b-button-group>
             </div>
           </b-modal>
+
+          <!-- 회원 등록 모달창 -->
+          <b-modal
+            :ref="`signupModal`"
+            title="회원 등록"
+            header-bg-variant="dark"
+            header-text-variant="light"
+            centered
+            hide-footer>
+            <!-- 회원 등록 모달창 Body 작성 -->
+            <div class="text-center" style="margin-bottom: 10px">
+              <b-input-group style="width: 400px" prepend="아이디">
+                <b-form-input placeholder="아이디 입력 ..." v-model="id">
+                </b-form-input>
+              </b-input-group>
+              <br />
+              <b-input-group style="width: 400px" prepend="이름">
+                <b-form-input placeholder="이름 입력 ..." v-model="name">
+                </b-form-input>
+              </b-input-group>
+              <br />
+              <b-input-group style="width: 400px" prepend="비밀번호">
+                <b-form-input
+                  placeholder="비밀번호 입력 ..."
+                  v-model="pw"
+                  :type="`password`">
+                </b-form-input>
+              </b-input-group>
+            </div>
+
+            <!-- 회원 등록 모달 창 Footer 작성 -->
+            <div class="text-center">
+              <b-button-group>
+                <b-button variant="secondary" @click="signup"
+                  >회원 등록</b-button
+                >
+              </b-button-group>
+            </div>
+          </b-modal>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -97,16 +142,23 @@ export default {
     return {
       id: "",
       pw: "",
+      name: "",
       isLogin: "",
     };
   },
   methods: {
-    ...mapActions(["userLogin"]),
+    ...mapActions(["userLogin", "createUser"]),
     showLoginModal() {
       this.$refs[`loginModal`].show();
     },
     hideLoginModal() {
       this.$refs[`loginModal`].hide();
+    },
+    showSignupModal() {
+      this.$refs[`signupModal`].show();
+    },
+    hideSignupModal() {
+      this.$refs[`signupModal`].hide();
     },
     login() {
       console.log(this.id, this.pw);
@@ -137,6 +189,33 @@ export default {
     logout() {
       localStorage.removeItem("login");
       router.go();
+    },
+    signup() {
+      const payload = {
+        user: {
+          id: this.id,
+          name: this.name,
+          pw: this.pw,
+        },
+        callback: (status) => {
+          console.log("콜백함수 실행!");
+          this.hideSignupModal(); //모달 창 닫기
+
+          if (status == 201) {
+            router.go();
+          } else if (status == 500) {
+            // 서버 오류 Toast 출력
+            this.$bvToast.toast("서버 오류 발생!", {
+              title: "회원 관리 알림",
+              variant: "danger",
+              toaster: "b-toaster-bottom-center",
+              autoHideDelay: 3000,
+              solid: true,
+            });
+          }
+        },
+      };
+      this.createUser(payload);
     },
   },
   created() {
