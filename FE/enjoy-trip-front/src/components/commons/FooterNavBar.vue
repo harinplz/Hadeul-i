@@ -28,8 +28,8 @@ footer {
   font-weight: bold;
   font-size: 13px;
   /* 나중에 필요할 때 주석 처리 */
-  bottom: 0px;
-  position: absolute;
+  /* bottom: 0px;
+  position: absolute; */
 }
 .footer-1 {
   margin-top: 30px;

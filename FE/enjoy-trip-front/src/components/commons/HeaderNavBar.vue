@@ -10,7 +10,9 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item href="#">HOME</b-nav-item>
-          <b-nav-item href="#">Attraction</b-nav-item>
+          <b-nav-item href="#">
+            <router-link :to="{ name: 'attractions' }">Attraction</router-link>
+          </b-nav-item>
           <b-nav-item href="#">HotPlace</b-nav-item>
           <b-nav-item href="#">Community</b-nav-item>
           <b-nav-item href="#">Notice</b-nav-item>
@@ -37,7 +39,9 @@
               <em><b-icon icon="person" font-scale="1"></b-icon></em>
             </template>
             <b-dropdown-item href="#">로그아웃</b-dropdown-item>
-            <b-dropdown-item href="/admin">회원관리</b-dropdown-item>
+            <b-dropdown-item href="#">
+              <router-link :to="{ name: 'admin' }">회원관리</router-link>
+            </b-dropdown-item>
           </b-nav-item-dropdown>
 
           <!-- 관리자 외 회원 로그인 -->
