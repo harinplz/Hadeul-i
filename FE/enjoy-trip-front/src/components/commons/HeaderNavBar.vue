@@ -20,18 +20,37 @@
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <!-- 로그인을 안 했을 시 -->
-          <b-nav-item href="#" disabled>로그인이 필요합니다.</b-nav-item>
-
-          <b-nav-item-dropdown right>
-            <template #button-content>
-              <em><b-icon icon="person" font-scale="1"></b-icon></em>
-            </template>
-            <b-dropdown-item href="#" @click="showLoginModal"
-              >로그인</b-dropdown-item
+          <!-- 로그인 안했을 때 -->
+          <div v-if="isLogin == null">
+            <div style="display: inline">로그인이 필요합니다.&nbsp;</div>
+            <a class="login-no-link" href="#"
+              ><div style="display: inline" @click="showLoginModal">
+                로그인&nbsp;
+              </div></a
             >
-            <b-dropdown-item href="#">회원가입</b-dropdown-item>
-          </b-nav-item-dropdown>
+            <div style="display: inline">회원가입&nbsp;</div>
+          </div>
+          <!-- 관리자 로그인 했을 때 -->
+          <div v-else-if="isLogin == `admin`">
+            <div style="display: inline">관리자&nbsp;</div>
+            <a class="login-no-link" href="#">
+              <div style="display: inline" @click="logout">로그아웃&nbsp;</div>
+            </a>
+            <div style="display: inline">
+              <router-link :to="{ name: 'admin' }" class="login-no-link"
+                >회원관리</router-link
+              >
+              &nbsp;
+            </div>
+          </div>
+          <!-- 일반 회원 로그인 -->
+          <div v-else>
+            <div style="display: inline">{{ isLogin }}님 안녕하세요!&nbsp;</div>
+            <a class="login-no-link" href="#">
+              <div style="display: inline" @click="logout">로그아웃&nbsp;</div>
+            </a>
+            <div style="display: inline">마이페이지&nbsp;</div>
+          </div>
 
           <!-- 로그인 모달 창 작성 -->
           <b-modal
@@ -63,30 +82,6 @@
               </b-button-group>
             </div>
           </b-modal>
-
-          <!-- 관리자로 로그인했을 때 -->
-          <!-- <b-nav-item href="#" disabled>관리자</b-nav-item>
-
-          <b-nav-item-dropdown right>
-            <template #button-content>
-              <em><b-icon icon="person" font-scale="1"></b-icon></em>
-            </template>
-            <b-dropdown-item href="#">로그아웃</b-dropdown-item>
-            <b-dropdown-item href="#">
-              <router-link :to="{ name: 'admin' }">회원관리</router-link>
-            </b-dropdown-item>
-          </b-nav-item-dropdown> -->
-
-          <!-- 관리자 외 회원 로그인 -->
-          <!-- <b-nav-item href="#" disabled>님 환영합니다.</b-nav-item>
-
-          <b-nav-item-dropdown right>
-            <template #button-content>
-              <em><b-icon icon="person" font-scale="1"></b-icon></em>
-            </template>
-            <b-dropdown-item href="#">로그아웃</b-dropdown-item>
-            <b-dropdown-item href="#">마이페이지</b-dropdown-item>
-          </b-nav-item-dropdown> -->
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -94,12 +89,15 @@
 </template>
 
 <script>
+import router from "@/router";
+
 import { mapActions } from "vuex";
 export default {
   data: function () {
     return {
       id: "",
       pw: "",
+      isLogin: "",
     };
   },
   methods: {
@@ -121,13 +119,7 @@ export default {
           if (status == 200) {
             console.log("콜백함수 실행!");
             this.hideLoginModal(); //모달 창 닫기
-            this.$bvToast.toast("로그인 성공하였습니다", {
-              title: "로그인",
-              variant: "success",
-              toaster: "b-toaster-bottom-center",
-              autoHideDelay: 2000,
-              solid: true,
-            });
+            router.go();
           } else if (status == 500) {
             // 서버 오류 Toast 출력
             this.$bvToast.toast("서버 오류 발생!", {
@@ -142,6 +134,33 @@ export default {
       };
       this.userLogin(payload);
     },
+    logout() {
+      localStorage.removeItem("login");
+      router.go();
+    },
+  },
+  created() {
+    this.isLogin = localStorage.getItem("login");
+    console.log(this.isLogin);
   },
 };
 </script>
+
+<style scoped>
+#login-no {
+  /* display: none; */
+  color: #7f7f7f;
+}
+.login-no-link {
+  text-decoration: none;
+  color: #7f7f7f;
+}
+#login-admin {
+  display: none;
+  color: #7f7f7f;
+}
+#login-user {
+  display: none;
+  color: #7f7f7f;
+}
+</style>
