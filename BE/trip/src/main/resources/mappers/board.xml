@@ -14,4 +14,27 @@
 	<select id="getBoards" resultMap="board">
 		SELECT * FROM community
 	</select>
+	
+	<select id="getOne" resultMap="board" parameterType="int">
+		SELECT board_no,user_id,title,content,regtime
+		FROM community
+		WHERE board_no = #{boardNo}
+	</select>
+	
+	<delete id="deleteOne" parameterType="int">
+		DELETE FROM community
+		WHERE board_no = #{boardNo}
+	</delete>
+	
+	<update id="updateOne" parameterType="boardDto">
+		update community
+		set title = #{title}, content = #{content}
+		where board_no = #{boardNo}
+	</update>
+	
+	<insert id="insertOne" parameterType="boardDto">
+		INSERT INTO community 
+			(user_id, title, content)
+		VALUES(#{userId},#{title},#{content})
+	</insert>
 </mapper>

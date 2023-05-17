@@ -12,4 +12,12 @@ public interface BoardMapper {
 
 	public List<BoardDto> getBoards() throws SQLException;
 
+	public BoardDto getOne(int boardNo) throws SQLException;
+
+	public int deleteOne(int boardNo) throws SQLException;
+
+	public int updateOne(BoardDto boardDto) throws SQLException;
+
+	public int insertOne(BoardDto boardDto) throws SQLException;
+
 }
