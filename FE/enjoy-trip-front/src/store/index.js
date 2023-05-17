@@ -9,6 +9,7 @@ export default new Vuex.Store({
     users: [],
     attractions: [],
     communities: [],
+    community: {},
   },
   getters: {
     users(state) {
@@ -20,6 +21,9 @@ export default new Vuex.Store({
     communities(state) {
       return state.communities;
     },
+    community(state) {
+      return state.community;
+    },
   },
   mutations: {
     USERS(state, payload) {
@@ -30,6 +34,9 @@ export default new Vuex.Store({
     },
     COMMUNITIES(state, payload) {
       state.communities = payload.communities;
+    },
+    COMMUNITY(state, payload) {
+      state.community = payload.community;
     },
   },
   actions: {
@@ -106,6 +113,26 @@ export default new Vuex.Store({
         context.commit({
           type: "COMMUNITIES",
           communities: response.data,
+        });
+      });
+    },
+    //커뮤니티 글 작성
+    createCommunity(context, payload) {
+      http
+        .post("community/", payload.community)
+        .then((response) => {
+          payload.callback(response.status);
+        })
+        .catch((response) => {
+          payload.callback(response.status);
+        });
+    },
+    //커뮤니티 글 상세 조회
+    getCommunity(context, payload) {
+      http.get(`community/${payload.boardNo}`).then((response) => {
+        context.commit({
+          type: "COMMUNITY",
+          community: response.data,
         });
       });
     },

@@ -5,11 +5,11 @@
         <h3>글 목록</h3>
       </b-col>
     </b-row>
-    <!-- <b-row class="mb-1">
+    <b-row class="mb-1">
       <b-col class="text-right">
-        <b-button variant="outline-primary" @click="movePage">등록</b-button>
+        <b-button variant="outline-secondary" @click="movePage">등록</b-button>
       </b-col>
-    </b-row> -->
+    </b-row>
 
     <b-table
       v-if="communities.length"
@@ -18,7 +18,8 @@
       hover
       head-variant="dark"
       :items="communities"
-      :fields="fields"></b-table>
+      :fields="fields"
+      @row-clicked="rowClickListener"></b-table>
     <div v-else class="text-center">게시글이 없습니다.</div>
   </b-container>
 </template>
@@ -54,6 +55,17 @@ export default {
   },
   methods: {
     ...mapActions(["getCommunities"]),
+    movePage() {
+      this.$router.push({ name: "CommunityCreate" });
+    },
+    rowClickListener(row, index) {
+      console.log(index, row);
+
+      this.$router.push({
+        name: "CommunityDetail",
+        params: { boardNo: row.boardNo },
+      });
+    },
   },
   created() {
     this.getCommunities();

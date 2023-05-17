@@ -38,6 +38,16 @@ const routes = [
         name: "CommunityList",
         component: () => import("@/components/community/CommunityList.vue"),
       },
+      {
+        path: "create",
+        name: "CommunityCreate",
+        component: () => import("@/components/community/CommunityCreate"),
+      },
+      {
+        path: "detail/:boardNo",
+        name: "CommunityDetail",
+        component: () => import("@/components/community/CommunityDetail"),
+      },
     ],
   },
 ];
