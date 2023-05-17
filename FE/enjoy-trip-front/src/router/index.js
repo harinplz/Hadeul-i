@@ -27,6 +27,34 @@ const routes = [
     name: "attractions",
     component: () => import("@/views/AppAttraction.vue"),
   },
+  {
+    path: "/community",
+    name: "communities",
+    component: () => import("@/views/AppCommunity.vue"),
+    redirect: "/community/list",
+    children: [
+      {
+        path: "list",
+        name: "CommunityList",
+        component: () => import("@/components/community/CommunityList.vue"),
+      },
+      {
+        path: "create",
+        name: "CommunityCreate",
+        component: () => import("@/components/community/CommunityCreate"),
+      },
+      {
+        path: "detail/:boardNo",
+        name: "CommunityDetail",
+        component: () => import("@/components/community/CommunityDetail"),
+      },
+      {
+        path: "modify/:boardNo",
+        name: "CommunityModify",
+        component: () => import("@/components/community/CommunityModify"),
+      },
+    ],
+  },
 ];
 
 const router = new VueRouter({
