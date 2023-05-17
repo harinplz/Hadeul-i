@@ -1,25 +1,42 @@
 package com.ssafy.board.controller;
 
-import java.io.IOException;
+import java.util.List;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@WebServlet("/board")
-public class BoardController extends HttpServlet {
+import com.ssafy.board.model.dto.BoardDto;
+import com.ssafy.board.model.service.BoardService;
+
+@RestController
+@RequestMapping("/community")
+@CrossOrigin("*")
+public class BoardController {
 	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		super.doGet(req, resp);
+	BoardService boardService;
+	
+	@Autowired
+	public BoardController(BoardService boardService) {
+		this.boardService =boardService;
 	}
 	
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("UTF-8");
-		doGet(req, resp);
+	@GetMapping("/list")
+	public ResponseEntity<?> searchAll() throws Exception{
+		List<BoardDto> list = boardService.getList();
+		for(int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i).getBoardNo());
+		}
+		
+		if(list != null && !list.isEmpty()) {
+			return new ResponseEntity<List<BoardDto>>(list, HttpStatus.OK);
+		}else {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
 	}
-
+	
 }
