@@ -7,15 +7,22 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     users: [],
+    attractions: [],
   },
   getters: {
     users(state) {
       return state.users;
     },
+    attractions(state) {
+      return state.attractions;
+    },
   },
   mutations: {
     USERS(state, payload) {
       state.users = payload.users;
+    },
+    ATTRACTIONS(state, payload) {
+      state.attractions = payload.attractions;
     },
   },
   actions: {
@@ -54,6 +61,17 @@ export default new Vuex.Store({
         .catch((response) => {
           payload.callback(response.status);
         });
+    },
+     attractionSearch(context, payload) {
+      http.post("/trips", payload.attractionSearchInfo).then((response) => {
+        console.log("서버 응답이 왔습니다", response.data);
+        // console.log(payload.attractionSearchInfo);
+        //뮤테이션 호출 -> 동기화
+        context.commit({
+          type: "ATTRACTIONS",
+          attractions: response.data,
+        });
+      });
     },
   },
   modules: {},
