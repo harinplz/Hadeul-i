@@ -147,6 +147,17 @@ export default new Vuex.Store({
           payload.callback(response.status);
         });
     },
+    //커뮤니티 글 삭제
+    deleteCommunity(context, payload) {
+      http
+        .delete(`community/${payload.boardNo}`)
+        .then((response) => {
+          payload.callback(response.status);
+        })
+        .catch((response) => {
+          payload.callback(response.status);
+        });
+    },
   },
   modules: {},
 });

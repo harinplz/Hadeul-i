@@ -15,7 +15,7 @@
         <b-button variant="outline-info" size="sm" @click="moveModifyCommuntiy"
           >수정</b-button
         >
-        <b-button variant="outline-danger" size="sm" @click="deleteCommuntiy"
+        <b-button variant="outline-danger" size="sm" @click="deleteCom"
           >삭제</b-button
         >
       </b-col>
@@ -28,11 +28,16 @@
 import { mapActions, mapGetters } from "vuex";
 
 export default {
+  data: function () {
+    return {
+      boardNo: "",
+    };
+  },
   components: {
     "view-detail": () => import("@/components/community/include/ViewDetail"),
   },
   methods: {
-    ...mapActions(["getCommunity"]),
+    ...mapActions(["getCommunity", "deleteCommunity"]),
     listCommunity() {
       this.$router.push({ name: "CommunityList" });
     },
@@ -42,15 +47,24 @@ export default {
         params: this.community.boardNo,
       });
     },
-    deleteCommuntiy() {
-      this.$router.push({
-        name: "BookDelete",
-        params: this.book.isbn,
-      });
+    deleteCom() {
+      console.log("삭제실행");
+      const payload = {
+        boardNo: this.boardNo,
+        callback: (status) => {
+          if (status == 200) {
+            this.$router.push({ name: "CommunityList" });
+          } else if (status == 500) {
+            alert("서버 오류 발생!");
+          }
+        },
+      };
+      this.deleteCommunity(payload);
     },
   },
   created() {
     const boardNo = this.$route.params.boardNo;
+    this.boardNo = boardNo;
     // action 함수 호출
     this.getCommunity({
       boardNo,
