@@ -30,7 +30,7 @@
 
 	<!-- 관리자 회원 정보 모두 조회 -->
 	<select id="searchAll" resultMap="user">
-		SELECT user_no, id, password, name
+		SELECT user_no, id, password, name, email
 		FROM
 		user
 	</select>
