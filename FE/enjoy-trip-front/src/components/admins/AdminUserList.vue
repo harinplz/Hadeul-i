@@ -54,6 +54,7 @@
             <th scope="col">번호</th>
             <th scope="col">id</th>
             <th scope="col">이름</th>
+            <th scope="col">이메일</th>
             <th scope="col">비밀번호</th>
             <th scope="col">관리</th>
           </tr>
@@ -76,6 +77,7 @@ export default {
     return {
       id: "",
       name: "",
+      email: "",
       pw: "",
     }
   },

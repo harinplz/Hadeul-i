@@ -3,6 +3,7 @@
     <th scope="col">{{ input.no }}</th>
     <td>{{ input.id }}</td>
     <td>{{ input.name }}</td>
+    <td>{{ input.email }}</td>
     <td>{{ input.pw }}</td>
     <td>
       <b-button-group>
