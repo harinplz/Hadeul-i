@@ -48,7 +48,7 @@
 	<update id="update">
 		UPDATE user
 		SET id = #{id}, password=#{pw}, name =
-		#{name}
+		#{name}, email = #{email}
 		WHERE user_no = #{no}
 	</update>
 
