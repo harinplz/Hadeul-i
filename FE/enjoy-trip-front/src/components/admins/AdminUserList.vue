@@ -30,6 +30,13 @@
             v-model="name">
           </b-form-input>
         </b-input-group>
+        <br/>        
+        <b-input-group style="width: 400px" prepend="이메일">
+          <b-form-input
+            placeholder="이메일 입력 ..."
+            v-model="email">
+          </b-form-input>
+        </b-input-group>
         <br/>
         <b-input-group style="width: 400px" prepend="비밀번호">
           <b-form-input
@@ -54,6 +61,7 @@
             <th scope="col">번호</th>
             <th scope="col">id</th>
             <th scope="col">이름</th>
+            <th scope="col">이메일</th>
             <th scope="col">비밀번호</th>
             <th scope="col">관리</th>
           </tr>
@@ -76,6 +84,7 @@ export default {
     return {
       id: "",
       name: "",
+      email: "",
       pw: "",
     }
   },
@@ -98,6 +107,7 @@ export default {
         user: {
           id: this.id,
           name: this.name,
+          email: this.email,
           pw: this.pw,
         },
         callback: (status) => {

@@ -3,6 +3,7 @@
     <th scope="col">{{ input.no }}</th>
     <td>{{ input.id }}</td>
     <td>{{ input.name }}</td>
+    <td>{{ input.email }}</td>
     <td>{{ input.pw }}</td>
     <td>
       <b-button-group>
@@ -31,6 +32,13 @@
           <b-form-input
             placeholder="이름 입력 ..."
             v-model="input.name">
+          </b-form-input>
+        </b-input-group>
+        <br/>        
+        <b-input-group style="width: 400px" prepend="이메일">
+          <b-form-input
+            placeholder="이메일 입력 ..."
+            v-model="input.email">
           </b-form-input>
         </b-input-group>
         <br/>
@@ -88,12 +96,14 @@ export default {
           no: this.input.no,
           id: this.input.id,
           name: this.input.name,
+          email: this.input.email,
           pw: this.input.pw,
         },
         callback: () => {
           //수정한 내용 지우기
           this.input.id = "";
           this.input.name = "";
+          this.input.email = "";
           this.input.pw = "";
 
           //모달 창 닫기
