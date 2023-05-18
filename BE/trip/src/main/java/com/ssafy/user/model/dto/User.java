@@ -5,6 +5,7 @@ public class User {
     String id;
     String pw;
     String name;
+    String email;
     
     public User() {}
     
@@ -15,19 +16,21 @@ public class User {
     }
 
 
-    public User(String id, String pw, String name) {
+    public User(String id, String pw, String name, String email) {
         super();
         this.id = id;
         this.pw = pw;
         this.name = name;
+        this.email = email;
     }
     
-    public User(int no, String id, String pw, String name) {
+    public User(int no, String id, String pw, String name, String email) {
         super();
         this.no = no;
         this.id = id;
         this.pw = pw;
         this.name = name;
+        this.email = email;
     }
 
     public int getNo() {
@@ -62,12 +65,17 @@ public class User {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "User [id=" + id + ", pw=" + pw + ", name=" + name + "]";
-    }
-    
-    
-    
+    public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	@Override
+	public String toString() {
+		return "User [no=" + no + ", id=" + id + ", pw=" + pw + ", name=" + name + ", email=" + email + "]";
+	}
 
 }

@@ -9,15 +9,16 @@
 		<result column="user_no" property="no" />
 		<result column="id" property="id" />
 		<result column="password" property="pw" />
+		<result column="email" property="email"/>
 		<result column="name" property="name" />
 	</resultMap>
 
 	<!-- 관리자 회원 등록 & 회원가입 -->
 	<insert id="insert">
 		insert into user
-		(id, password, name)
+		(id, password, name, email)
 		values (#{id},
-		#{pw}, #{name})
+		#{pw}, #{name}, #{email})
 	</insert>
 
 	<!-- 회원 로그인 -->
@@ -29,7 +30,7 @@
 
 	<!-- 관리자 회원 정보 모두 조회 -->
 	<select id="searchAll" resultMap="user">
-		SELECT user_no, id, password, name
+		SELECT user_no, id, password, name, email
 		FROM
 		user
 	</select>
@@ -47,7 +48,7 @@
 	<update id="update">
 		UPDATE user
 		SET id = #{id}, password=#{pw}, name =
-		#{name}
+		#{name}, email = #{email}
 		WHERE user_no = #{no}
 	</update>
 
