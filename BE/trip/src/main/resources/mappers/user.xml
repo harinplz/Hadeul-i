@@ -37,7 +37,7 @@
 
 	<!-- 관리자 & 마이페이지 정보 조회 -->
 	<select id="selectId" resultMap="user">
-		SELECT id, password, name
+		SELECT id, password, name, email
 		FROM
 		user
 		WHERE id = #{id}
@@ -59,6 +59,23 @@
 		FROM user
 		WHERE id = #{id}
 	</delete>
+	
+	
+	<!-- 토큰 갱신 -->
+	<update id="updateTokenByUserId" parameterType="map">
+		UPDATE user
+		SET token = #{token}
+		WHERE id = #{id}
+	</update>
+	
+	
+	<!-- 사용자 조회 (Token 이용) -->
+		<select id="selectByToken" parameterType="string" resultType="user">
+		SELECT id, name, email
+		FROM user
+		WHERE token = #{refreshToken}
+	</select>
+	
 
 
 </mapper>

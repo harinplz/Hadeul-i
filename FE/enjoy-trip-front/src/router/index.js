@@ -1,7 +1,49 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from "@/store";
 
 Vue.use(VueRouter);
+
+const onlyAuthUser = (to, from, next) => {
+  console.log(to, from, next);
+  // 현재 로그인 된 상태
+  if (store.getters.userInfo != null && store.getters.accessToken) {
+    //this.$store.dispatch("getUserInfo");
+    store.dispatch("getUserInfo", {
+      accessToken: store.getters.accessToken,
+      callback: (status) => {
+        if (status == 200) {
+          console.log("현재 accessToken은 유효함!!");
+          next();
+        } else if (status == 401) {
+          // accessToken이 만료 되었으므로 refreshToken을 이용하여 새로운 accessToken 얻기
+          store.dispatch("getAccessToken", {
+            refreshToken: store.getters.refreshToken,
+            callback: (status) => {
+              if (status == 200) {
+                // 새로운 accessToken을 얻었으므로, 다시 사용자 정보 얻어오기
+                store.dispatch("getUserInfo", {
+                  accessToken: store.getters.accessToken,
+                  callback: () => {
+                    console.log("새로운 accessToken을 획득!!");
+                    next();
+                  },
+                });
+              } else if (status == 401) {
+                // refreshToken도 만료된 상태이므로, 사용자에게 재로그인을 하도록 유도
+                alert("토큰이 만료되었습니다. 재로그인 해주세요.");
+                store.dispatch("logout"); // 로그아웃
+              }
+            },
+          });
+        }
+      },
+    });
+  } else {
+    // 로그인이 되어 있지 않다면 로그인 페이지로 이동
+    alert("로그인이 필요한 페이지입니다.");
+  }
+};
 
 const routes = [
   {
@@ -26,6 +68,7 @@ const routes = [
     path: "/attractions",
     name: "attractions",
     component: () => import("@/views/AppAttraction.vue"),
+    beforeEnter: onlyAuthUser,
   },
   {
     path: "/community",

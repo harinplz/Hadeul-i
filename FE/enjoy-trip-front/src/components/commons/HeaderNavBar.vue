@@ -27,7 +27,7 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <!-- 로그인 안했을 때 -->
-          <div v-if="isLogin == null">
+          <div v-if="userInfo == null">
             <div style="display: inline">로그인이 필요합니다.&nbsp;</div>
             <a class="login-no-link" href="#"
               ><div style="display: inline" @click="showLoginModal">
@@ -41,7 +41,7 @@
             </a>
           </div>
           <!-- 관리자 로그인 했을 때 -->
-          <div v-else-if="isLogin == `admin`">
+          <div v-else-if="userInfo.name == `admin`">
             <div style="display: inline">관리자&nbsp;</div>
             <a class="login-no-link" href="#">
               <div style="display: inline" @click="logout">로그아웃&nbsp;</div>
@@ -55,7 +55,9 @@
           </div>
           <!-- 일반 회원 로그인 -->
           <div v-else>
-            <div style="display: inline">{{ isLogin }}님 안녕하세요!&nbsp;</div>
+            <div style="display: inline">
+              {{ userInfo.name }}님 안녕하세요!&nbsp;
+            </div>
             <a class="login-no-link" href="#">
               <div style="display: inline" @click="logout">로그아웃&nbsp;</div>
             </a>
@@ -71,16 +73,19 @@
             header-text-variant="light"
             centered
             hide-footer>
+            <b-alert show variant="danger" v-if="isLoginError">
+              아이디 또는 비밀번호를 확인하세요.
+            </b-alert>
             <div>
               <b-input-group style="width: 240px" prepend="아이디">
-                <b-form-input placeholder="아이디 입력 ..." v-model="id">
+                <b-form-input placeholder="아이디 입력 ..." v-model="user.id">
                 </b-form-input>
               </b-input-group>
               <br />
               <b-input-group style="width: 240px" prepend="비밀번호">
                 <b-form-input
                   placeholder="비밀번호 입력 ..."
-                  v-model="pw"
+                  v-model="user.pw"
                   :type="`password`">
                 </b-form-input>
               </b-input-group>
@@ -88,7 +93,7 @@
             <br />
             <div class="text-center">
               <b-button-group>
-                <b-button variant="secondary" @click="login">로그인</b-button>
+                <b-button variant="secondary" @click="confirm">로그인</b-button>
               </b-button-group>
             </div>
           </b-modal>
@@ -145,10 +150,16 @@
 <script>
 import router from "@/router";
 
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   data: function () {
     return {
+      user: {
+        id: null,
+        name: null,
+        pw: null,
+      },
+      isLoginError: false,
       id: "",
       pw: "",
       name: "",
@@ -157,7 +168,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["userLogin", "createUser"]),
+    ...mapActions(["login", "logout", "getUserInfo", "createUser"]),
     showLoginModal() {
       this.$refs[`loginModal`].show();
     },
@@ -170,35 +181,51 @@ export default {
     hideSignupModal() {
       this.$refs[`signupModal`].hide();
     },
-    login() {
-      console.log(this.id, this.pw);
-      const payload = {
-        user: {
-          id: this.id,
-          pw: this.pw,
-        },
+    confirm() {
+      this.login({
+        user: this.user,
         callback: (status) => {
           if (status == 200) {
-            console.log("콜백함수 실행!");
-            this.hideLoginModal(); //모달 창 닫기
-            router.go();
-          } else if (status == 500) {
-            // 서버 오류 Toast 출력
-            this.$bvToast.toast("서버 오류 발생!", {
-              title: "로그인 오류",
-              variant: "danger",
-              toaster: "b-toaster-bottom-center",
-              autoHideDelay: 2000,
-              solid: true,
+            //로그인 성공하면 사용자 정보 얻어오기
+            this.getUserInfo({
+              accessToken: this.accessToken,
+              callback: (status) => {
+                if (status == 200) {
+                  console.log(status);
+                  this.hideLoginModal();
+                }
+              },
             });
+            console.log(status);
+          } else if (status == 401) {
+            this.isLoginError = true;
           }
         },
-      };
-      this.userLogin(payload);
-    },
-    logout() {
-      localStorage.removeItem("login");
-      router.go();
+      });
+      // console.log(this.id, this.pw);
+      // const payload = {
+      //   user: {
+      //     id: this.id,
+      //     pw: this.pw,
+      //   },
+      //   callback: (status) => {
+      //     if (status == 200) {
+      //       console.log("콜백함수 실행!");
+      //       this.hideLoginModal(); //모달 창 닫기
+      //       router.go();
+      //     } else if (status == 500) {
+      //       // 서버 오류 Toast 출력
+      //       this.$bvToast.toast("서버 오류 발생!", {
+      //         title: "로그인 오류",
+      //         variant: "danger",
+      //         toaster: "b-toaster-bottom-center",
+      //         autoHideDelay: 2000,
+      //         solid: true,
+      //       });
+      //     }
+      //   },
+      // };
+      // this.userLogin(payload);
     },
     signup() {
       const payload = {
@@ -229,9 +256,13 @@ export default {
       this.createUser(payload);
     },
   },
+
   created() {
     this.isLogin = localStorage.getItem("login");
     console.log(this.isLogin);
+  },
+  computed: {
+    ...mapGetters(["accessToken", "userInfo"]),
   },
 };
 </script>
