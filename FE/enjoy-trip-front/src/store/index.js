@@ -67,7 +67,7 @@ export default new Vuex.Store({
   actions: {
     getAccessToken({ commit }, payload) {
       http
-        .payload(`/user/refresh`, payload.refreshToken)
+        .get(`/user/refresh`, payload.refreshToken)
         .then(({ status, data }) => {
           if (status == 200) {
             commit("TOKEN", {

@@ -6,9 +6,9 @@ Vue.use(VueRouter);
 
 const onlyAuthUser = (to, from, next) => {
   console.log(to, from, next);
-  // 현재 로그인 된 상태
+  //현재 로그인 된 상태
   if (store.getters.userInfo != null && store.getters.accessToken) {
-    //this.$store.dispatch("getUserInfo");
+    // this.$store.dispatch("getUserInfo")
     store.dispatch("getUserInfo", {
       accessToken: store.getters.accessToken,
       callback: (status) => {
@@ -16,7 +16,8 @@ const onlyAuthUser = (to, from, next) => {
           console.log("현재 accessToken은 유효함!!");
           next();
         } else if (status == 401) {
-          // accessToken이 만료 되었으므로 refreshToken을 이용하여 새로운 accessToken 얻기
+          // accessToken이 만료되었으므로 refreshToken을 이용하여 새로운 accessToken 얻기
+          console.log("refreshToken: " + store.getters.refreshToken);
           store.dispatch("getAccessToken", {
             refreshToken: store.getters.refreshToken,
             callback: (status) => {
@@ -32,7 +33,7 @@ const onlyAuthUser = (to, from, next) => {
               } else if (status == 401) {
                 // refreshToken도 만료된 상태이므로, 사용자에게 재로그인을 하도록 유도
                 alert("토큰이 만료되었습니다. 재로그인 해주세요.");
-                store.dispatch("logout"); // 로그아웃
+                store.dispatch("logout"); //로그아웃하고
               }
             },
           });
@@ -40,7 +41,7 @@ const onlyAuthUser = (to, from, next) => {
       },
     });
   } else {
-    // 로그인이 되어 있지 않다면 로그인 페이지로 이동
+    //로그인이 되어있지 않다면 로그인 페이지로 이동
     alert("로그인이 필요한 페이지입니다.");
   }
 };

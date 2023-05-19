@@ -77,7 +77,6 @@ public class UserController{
 			// AccessToken 생성
 			String accessToken = jwtService.create("userid", loginUser.getId(), "access-token", 1000 * 10 /*10초 추후 수정*/);
 
-
 			// RefreshToken 생성
 			String refreshToken = jwtService.create("userid",
 					loginUser.getId(),
