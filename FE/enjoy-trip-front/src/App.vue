@@ -18,4 +18,12 @@ export default {
 };
 </script>
 
-<style></style>
+
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap');
+#app {
+  background-color: #d5f5ff;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+</style>
