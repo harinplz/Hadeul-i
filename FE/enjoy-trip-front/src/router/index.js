@@ -70,6 +70,11 @@ const routes = [
         path: "create",
         name: "HotplaceCreate",
         component: () => import("@/components/hotplace/HotplaceCreate"),
+      },
+      {
+        path: "detail",
+        name: "HotplaceDetail",
+        component: () => import("@/components/hotplace/HotplaceDetail"),
       }
     ]
     
