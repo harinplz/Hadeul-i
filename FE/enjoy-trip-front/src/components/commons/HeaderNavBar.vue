@@ -29,39 +29,28 @@
           <!-- 로그인 안했을 때 -->
           <div v-if="userInfo == null">
             <div style="display: inline">로그인이 필요합니다.&nbsp;</div>
-            <a class="login-no-link" href="#"
-              ><div style="display: inline" @click="showLoginModal">
-                로그인&nbsp;
-              </div></a
-            >
-            <a class="login-no-link">
-              <div style="display: inline" @click="showSignupModal">
-                회원가입&nbsp;
-              </div>
-            </a>
+            <div class="login-no-link" @click="showLoginModal">
+              로그인&nbsp;
+            </div>
+            <div class="login-no-link" @click="showSignupModal">
+              회원가입&nbsp;
+            </div>
           </div>
           <!-- 관리자 로그인 했을 때 -->
           <div v-else-if="userInfo.id == 'admin'">
             <div style="display: inline">관리자&nbsp;</div>
-            <a class="login-no-link" href="#">
-              <div style="display: inline" @click="logout">로그아웃&nbsp;</div>
-            </a>
-            <div style="display: inline">
-              <router-link :to="{ name: 'admin' }" class="login-no-link"
+            <div class="login-no-link" @click="logout">로그아웃&nbsp;</div>
+            <router-link :to="{ name: 'admin' }" class="login-no-link"
                 >회원관리</router-link
               >
-              &nbsp;
-            </div>
           </div>
           <!-- 일반 회원 로그인 -->
           <div v-else>
             <div style="display: inline">
               {{ userInfo.name }}님 안녕하세요!&nbsp;
             </div>
-            <a class="login-no-link" href="#">
-              <div style="display: inline" @click="logout">로그아웃&nbsp;</div>
-            </a>
-            <div style="display: inline">마이페이지&nbsp;</div>
+            <div class="login-no-link" @click="logout">로그아웃&nbsp;</div>
+            <div class="login-no-link">마이페이지&nbsp;</div>
           </div>
 
           <!-- 로그인 모달 창 작성 -->
@@ -258,6 +247,8 @@ export default {
 .login-no-link {
   text-decoration: none;
   color: #7f7f7f;
+  display: inline;
+  cursor: pointer;
 }
 #login-admin {
   display: none;
