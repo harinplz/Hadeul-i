@@ -41,6 +41,26 @@
       </div>
     </div>
 
+    <!-- 댓글 구현 부분 -->
+    <div class="hotpl_comment">
+      <!-- 댓글 갯수 -->
+      <div class="hotpl_comment_title">댓글 1</div>
+      <!-- 댓글 등록 -->
+      <div class="hotpl_comment_create row">
+        <div class="col-md-10">
+          <textarea
+            class="hotpl_comment_create_input"
+            placeholder="댓글을 입력해주세요 ... "
+          ></textarea>
+        </div>
+        <div class="col-md-2">
+          <button type="button" class="btn commentBtn" style="background-color: #c3e5ee">
+            입력
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div style="margin-top: 100px; height: 300px"></div>
   </div>
 </template>
@@ -101,9 +121,6 @@ export default {
   float: right;
 }
 
-.hotpl_desc_regtime {
-}
-
 .hotpl-map-desc {
   height: 600px;
   padding-top: 20px;
@@ -156,5 +173,34 @@ export default {
 
 .goodBtn {
   padding: 10px 30px;
+}
+
+.hotpl_comment {
+  width: 80%;
+  margin: 100px auto 0px auto;
+}
+
+.hotpl_comment_title {
+  font-size: 18px;
+  font-weight: bold;
+  padding-bottom: 15px;
+}
+
+.hotpl_comment_create_input {
+  width: 100%;
+  height: 100px;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  font-size: 16px;
+  resize: none;
+  padding: 20px;
+}
+
+.commentBtn {
+  margin-top: 7px;
+  width: 80%;
+  height: 80%;
+  font-size: 15px;
+  font-weight: bold;
 }
 </style>
