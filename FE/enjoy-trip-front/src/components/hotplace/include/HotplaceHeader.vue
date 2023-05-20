@@ -27,7 +27,6 @@
 #hotplace-desc {
     background-color: #FAFAFA;
     height: 450px;
-    float: left;
 }
 #hotplace-pic {
     height: 450px;
@@ -40,10 +39,9 @@
     font-size: 30px;
 }
 .img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    widows: 100%;
+    width: 100%;
     height: 100%;
+    overflow: hidden;
+    margin: 0 auto;
 }
 </style>
