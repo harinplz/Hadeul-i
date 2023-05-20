@@ -33,7 +33,7 @@ export default {
 .search{
     position: relative;
     text-align: right;
-    padding-right: 30px;
+    padding-right: 28px;
 }
 .searchSelect {
     border: 1px solid #bbb;
