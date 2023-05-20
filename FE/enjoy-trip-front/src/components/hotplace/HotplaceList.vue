@@ -1,6 +1,5 @@
 <template>
   <div>
-    HotplaceList.vue 입니다.
     <hotplace-header></hotplace-header>
   </div>
 </template>
