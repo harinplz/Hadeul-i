@@ -109,24 +109,24 @@
             <!-- 회원 등록 모달창 Body 작성 -->
             <div class="text-center" style="margin-bottom: 10px">
               <b-input-group style="width: 400px" prepend="아이디">
-                <b-form-input placeholder="아이디 입력 ..." v-model="id">
+                <b-form-input placeholder="아이디 입력 ..." v-model="user.id">
                 </b-form-input>
               </b-input-group>
               <br />
               <b-input-group style="width: 400px" prepend="이름">
-                <b-form-input placeholder="이름 입력 ..." v-model="name">
+                <b-form-input placeholder="이름 입력 ..." v-model="user.name">
                 </b-form-input>
               </b-input-group>
               <br />
               <b-input-group style="width: 400px" prepend="이메일">
-                <b-form-input placeholder="이메일 입력 ..." v-model="email">
+                <b-form-input placeholder="이메일 입력 ..." v-model="user.email">
                 </b-form-input>
               </b-input-group>
               <br />
               <b-input-group style="width: 400px" prepend="비밀번호">
                 <b-form-input
                   placeholder="비밀번호 입력 ..."
-                  v-model="pw"
+                  v-model="user.pw"
                   :type="`password`">
                 </b-form-input>
               </b-input-group>
@@ -148,7 +148,7 @@
 </template>
 
 <script>
-import router from "@/router";
+// import router from "@/router";
 
 import { mapActions, mapGetters } from "vuex";
 export default {
@@ -157,13 +157,10 @@ export default {
       user: {
         id: null,
         name: null,
+        email: null,
         pw: null,
       },
       isLoginError: false,
-      id: "",
-      pw: "",
-      name: "",
-      email: "",
     };
   },
   methods: {
@@ -178,6 +175,10 @@ export default {
       this.$refs[`signupModal`].show();
     },
     hideSignupModal() {
+      this.user.id = "";
+      this.user.pw = "";
+      this.user.name = "";
+      this.user.email = "";
       this.$refs[`signupModal`].hide();
     },
     confirm() {
@@ -214,18 +215,20 @@ export default {
     },
     signup() {
       const payload = {
-        user: {
-          id: this.id,
-          name: this.name,
-          email: this.email,
-          pw: this.pw,
-        },
+        user: this.user,
         callback: (status) => {
           console.log("콜백함수 실행!");
           this.hideSignupModal(); //모달 창 닫기
 
           if (status == 201) {
-            router.go();
+            this.hideSignupModal();
+            this.$bvToast.toast("회원가입 완료!", {
+              title: "회원가입",
+              variant: "dark",
+              toaster: "b-toaster-bottom-center",
+              autoHideDelay: 2000,
+              solid: true,
+            });
           } else if (status == 500) {
             // 서버 오류 Toast 출력
             this.$bvToast.toast("서버 오류 발생!", {
