@@ -32,7 +32,7 @@ footer {
   position: absolute; */
 }
 .footer-1 {
-  margin-top: 30px;
+  padding-top: 30px;
   margin-left: 40px;
 }
 .footer-2 {
