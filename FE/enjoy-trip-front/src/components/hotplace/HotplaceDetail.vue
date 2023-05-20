@@ -1,15 +1,141 @@
 <template>
   <div>
-    핫플레이스 상세입니다.
+    <hotplace-header></hotplace-header>
+    <!-- 지도와 설명 div  -->
+    <div>
+      <!-- 제목과 작성자 div -->
+      <div class="hotpl-desc-title">[유형]제목</div>
+      <div class="hotpl-desc-writer">작성자</div>
+    </div>
+    <div class="row hotpl-map-desc">
+      <div class="col-md-6 hotpl-img">
+        <img class="img" src="@/assets/img/hotplace-header-img1.jpg" />
+      </div>
+      <div></div>
+      <div class="col-md-6 hotpl-map">
+        <label for="hotpl-pos" style="padding-left: 20px; font-size: 18px"
+          ><b>📍 핫플레이스 위치</b></label
+        >
+        <br />
+        <div id="map"></div>
+        <label
+          for="hotpl-desc-content"
+          style="padding-left: 20px; margin-top: 20px; font-size: 18px"
+          ><b>📍 핫플레이스 설명</b></label
+        >
+        <br />
+        <div class="hotpl-desc-content">설명입니다.</div>
+      </div>
+    </div>
+
+    <!-- 좋아요 버튼 -->
+    <div class="goodBtn-div">
+      <button type="button" class="btn goodBtn" style="background-color: #ffd5e3">
+        <b>좋아요 1</b>
+      </button>
+    </div>
+
+    <div style="margin-top: 100px; height: 300px"></div>
   </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      map: null,
+    };
+  },
+  components: {
+    "hotplace-header": () => import("@/components/hotplace/include/HotplaceHeader.vue"),
+  },
+  mounted() {
+    if (window.kakao && window.kakao.maps) {
+      this.loadMap();
+    } else {
+      this.loadScript();
+    }
+  },
+  methods: {
+    loadScript() {
+      const script = document.createElement("script");
+      script.src =
+        "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=70697613147c4c88e83fb654db4eed6e&libraries=services,clusterer,drawing";
 
-}
+      script.onload = () => window.kakao.maps.load(this.loadMap);
+      document.head.appendChild(script);
+    },
+    loadMap() {
+      var mapContainer = document.getElementById("map"),
+        mapOption = {
+          center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+          level: 5,
+        };
+      this.map = new window.kakao.maps.Map(mapContainer, mapOption);
+    },
+  },
+};
 </script>
 
-<style>
+<style scoped>
+.hotpl-map-desc {
+  height: 600px;
+  padding-top: 20px;
+  margin: auto;
+  width: 80%;
+}
 
+#map {
+  height: 40%;
+}
+
+.hotpl-desc {
+  height: 54%;
+}
+
+.hotpl-img {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  background-color: aqua;
+}
+
+.img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hotpl-desc {
+  padding-left: 20px;
+}
+
+.hotpl-desc-title {
+  font-size: 30px;
+  font-weight: bolder;
+  width: 80%;
+  margin: auto;
+  padding-top: 30px;
+}
+
+.hotpl-desc-writer {
+  width: 80%;
+  margin: auto;
+  font-size: 20px;
+}
+
+.hotpl-desc-content {
+  padding-left: 20px;
+}
+
+.goodBtn-div {
+  margin-top: 50px;
+  text-align: center;
+}
+
+.goodBtn {
+  padding: 10px 30px;
+}
 </style>
