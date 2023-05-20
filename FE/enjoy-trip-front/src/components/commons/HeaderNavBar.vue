@@ -41,7 +41,7 @@
             </a>
           </div>
           <!-- 관리자 로그인 했을 때 -->
-          <div v-else-if="userInfo.name == `admin`">
+          <div v-else-if="userInfo.id == 'admin'">
             <div style="display: inline">관리자&nbsp;</div>
             <a class="login-no-link" href="#">
               <div style="display: inline" @click="logout">로그아웃&nbsp;</div>
@@ -164,7 +164,6 @@ export default {
       pw: "",
       name: "",
       email: "",
-      isLogin: "",
     };
   },
   methods: {
@@ -198,7 +197,7 @@ export default {
 
                   this.$bvToast.toast("로그인 성공!", {
                     title: "로그인",
-                    variant: "success",
+                    variant: "dark",
                     toaster: "b-toaster-bottom-center",
                     autoHideDelay: 2000,
                     solid: true,
@@ -211,30 +210,7 @@ export default {
           }
         },
       });
-      // console.log(this.id, this.pw);
-      // const payload = {
-      //   user: {
-      //     id: this.id,
-      //     pw: this.pw,
-      //   },
-      //   callback: (status) => {
-      //     if (status == 200) {
-      //       console.log("콜백함수 실행!");
-      //       this.hideLoginModal(); //모달 창 닫기
-      //       router.go();
-      //     } else if (status == 500) {
-      //       // 서버 오류 Toast 출력
-      //       this.$bvToast.toast("서버 오류 발생!", {
-      //         title: "로그인 오류",
-      //         variant: "danger",
-      //         toaster: "b-toaster-bottom-center",
-      //         autoHideDelay: 2000,
-      //         solid: true,
-      //       });
-      //     }
-      //   },
-      // };
-      // this.userLogin(payload);
+
     },
     signup() {
       const payload = {
