@@ -45,7 +45,9 @@
             </div>
         </div>
         <div class="create-list-btns">
+            <router-link :to="{name: 'HotplaceList'}">
             <button type="button" class="btn hotplBtn" style="background-color: #c3e5e5;"><b>목록</b></button>
+            </router-link>
             <button type="button" class="btn hotplBtn" style="background-color: #FFD5E3"><b>등록</b></button>
         </div>
     </div>
