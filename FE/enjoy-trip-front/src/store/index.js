@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import http from "@/util/http-commons.js";
+import jwtDecode from "jwt-decode";
 
 Vue.use(Vuex);
 
@@ -10,8 +11,20 @@ export default new Vuex.Store({
     attractions: [],
     communities: [],
     community: {},
+    accessToken: null,
+    refreshToken: null,
+    userInfo: null,
   },
   getters: {
+    userInfo(state) {
+      return state.userInfo;
+    },
+    accessToken(state) {
+      return state.accessToken;
+    },
+    refreshToken(state) {
+      return state.refreshToken;
+    },
     users(state) {
       return state.users;
     },
@@ -26,6 +39,18 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    LOGOUT(state) {
+      state.accessToken = null;
+      state.refreshToken = null;
+      state.userInfo = null;
+    },
+    USER_INFO(state, payload) {
+      state.userInfo = payload.userInfo;
+    },
+    TOKEN(state, payload) {
+      state.accessToken = payload.accessToken;
+      state.refreshToken = payload.refreshToken;
+    },
     USERS(state, payload) {
       state.users = payload.users;
     },
@@ -40,6 +65,25 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    getAccessToken({ commit }, payload) {
+      http
+        .post(`/user/refresh`, payload.refreshToken)
+        .then(({ status, data }) => {
+          if (status == 200) {
+            commit("TOKEN", {
+              accessToken: data["access-token"],
+              refreshToken: data["refresh-token"],
+            });
+          }
+          payload.callback(status);
+        })
+        .catch((error) => {
+          payload.callback(error.response.status);
+        });
+    },
+    logout({ commit }) {
+      commit("LOGOUT");
+    },
     getUsers(context) {
       //관리자가 회원 정보 가져오기
       http.get(`admin/list`).then((response) => {
@@ -93,16 +137,47 @@ export default new Vuex.Store({
       });
     },
     // 회원 로그인
-    userLogin(context, payload) {
+    login({ commit }, payload) {
       console.log(payload);
       http
         .post("/user/login", payload.user)
-        .then((response) => {
-          localStorage.setItem("login", payload.user.id);
-          payload.callback(response.status);
+        .then(({ status, data }) => {
+          //localStorage.setItem("login", payload.user.id);
+          if (status == 200) {
+            // 서버로 부터 토크 전달받음
+            console.log(data);
+            commit("TOKEN", {
+              accessToken: data["access-token"],
+              refreshToken: data["refresh-token"],
+            });
+          }
+          payload.callback(status);
         })
         .catch((response) => {
           payload.callback(response.status);
+        });
+    },
+    async getUserInfo({ commit }, payload) {
+      const decodeToken = jwtDecode(payload.accessToken);
+      const config = {
+        headers: {
+          "access-token": payload.accessToken,
+        },
+      };
+
+      http
+        .get(`user/info/${decodeToken.userid}`, config)
+        .then(({ status, data }) => {
+          if (status == 200) {
+            console.log(data.userInfo);
+            commit("USER_INFO", {
+              userInfo: data.userInfo,
+            });
+          }
+          payload.callback(status);
+        })
+        .catch((error) => {
+          payload.callback(error.response.status);
         });
     },
     // 커뮤니티 글 불러오기

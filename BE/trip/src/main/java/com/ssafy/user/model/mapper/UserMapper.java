@@ -2,6 +2,7 @@ package com.ssafy.user.model.mapper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -23,6 +24,10 @@ public interface UserMapper {
 	public int update(User user) throws SQLException;
 
 	public ArrayList<User> searchAll() throws SQLException;
+
+	public int updateTokenByUserId(Map<String, String> params);
+
+	public User selectByToken(String refreshToken);
 
 
 }

@@ -3,6 +3,8 @@ package com.ssafy.user.model.service;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,6 +56,19 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ArrayList<User> searchAll() throws SQLException {
 		return userMapper.searchAll();
+	}
+
+	@Override
+	public void updateTokenByUserId(String id, String refreshToken) {
+		Map<String, String> params = new HashMap<>();
+		params.put("id", id);
+		params.put("token", refreshToken);
+		userMapper.updateTokenByUserId(params);
+	}
+
+	@Override
+	public User selectByToken(String refreshToken) {
+		return userMapper.selectByToken(refreshToken);
 	}
 
 

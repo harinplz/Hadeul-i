@@ -22,4 +22,8 @@ public interface UserService {
 
 	public ArrayList<User> searchAll() throws SQLException;
 
+	public void updateTokenByUserId(String id, String refreshToken);
+
+	public User selectByToken(String refreshToken);
+
 }
