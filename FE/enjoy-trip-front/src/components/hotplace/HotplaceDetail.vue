@@ -2,37 +2,43 @@
   <div>
     <hotplace-header></hotplace-header>
     <!-- 지도와 설명 div  -->
-    <div>
+    <div style="margin-top: 50px">
       <!-- 제목과 작성자 div -->
-      <div class="hotpl-desc-title">[유형]제목</div>
-      <div class="hotpl-desc-writer">작성자</div>
-    </div>
-    <div class="row hotpl-map-desc">
-      <div class="col-md-6 hotpl-img">
-        <img class="img" src="@/assets/img/hotplace-header-img1.jpg" />
+      <div class="hotpl_desc_title_area">
+        <div class="hotpl-desc-title">[유형]제목</div>
+        <div class="hotpl_desc_writer_regtime">
+          <div class="hotpl-desc-writer">작성자</div>
+          <div class="hotpl_desc_regtime">작성날짜</div>
+        </div>
       </div>
-      <div></div>
-      <div class="col-md-6 hotpl-map">
-        <label for="hotpl-pos" style="padding-left: 20px; font-size: 18px"
-          ><b>📍 핫플레이스 위치</b></label
-        >
-        <br />
-        <div id="map"></div>
-        <label
-          for="hotpl-desc-content"
-          style="padding-left: 20px; margin-top: 20px; font-size: 18px"
-          ><b>📍 핫플레이스 설명</b></label
-        >
-        <br />
-        <div class="hotpl-desc-content">설명입니다.</div>
-      </div>
-    </div>
 
-    <!-- 좋아요 버튼 -->
-    <div class="goodBtn-div">
-      <button type="button" class="btn goodBtn" style="background-color: #ffd5e3">
-        <b>좋아요 1</b>
-      </button>
+      <div class="row hotpl-map-desc">
+        <div class="col-md-6 hotpl-img">
+          <img class="img" src="@/assets/img/hotplace-header-img1.jpg" />
+        </div>
+        <div></div>
+        <div class="col-md-6 hotpl-map">
+          <label for="hotpl-pos" style="padding-left: 20px; font-size: 18px"
+            ><b>📍 핫플레이스 위치</b></label
+          >
+          <br />
+          <div id="map"></div>
+          <label
+            for="hotpl-desc-content"
+            style="padding-left: 20px; margin-top: 20px; font-size: 18px"
+            ><b>📍 핫플레이스 설명</b></label
+          >
+          <br />
+          <div class="hotpl-desc-content">설명입니다.</div>
+        </div>
+      </div>
+
+      <!-- 좋아요 버튼 -->
+      <div class="goodBtn-div">
+        <button type="button" class="btn goodBtn" style="background-color: #ffd5e3">
+          <b>좋아요 1</b>
+        </button>
+      </div>
     </div>
 
     <div style="margin-top: 100px; height: 300px"></div>
@@ -78,6 +84,26 @@ export default {
 </script>
 
 <style scoped>
+.hotpl_desc_title_area {
+  border-bottom: 1px solid #c4c4c4;
+  width: 80%;
+  height: 100px;
+  margin: auto;
+}
+
+.hotpl-desc-writer {
+  padding-top: 30px;
+  padding-right: 20px;
+  font-size: 20px;
+}
+
+.hotpl_desc_writer_regtime {
+  float: right;
+}
+
+.hotpl_desc_regtime {
+}
+
 .hotpl-map-desc {
   height: 600px;
   padding-top: 20px;
@@ -115,15 +141,8 @@ export default {
 .hotpl-desc-title {
   font-size: 30px;
   font-weight: bolder;
-  width: 80%;
-  margin: auto;
   padding-top: 30px;
-}
-
-.hotpl-desc-writer {
-  width: 80%;
-  margin: auto;
-  font-size: 20px;
+  float: left;
 }
 
 .hotpl-desc-content {
