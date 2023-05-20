@@ -3,7 +3,9 @@
     <hotplace-header></hotplace-header>
     <div id="submitSearch" class="row g-0 align-items-center flex-column-reverse flex-md-row">
         <div class="col-md-6">
+            <router-link :to="{name: 'HotplaceCreate'}">
             <button type="button" class="btn" style="background-color: #c3e5e5;"><b>글쓰기</b></button>
+            </router-link>
         </div>
         <div class="search col-md-6">
             <select class="searchSelect">

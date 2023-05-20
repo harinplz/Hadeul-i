@@ -65,6 +65,11 @@ const routes = [
         path: "list",
         name: "HotplaceList",
         component: () => import("@/components/hotplace/HotplaceList"),
+      },
+      {
+        path: "create",
+        name: "HotplaceCreate",
+        component: () => import("@/components/hotplace/HotplaceCreate"),
       }
     ]
     
