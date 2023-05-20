@@ -192,11 +192,20 @@ export default {
               callback: (status) => {
                 if (status == 200) {
                   console.log(status);
+                  this.user.id = "";
+                  this.user.pw = "";
                   this.hideLoginModal();
+
+                  this.$bvToast.toast("로그인 성공!", {
+                    title: "로그인",
+                    variant: "success",
+                    toaster: "b-toaster-bottom-center",
+                    autoHideDelay: 2000,
+                    solid: true,
+                  });
                 }
               },
             });
-            console.log(status);
           } else if (status == 401) {
             this.isLoginError = true;
           }
@@ -255,11 +264,6 @@ export default {
       };
       this.createUser(payload);
     },
-  },
-
-  created() {
-    this.isLogin = localStorage.getItem("login");
-    console.log(this.isLogin);
   },
   computed: {
     ...mapGetters(["accessToken", "userInfo"]),
