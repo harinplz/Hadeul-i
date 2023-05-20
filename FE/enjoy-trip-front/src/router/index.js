@@ -55,6 +55,20 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/hotplace",
+    name: "Hotplace",
+    component: () => import("@/views/AppHotplace.vue"),
+    redirect: "/hotplace/list",
+    children: [
+      {
+        path: "list",
+        name: "HotplaceList",
+        component: () => import("@/components/hotplace/HotplaceList"),
+      }
+    ]
+    
+  }
 ];
 
 const router = new VueRouter({
