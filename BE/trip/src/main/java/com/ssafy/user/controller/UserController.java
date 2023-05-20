@@ -75,13 +75,13 @@ public class UserController{
 		if(loginUser!=null) {
 			// 세션 스토리지에 저장하는 느낌으로 구현하기... 
 			// AccessToken 생성
-			String accessToken = jwtService.create("userid", loginUser.getId(), "access-token", 1000 * 10 /*10초 추후 수정*/);
+			String accessToken = jwtService.create("userid", loginUser.getId(), "access-token", 1000 * 60 * 30 /*30분*/);
 
 			// RefreshToken 생성
 			String refreshToken = jwtService.create("userid",
 					loginUser.getId(),
 					"refresh-token", 
-					1000 * 30 /* 30초 추후 수정 */);
+					1000 * 60 * 60 * 24 /* 하루 */);
 
 			// refreshToken을 DB에 저장
 			userService.updateTokenByUserId(loginUser.getId(), refreshToken);
@@ -148,13 +148,13 @@ public ResponseEntity<?> refreshToken(@RequestBody String refreshToken) throws E
 				String newAccessToken = jwtService.create("userid",
 						user.getId(),
 						"access-token", 
-						1000 * 10 /* 10초 추후 수정*/);
+						1000 * 60 * 30 /* 10초 추후 수정*/);
 
 				// RefreshToken 생성
 				String newRefreshToken = jwtService.create("userid",
 						user.getId(),
 						"refresh-token", 
-						1000 * 30 /* 30초  추후 수정*/);
+						1000 * 60 * 60 * 24 /* 30초  추후 수정*/);
 				
 				// refreshToken을 DB에 저장
 				userService.updateTokenByUserId(user.getId(), refreshToken);
