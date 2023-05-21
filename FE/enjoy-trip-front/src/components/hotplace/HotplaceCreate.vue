@@ -12,22 +12,27 @@
         <div class="create-content">
           <label for="hotpl-cate-label">핫플레이스 유형</label>
           <div style="margin-bottom: 20px">
-            <select class="searchSelect">
-              <option>핫플레이스 유형</option>
-              <option>관광지</option>
-              <option>문화시설</option>
-              <option>축제공연행사</option>
-              <option>여행코스</option>
-              <option>레포츠</option>
-              <option>숙박</option>
-              <option>쇼핑</option>
-              <option>음식점</option>
+            <select id="searchSelect" v-model="hotplace.category">
+              <option selected>핫플레이스 유형</option>
+              <option value="관광지">관광지</option>
+              <option value="문화시설">문화시설</option>
+              <option value="축제공연행사">축제공연행사</option>
+              <option value="여행코스">여행코스</option>
+              <option value="레포츠">레포츠</option>
+              <option value="숙박">숙박</option>
+              <option value="쇼핑">쇼핑</option>
+              <option value="음식점">음식점</option>
             </select>
           </div>
         </div>
         <div class="input-box">
           <label for="hotpl-name-label">핫플레이스 이름</label> <br />
-          <input class="hotplace-name" type="text" placeholder="핫플레이스 이름" />
+          <input
+            class="hotplace-name"
+            type="text"
+            placeholder="핫플레이스 이름"
+            v-model="hotplace.hotplaceName"
+          />
         </div>
         <div class="hotpl-img">
           <label for="hotpl-img-label">핫플레이스 사진</label> <br />
@@ -43,7 +48,11 @@
         </div>
         <div class="hotpl-desc">
           <label for="hotpl-desc-label">핫플레이스 설명</label> <br />
-          <textarea class="hotpl-desc-text" placeholder="나만의 핫플레이스를 자랑해주세요!" />
+          <textarea
+            class="hotpl-desc-text"
+            placeholder="나만의 핫플레이스를 자랑해주세요!"
+            v-model="hotplace.hotplaceContent"
+          />
         </div>
       </div>
       <!-- </transition> -->
@@ -73,35 +82,109 @@ export default {
   data() {
     return {
       map: null,
-      userNo: null,
+      hotplace: {
+        userNo: null,
+        category: "핫플레이스 유형",
+        hotplaceName: null,
+        hotplaceContent: null,
+        latitude: null,
+        longiutde: null,
+        img: null,
+      },
     };
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
-      this.loadMap();
+      this.initMap();
     } else {
-      this.loadScript();
+      const script = document.createElement("script");
+      /* global kakao */
+      script.onload = () => kakao.maps.load(this.initMap);
+      script.src =
+        "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=70697613147c4c88e83fb654db4eed6e&libraries=services";
+      document.head.appendChild(script);
     }
   },
   methods: {
     testUser() {
-      console.log(this.userInfo);
+      this.hotplace.userNo = this.userInfo.no;
+      console.log(this.hotplace.userNo);
+      console.log(this.hotplace.category);
+      console.log(this.hotplace.hotplaceName);
+      console.log(this.hotplace.hotplaceContent);
     },
-    loadScript() {
-      const script = document.createElement("script");
-      script.src =
-        "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=70697613147c4c88e83fb654db4eed6e&libraries=services,clusterer,drawing";
+    initMap() {
+      var container = document.getElementById("map");
+      var options = {
+        center: new kakao.maps.LatLng(35.163759, 129.159066),
+        level: 5,
+      };
 
-      script.onload = () => window.kakao.maps.load(this.loadMap);
-      document.head.appendChild(script);
-    },
-    loadMap() {
-      var mapContainer = document.getElementById("map"),
-        mapOption = {
-          center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-          level: 5,
-        };
-      this.map = new window.kakao.maps.Map(mapContainer, mapOption);
+      var map = new kakao.maps.Map(container, options);
+
+      // 주소-좌표 변환 객체를 생성합니다
+      var geocoder = new kakao.maps.services.Geocoder();
+
+      var marker = new kakao.maps.Marker(), // 클릭한 위치를 표시할 마커입니다
+        infowindow = new kakao.maps.InfoWindow({ zindex: 1 }); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
+
+      // 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
+      searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+
+      // 지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
+      kakao.maps.event.addListener(map, "click", function (mouseEvent) {
+        searchDetailAddrFromCoords(mouseEvent.latLng, function (result, status) {
+          if (status === kakao.maps.services.Status.OK) {
+            var detailAddr = "";
+            if (result[0].road_address) {
+              detailAddr = "<div>도로명주소 : " + result[0].road_address.address_name + "</div>";
+            }
+            detailAddr += "<div>지번 주소 : " + result[0].address.address_name + "</div>";
+
+            var content =
+              '<div class="bAddr">' +
+              '<span class="title"><b>법정동 주소정보</b></span>' +
+              detailAddr +
+              "</div>";
+
+            // 마커를 클릭한 위치에 표시합니다
+            marker.setPosition(mouseEvent.latLng);
+            marker.setMap(map);
+
+            // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
+            infowindow.setContent(content);
+            infowindow.open(map, marker);
+          }
+        });
+      });
+
+      // 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
+      kakao.maps.event.addListener(map, "idle", function () {
+        searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+      });
+
+      function searchAddrFromCoords(coords, callback) {
+        // 좌표로 행정동 주소 정보를 요청합니다
+        geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);
+      }
+
+      function searchDetailAddrFromCoords(coords, callback) {
+        // 좌표로 법정동 상세 주소 정보를 요청합니다
+        geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+      }
+
+      // 지도 좌측상단에 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
+      function displayCenterInfo(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+          for (var i = 0; i < result.length; i++) {
+            // 행정동의 region_type 값은 'H' 이므로
+            if (result[i].region_type === "H") {
+              console.log(result[i].address_name);
+              break;
+            }
+          }
+        }
+      }
     },
   },
   computed: {
@@ -192,7 +275,7 @@ export default {
   outline: none;
 }
 
-.searchSelect {
+#searchSelect {
   width: 100%;
   border: 1px solid #bbb;
   border-radius: 8px;

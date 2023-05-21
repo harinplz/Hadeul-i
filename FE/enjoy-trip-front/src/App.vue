@@ -24,4 +24,10 @@ export default {
   /* background-color: #d5f5ff; */
   font-family: "Noto Sans KR", sans-serif;
 }
+
+.bAddr {
+  width: 300px;
+  height: 100px;
+  border: none;
+}
 </style>
