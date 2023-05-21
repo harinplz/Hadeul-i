@@ -23,7 +23,7 @@
 
 	<!-- 회원 로그인 -->
 	<select id="select" resultMap="user">
-		SELECT id, password, name
+		SELECT id, password, name, user_no
 		FROM user
 		WHERE id = #{id} AND password = #{pw}
 	</select>
@@ -37,7 +37,7 @@
 
 	<!-- 관리자 & 마이페이지 정보 조회 -->
 	<select id="selectId" resultMap="user">
-		SELECT id, password, name, email
+		SELECT user_no, id, password, name, email
 		FROM
 		user
 		WHERE id = #{id}

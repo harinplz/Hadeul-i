@@ -54,7 +54,12 @@
           <b>목록</b>
         </button>
       </router-link>
-      <button type="button" class="btn hotplBtn" style="background-color: #ffd5e3">
+      <button
+        type="button"
+        class="btn hotplBtn"
+        style="background-color: #ffd5e3"
+        @click="testUser"
+      >
         <b>등록</b>
       </button>
     </div>
@@ -62,10 +67,13 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
       map: null,
+      userNo: null,
     };
   },
   mounted() {
@@ -76,6 +84,9 @@ export default {
     }
   },
   methods: {
+    testUser() {
+      console.log(this.userInfo);
+    },
     loadScript() {
       const script = document.createElement("script");
       script.src =
@@ -92,6 +103,9 @@ export default {
         };
       this.map = new window.kakao.maps.Map(mapContainer, mapOption);
     },
+  },
+  computed: {
+    ...mapGetters(["userInfo"]),
   },
 };
 </script>
