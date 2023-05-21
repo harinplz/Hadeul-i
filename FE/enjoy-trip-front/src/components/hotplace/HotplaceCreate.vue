@@ -34,6 +34,15 @@
             v-model="hotplace.hotplaceName"
           />
         </div>
+        <div class="input-box">
+          <label for="hotpl-addr-label">핫플레이스 추가 주소</label> <br />
+          <input
+            class="hotplace-addr"
+            type="text"
+            placeholder="핫플레이스 추가 주소"
+            v-model="hotplace.hotplaceAddr"
+          />
+        </div>
         <div class="hotpl-img">
           <label for="hotpl-img-label">핫플레이스 사진</label> <br />
           <!-- <input type="file"> -->
@@ -86,9 +95,11 @@ export default {
         userNo: null,
         category: "핫플레이스 유형",
         hotplaceName: null,
+        hotplaceAddr: null,
         hotplaceContent: null,
+        jibun: null,
         latitude: null,
-        longiutde: null,
+        longitude: null,
         img: null,
       },
     };
@@ -108,10 +119,7 @@ export default {
   methods: {
     testUser() {
       this.hotplace.userNo = this.userInfo.no;
-      console.log(this.hotplace.userNo);
-      console.log(this.hotplace.category);
-      console.log(this.hotplace.hotplaceName);
-      console.log(this.hotplace.hotplaceContent);
+      console.log(this.hotplace);
     },
     initMap() {
       var container = document.getElementById("map");
@@ -131,10 +139,17 @@ export default {
       // 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
       searchAddrFromCoords(map.getCenter(), displayCenterInfo);
 
+      const thiz = this;
       // 지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
       kakao.maps.event.addListener(map, "click", function (mouseEvent) {
         searchDetailAddrFromCoords(mouseEvent.latLng, function (result, status) {
           if (status === kakao.maps.services.Status.OK) {
+            thiz.hotplace.jibun = result[0].address.address_name;
+            console.log("jibun:", result[0].address.address_name);
+
+            thiz.hotplace.latitude = mouseEvent.latLng.getLat();
+            thiz.hotplace.longitude = mouseEvent.latLng.getLng();
+
             var detailAddr = "";
             if (result[0].road_address) {
               detailAddr = "<div>도로명주소 : " + result[0].road_address.address_name + "</div>";
@@ -234,7 +249,7 @@ export default {
 }
 
 .map-and-create {
-  height: 630px;
+  height: 690px;
   width: 90%;
   margin: auto;
   padding-top: 70px;
