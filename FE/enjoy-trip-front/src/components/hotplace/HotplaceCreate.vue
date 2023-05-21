@@ -1,5 +1,8 @@
 <template>
   <div id="bg">
+    <div class="hotpl_create_title wow fadeInUp" data-wow-delay="0.05s">
+      <div class="hotpl_create_title_text">당신의 <b>핫플레이스</b>를 자랑해주세요!</div>
+    </div>
     <div class="map-and-create row g-0 align-items-center flex-column-reverse flex-md-row">
       <div class="wow fadeInUp col-md-6" data-wow-delay="0.1s">
         <div id="map"></div>
@@ -94,6 +97,22 @@ export default {
 </script>
 
 <style scoped>
+@font-face {
+  font-family: "Dovemayo_gothic";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.1/Dovemayo_gothic.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "SUITE-Regular";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2")
+    format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
 #bg {
   /* background-color: aqua; */
   background-image: url("@/assets/img/hotplace-create-bg.jpg");
@@ -101,11 +120,27 @@ export default {
   margin-top: -50px;
 }
 
+.hotpl_create_title {
+  font-size: 25px;
+  padding-top: 50px;
+  text-align: center;
+  color: #7c7877;
+  font-family: "SUITE-Regular";
+}
+
+.hotpl_create_title_text {
+  width: 470px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 30px;
+  margin: auto;
+}
+
 .map-and-create {
   height: 630px;
   width: 90%;
   margin: auto;
-  padding-top: 100px;
+  padding-top: 70px;
 }
 
 #map {
