@@ -42,11 +42,11 @@
     </div>
 
     <!-- 댓글 구현 부분 -->
-    <div class="hotpl_comment">
-      <!-- 댓글 갯수 -->
-      <div class="hotpl_comment_title">댓글 1</div>
-      <!-- 댓글 등록 -->
-      <div class="hotpl_comment_create row">
+    <!-- <div class="hotpl_comment"> -->
+    <!-- 댓글 갯수 -->
+    <!-- <div class="hotpl_comment_title">댓글 1</div> -->
+    <!-- 댓글 등록 -->
+    <!-- <div class="hotpl_comment_create row">
         <div class="col-md-10">
           <textarea
             class="hotpl_comment_create_input"
@@ -59,7 +59,7 @@
           </button>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div style="margin-top: 100px; height: 300px"></div>
   </div>
