@@ -46,6 +46,8 @@ const onlyAuthUser = (to, from, next) => {
   }
 };
 
+console.log(onlyAuthUser); //오류 안나도록
+
 const routes = [
   {
     path: "/",
@@ -69,7 +71,7 @@ const routes = [
     path: "/attractions",
     name: "attractions",
     component: () => import("@/views/AppAttraction.vue"),
-    beforeEnter: onlyAuthUser,
+    // beforeEnter: onlyAuthUser, //나중에 주석 풀기
   },
   {
     path: "/community",
@@ -119,10 +121,9 @@ const routes = [
         path: "detail",
         name: "HotplaceDetail",
         component: () => import("@/components/hotplace/HotplaceDetail"),
-      }
-    ]
-    
-  }
+      },
+    ],
+  },
 ];
 
 const router = new VueRouter({
