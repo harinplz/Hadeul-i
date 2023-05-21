@@ -1,5 +1,9 @@
 package com.ssafy.hotplace.model.dto;
 
+import java.io.File;
+
+import org.springframework.web.multipart.MultipartFile;
+
 public class HotplaceDto {
 	
 	private int hotplaceNo;
@@ -11,7 +15,9 @@ public class HotplaceDto {
 	private String jibun;
 	private String latitude;
 	private String longitude;
-	private String img;
+	
+	private byte[] img;
+	
 	public int getHotplaceNo() {
 		return hotplaceNo;
 	}
@@ -66,33 +72,14 @@ public class HotplaceDto {
 	public void setLongitude(String longitude) {
 		this.longitude = longitude;
 	}
-	public String getImg() {
+	public byte[] getImg() {
 		return img;
 	}
-	public void setImg(String img) {
+	public void setImg(byte[] img) {
 		this.img = img;
 	}
 	
-	public HotplaceDto(String userNo, String hotplaceName, String hotplaceAddr, String category, String hotplaceContent,
-			String jibun, String latitude, String longitude, String img) {
-		super();
-		this.userNo = userNo;
-		this.hotplaceName = hotplaceName;
-		this.hotplaceAddr = hotplaceAddr;
-		this.category = category;
-		this.hotplaceContent = hotplaceContent;
-		this.jibun = jibun;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.img = img;
-	}
 	
-	@Override
-	public String toString() {
-		return "HotplaceDto [hotplaceNo=" + hotplaceNo + ", userNo=" + userNo + ", hotplaceName=" + hotplaceName
-				+ ", hotplaceAddr=" + hotplaceAddr + ", category=" + category + ", hotplaceContent=" + hotplaceContent
-				+ ", jibun=" + jibun + ", latitude=" + latitude + ", longitude=" + longitude + ", img=" + img + "]";
-	}
 	
 	
 }

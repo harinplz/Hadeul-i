@@ -15,13 +15,13 @@
 		<result column="jibun" property="jibun" />
 		<result column="latitude" property="latitude" />
 		<result column="longitude" property="longitude" />
-		<result column="img" property="img" />
+		<result column="img" property="blobImg" />
 	</resultMap>
 	
 	<!-- 핫플레이스 등록 -->
 	<insert id="insert">
 		insert into hotplace (user_no, hotplace_name, hotplace_addr, category, hotplace_content, jibun, latitude, longitude, img)
-		values (#{userNo}, #{hotplaceName}, #{hotplaceAddr}, #{category}, #{hotplaceContent}, #{jibun}, #{latitude}, #{longitude}, #{img})
+		values (#{userNo}, #{hotplaceName}, #{hotplaceAddr}, #{category}, #{hotplaceContent}, #{jibun}, #{latitude}, #{longitude}, #{blobImg})
 	</insert>
 
 </mapper>

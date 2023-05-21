@@ -46,7 +46,8 @@
         <div class="hotpl-img">
           <label for="hotpl-img-label">핫플레이스 사진</label> <br />
           <!-- <input type="file"> -->
-          <b-form-file multiple>
+          <!-- <input type="file" id="hotpl_file" @change="uploadFile" /> -->
+          <b-form-file multiple v-model="inputFile">
             <template slot="file-name" slot-scope="{ names }">
               <b-badge variant="dark">{{ names[0] }}</b-badge>
               <b-badge v-if="names.length > 1" variant="dark" class="ml-1">
@@ -102,6 +103,8 @@ export default {
         longitude: null,
         img: null,
       },
+      inputFile: null,
+      blob: null,
     };
   },
   mounted() {
@@ -117,9 +120,40 @@ export default {
     }
   },
   methods: {
+    // ...mapActions(["createHotplace"]),
+    // upload() {
+    //   // const fr = new FileReader();
+    //   this.hotplace.userNo = this.userInfo.no;
+    //   this.hotplace.img = this.blob;
+    //   // const payload = {
+    //   //   hotplace: this.hotplace,
+    //   //   callback: (status) => {
+    //   //     if (status == 201) {
+    //   //       console.log("등록 완료!!");
+    //   //     } else if (status == 500) {
+    //   //       console.log("서버 오류 발생!!");
+    //   //     }
+    //   //   },
+    //   // };
+    //   // this.createHotplace(payload);
+    // },
     testUser() {
       this.hotplace.userNo = this.userInfo.no;
       console.log(this.hotplace);
+      //   const fr = new FileReader();
+      //   const file = this.inputFile[0];
+      //   console.log(file);
+      //   fr.readAsArrayBuffer(file);
+      //   const thiz = this;
+      //   fr.onload = function () {
+      //     const blob = new Blob([fr.result]);
+      //     thiz.blob = blob;
+      //     console.log(thiz.blob);
+      //     // setTimeout(() => {
+      //     //   thiz.upload();
+      //     // }, 500);
+      //   };
+      //   fr.readAsArrayBuffer(thiz.blob);
     },
     initMap() {
       var container = document.getElementById("map");

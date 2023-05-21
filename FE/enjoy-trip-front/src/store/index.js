@@ -65,6 +65,16 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    createHotplace(context, payload) {
+      http
+        .post("hotplace/", payload.hotplace)
+        .then((response) => {
+          payload.callback(response.status);
+        })
+        .catch((response) => {
+          payload.callback(response.status);
+        });
+    },
     getAccessToken({ commit }, payload) {
       http
         .post(`/user/refresh`, payload.refreshToken)
