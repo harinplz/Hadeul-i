@@ -67,8 +67,14 @@ export default new Vuex.Store({
   actions: {
     createHotplace(context, payload) {
       http
-        .post("hotplace/", payload.hotplace)
+        .post("hotplace/", payload.frm, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((response) => {
+          console.log(payload.hotplace);
+          console.log(payload.frm);
           payload.callback(response.status);
         })
         .catch((response) => {

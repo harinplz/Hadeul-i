@@ -46,15 +46,17 @@
         <div class="hotpl-img">
           <label for="hotpl-img-label">핫플레이스 사진</label> <br />
           <!-- <input type="file"> -->
-          <!-- <input type="file" id="hotpl_file" @change="uploadFile" /> -->
-          <b-form-file multiple v-model="inputFile">
+          <form enctype="multipart/form-data">
+            <input type="file" id="upfile" name="upfile" @change="fileSelect()" ref="upfile" />
+          </form>
+          <!-- <b-form-file multiple v-model="upfile">
             <template slot="file-name" slot-scope="{ names }">
               <b-badge variant="dark">{{ names[0] }}</b-badge>
               <b-badge v-if="names.length > 1" variant="dark" class="ml-1">
                 + {{ names.length - 1 }} More files
               </b-badge>
             </template>
-          </b-form-file>
+          </b-form-file> -->
         </div>
         <div class="hotpl-desc">
           <label for="hotpl-desc-label">핫플레이스 설명</label> <br />
@@ -86,7 +88,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
@@ -101,10 +103,9 @@ export default {
         jibun: null,
         latitude: null,
         longitude: null,
-        img: null,
       },
-      inputFile: null,
-      blob: null,
+      upfile: null,
+      frm: null,
     };
   },
   mounted() {
@@ -120,26 +121,44 @@ export default {
     }
   },
   methods: {
-    // ...mapActions(["createHotplace"]),
-    // upload() {
-    //   // const fr = new FileReader();
-    //   this.hotplace.userNo = this.userInfo.no;
-    //   this.hotplace.img = this.blob;
-    //   // const payload = {
-    //   //   hotplace: this.hotplace,
-    //   //   callback: (status) => {
-    //   //     if (status == 201) {
-    //   //       console.log("등록 완료!!");
-    //   //     } else if (status == 500) {
-    //   //       console.log("서버 오류 발생!!");
-    //   //     }
-    //   //   },
-    //   // };
-    //   // this.createHotplace(payload);
-    // },
+    ...mapActions(["createHotplace"]),
+    fileSelect() {
+      console.log(this.$refs);
+      this.upfile = this.$refs.upfile.files[0];
+      console.log(this.upfile);
+    },
+    upload() {
+      this.frm = new FormData();
+      this.frm.append("upfile", this.upfile);
+      this.frm.append("userNo", this.hotplace.userNo);
+      this.frm.append("category", this.hotplace.category);
+      this.frm.append("hotplaceName", this.hotplace.hotplaceName);
+      this.frm.append("hotplaceAddr", this.hotplace.hotplaceAddr);
+      this.frm.append("hotplaceContent", this.hotplace.hotplaceContent);
+      this.frm.append("jibun", this.hotplace.jibun);
+      this.frm.append("latitude", this.hotplace.latitude);
+      this.frm.append("longitude", this.hotplace.longitude);
+
+      for (let key of this.frm.entries()) {
+        console.log(`${key}`);
+      }
+
+      const payload = {
+        hotplace: this.hotplace,
+        frm: this.frm,
+        callback: (status) => {
+          if (status == 201) {
+            console.log("등록 완료!!");
+          } else if (status == 500) {
+            console.log("서버 오류 발생!!");
+          }
+        },
+      };
+      this.createHotplace(payload);
+    },
     testUser() {
       this.hotplace.userNo = this.userInfo.no;
-      console.log(this.hotplace);
+      this.upload();
       //   const fr = new FileReader();
       //   const file = this.inputFile[0];
       //   console.log(file);
