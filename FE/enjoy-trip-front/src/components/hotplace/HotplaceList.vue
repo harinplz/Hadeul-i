@@ -12,7 +12,7 @@
         </router-link>
       </div>
       <div class="search col-md-6">
-        <select class="searchSelect" v-model="key">
+        <select class="searchSelect" v-model="clientkey">
           <option selected>검색 조건</option>
           <option>제목</option>
           <option>카테고리</option>
@@ -21,7 +21,7 @@
           class="searchInput"
           type="text"
           placeholder="검색어 입력"
-          v-model="word" />
+          v-model="clientword" />
         <button
           type="button"
           class="btn searchBtn"
@@ -48,8 +48,12 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
-      key: "검색 조건",
-      word: null,
+      searchCondition: {
+        key: null,
+        word: null,
+      },
+      clientkey: "검색 조건",
+      clientword: null,
     };
   },
   components: {
@@ -59,9 +63,23 @@ export default {
       import("@/components/hotplace/include/HotplaceListCardview"),
   },
   methods: {
-    ...mapActions(["getHotplaces"]),
+    ...mapActions(["getHotplaces", "searchHotplaces"]),
     goSearch() {
-      console.log(this.key, this.word);
+      if (this.clientkey == "제목") this.searchCondition.key = "hotplace_name";
+      else if (this.clientkey == "카테고리")
+        this.searchCondition.key = "category";
+      this.searchCondition.word = this.clientword;
+      console.log(this.searchCondition);
+      this.searchHotplaces({
+        searchCondition: this.searchCondition,
+        callback: (status) => {
+          if (status == 200) {
+            console.log("흠...");
+          } else if (status == 500) {
+            alert("서버 오류 발생!");
+          }
+        },
+      });
     },
   },
   created() {

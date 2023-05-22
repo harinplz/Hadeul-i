@@ -73,6 +73,19 @@ export default new Vuex.Store({
   },
   actions: {
     // 핫플레이스
+    // 핫플레이스 검색
+    searchHotplaces({ commit }, payload) {
+      http
+        .post("/hotplace/search", payload.searchCondition)
+        .then(({ status, data }) => {
+          if (status == 200) {
+            commit({
+              type: "HOTPLACES",
+              hotplaces: data,
+            });
+          }
+        });
+    },
     // 핫플레이스 글 모두 조회
     getHotplaces(context) {
       http.get(`hotplace/`).then((response) => {
