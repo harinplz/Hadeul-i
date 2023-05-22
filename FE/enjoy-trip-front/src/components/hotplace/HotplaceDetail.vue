@@ -5,9 +5,7 @@
     <div style="margin-top: 50px">
       <!-- 제목과 작성자 div -->
       <div class="hotpl_desc_title_area">
-        <div class="hotpl-desc-title">
-          [{{ hotplace.category }}]{{ hotplace.hotplaceName }}
-        </div>
+        <div class="hotpl-desc-title">[{{ hotplace.category }}]{{ hotplace.hotplaceName }}</div>
         <div class="hotpl-desc-writer">{{ user.name }}님</div>
       </div>
 
@@ -22,9 +20,7 @@
           >
           <p class="hotpl_pos_jibun">
             {{ hotplace.jibun }}
-            <span v-if="hotplace.hotplaceAddr != 'null'">
-              {{ hotplace.hotplaceAddr }}</span
-            >
+            <span v-if="hotplace.hotplaceAddr != 'null'"> {{ hotplace.hotplaceAddr }}</span>
           </p>
 
           <br />
@@ -41,19 +37,18 @@
 
       <!-- 좋아요 버튼 -->
       <div class="goodBtn-div">
-        <button
-          type="button"
-          class="btn goodBtn"
-          style="background-color: #ffd5e3">
+        <button type="button" class="btn goodBtn" style="background-color: #ffd5e3">
           <b>좋아요 1</b>
         </button>
       </div>
-      <!--삭제 버튼 -->
-      <div v-if="userInfo.no == user.no" class="deleteBtn-div">
+      <!-- 삭제 버튼 -->
+      <div v-if="userInfo.no == user.no || userInfo.id == 'admin'" class="deleteBtn-div">
         <button
           type="button"
           class="btn deleteBtn"
-          style="background-color: #c3e5ee">
+          style="background-color: #c3e5ee"
+          @click="showModalDelete"
+        >
           <b>삭제</b>
         </button>
       </div>
@@ -95,8 +90,7 @@ export default {
     };
   },
   components: {
-    "hotplace-header": () =>
-      import("@/components/hotplace/include/HotplaceHeader.vue"),
+    "hotplace-header": () => import("@/components/hotplace/include/HotplaceHeader.vue"),
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
@@ -111,53 +105,94 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["getHotplace", "getUser"]),
+    ...mapActions(["getHotplace", "getUser", "deleteHotplace"]),
     initMap() {
       var mapContainer = document.getElementById("map"),
         mapOption = {
-          center: new window.kakao.maps.LatLng(
-            this.hotplace.latitude,
-            this.hotplace.longitude
-          ),
+          center: new window.kakao.maps.LatLng(this.hotplace.latitude, this.hotplace.longitude),
           level: 5,
         };
       this.map = new window.kakao.maps.Map(mapContainer, mapOption);
 
-      var markerPosition = new kakao.maps.LatLng(
-        this.hotplace.latitude,
-        this.hotplace.longitude
-      );
+      // var markerPosition = new kakao.maps.LatLng(this.hotplace.latitude, this.hotplace.longitude);
 
-      var marker = new kakao.maps.Marker({
-        position: markerPosition,
-      });
+      // var marker = new kakao.maps.Marker({
+      //   position: markerPosition,
+      // });
 
-      marker.setMap(this.map);
+      // marker.setMap(this.map);
 
       //커스텀 오버레이에 표시할 컨텐츠 입니다
       // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
       // 별도의 이벤트 메소드를 제공하지 않습니다
 
-      setTimeout(() => {
-        var content =
-          '<div style="background-color: #C3E5EE;margin-bottom: 120px; padding: 6px 10px; border-radius: 20px;' +
-          'font-weight: bold; color: #616161; font-size: 14px;">' +
-          this.hotplace.hotplaceName;
-        +"</div>";
+      // setTimeout(() => {
+      //   var content =
+      //     '<div style="background-color: #C3E5EE;margin-bottom: 120px; padding: 6px 10px; border-radius: 20px;' +
+      //     'font-weight: bold; color: #616161; font-size: 14px;">' +
+      //     this.hotplace.hotplaceName;
+      //   +"</div>";
 
-        // 마커 위에 커스텀오버레이를 표시합니다
-        // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
-        var overlay = new kakao.maps.CustomOverlay({
-          content: content,
-          map: this.map,
-          position: marker.getPosition(),
-        });
+      //   // 마커 위에 커스텀오버레이를 표시합니다
+      //   // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
+      //   var overlay = new kakao.maps.CustomOverlay({
+      //     content: content,
+      //     map: this.map,
+      //     position: marker.getPosition(),
+      //   });
 
-        // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
-        kakao.maps.event.addListener(marker, "click", function () {
-          overlay.setMap(this.map);
+      //   // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+      //   kakao.maps.event.addListener(marker, "click", function () {
+      //     overlay.setMap(this.map);
+      //   });
+      // }, 50);
+    },
+    showModalDelete() {
+      this.$bvModal
+        .msgBoxConfirm(`핫플레이스를 삭제하시겠습니까?`, {
+          centered: true,
+          size: "sm",
+          buttonSize: "sm",
+          okVariant: "danger",
+          okTitle: "네",
+          cancelTitle: "아니오",
+        })
+        .then((value) => {
+          if (value) {
+            this.delete();
+          }
         });
-      }, 50);
+    },
+    delete() {
+      const payload = {
+        hotplaceNo: this.hotplaceNo,
+        callback: (status) => {
+          if (status == 200) {
+            // 삭제 완료 toast 출력
+            setTimeout(() => {
+              this.$bvToast.toast(`핫플레이스가 삭제되었습니다.`, {
+                title: "핫플레이스 삭제 완료!",
+                variant: "danger",
+                toaster: "b-toaster-bottom-center",
+                autoHideDelay: 3000,
+                solid: true,
+              });
+            }, 500);
+
+            this.$router.push({ name: "HotplaceList" });
+          } else if (status == 500) {
+            // 서버 오류 Toast 출력
+            this.$bvToast.toast("서버 오류 발생!", {
+              title: "서버 오류 발생",
+              variant: "danger",
+              toaster: "b-toaster-bottom-center",
+              autoHideDelay: 3000,
+              solid: true,
+            });
+          }
+        },
+      };
+      this.deleteHotplace(payload);
     },
   },
   created() {
@@ -168,18 +203,16 @@ export default {
       hotplaceNo,
     });
 
-    const userNo = this.hotplace.userNo;
-    this.userNo = userNo;
-    this.getUser({
-      userNo,
-    });
-
     this.imgSrc = "http://localhost/hotplace/display?filename=";
     setTimeout(() => {
-      this.imgSrc += this.hotplace.img;
-    }, 50);
+      const userNo = this.hotplace.userNo;
+      this.userNo = userNo;
+      this.getUser({
+        userNo,
+      });
 
-    console.log(this.userInfo.no, "그리고 작성자", this.user.no);
+      this.imgSrc += this.hotplace.img;
+    }, 100);
   },
   computed: {
     ...mapGetters(["hotplace", "user", "userInfo"]),
