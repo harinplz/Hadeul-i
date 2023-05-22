@@ -48,6 +48,15 @@
           <b>좋아요 1</b>
         </button>
       </div>
+      <!--삭제 버튼 -->
+      <div v-if="userInfo.no == user.no" class="deleteBtn-div">
+        <button
+          type="button"
+          class="btn deleteBtn"
+          style="background-color: #c3e5ee">
+          <b>삭제</b>
+        </button>
+      </div>
     </div>
 
     <!-- 댓글 구현 부분 -->
@@ -169,9 +178,11 @@ export default {
     setTimeout(() => {
       this.imgSrc += this.hotplace.img;
     }, 50);
+
+    console.log(this.userInfo.no, "그리고 작성자", this.user.no);
   },
   computed: {
-    ...mapGetters(["hotplace", "user"]),
+    ...mapGetters(["hotplace", "user", "userInfo"]),
   },
 };
 </script>
@@ -252,6 +263,16 @@ export default {
 }
 
 .goodBtn {
+  padding: 10px 30px;
+}
+
+.deleteBtn-div {
+  margin-top: 60px;
+  text-align: right;
+  width: 90%;
+}
+
+.deleteBtn {
   padding: 10px 30px;
 }
 
