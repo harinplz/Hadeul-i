@@ -69,7 +69,7 @@
       </div>
       <!-- </transition> -->
     </div>
-    <div class="create-list-btns wow fadeInUp" data-wow-delay="0.5s">
+    <div class="create-list-btns wow fadeInUp">
       <router-link :to="{ name: 'HotplaceList' }">
         <button type="button" class="btn hotplBtn" style="background-color: #c3e5e5">
           <b>목록</b>
@@ -278,14 +278,6 @@ export default {
   src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.1/Dovemayo_gothic.woff2")
     format("woff2");
   font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "SUITE-Regular";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2")
-    format("woff2");
-  font-weight: 400;
   font-style: normal;
 }
 

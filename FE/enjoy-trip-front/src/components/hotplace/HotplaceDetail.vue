@@ -6,18 +6,20 @@
       <!-- 제목과 작성자 div -->
       <div class="hotpl_desc_title_area">
         <div class="hotpl-desc-title" v-if="hotplace">
-          [{{ hotplace.category }}]{{ hotplace.hotplaceName }}
+          [{{ hotplace.category }}] {{ hotplace.hotplaceName }}
         </div>
         <div class="hotpl-desc-writer" v-if="user">{{ user.name }}님</div>
       </div>
 
       <div class="row hotpl-map-desc">
-        <div class="col-md-6 hotpl-img">
-          <img class="img" :src="this.imgSrc" />
+        <div class="col-md-6 hotpl-img wow fadeInLeft">
+          <img class="img polaroid" :src="this.imgSrc" />
         </div>
         <div></div>
         <div class="col-md-6 hotpl-map">
-          <label for="hotpl-pos" style="padding-left: 20px; font-size: 18px"
+          <label
+            for="hotpl-pos"
+            style="padding-left: 20px; font-size: 18px; font-family: 'SUITE-Regular'"
             ><b>📍 핫플레이스 위치</b></label
           >
           <p class="hotpl_pos_jibun" v-if="hotplace">
@@ -29,7 +31,12 @@
           <div id="map"></div>
           <label
             for="hotpl-desc-content"
-            style="padding-left: 20px; margin-top: 20px; font-size: 18px"
+            style="
+              padding-left: 20px;
+              margin-top: 20px;
+              font-size: 18px;
+              font-family: 'SUITE-Regular';
+            "
             ><b>📍 핫플레이스 설명</b></label
           >
           <br />
@@ -44,17 +51,26 @@
         </button>
       </div>
       <!-- 삭제 버튼 -->
-      <div v-if="userInfo && user">
-        <div v-if="userInfo.no == user.no || userInfo.id == 'admin'" class="deleteBtn-div">
-          <button
-            type="button"
-            class="btn deleteBtn"
-            style="background-color: #c3e5ee"
-            @click="showModalDelete"
-          >
-            <b>삭제</b>
-          </button>
-        </div>
+      <div class="list_delete_btns">
+        <span
+          ><router-link :to="{ name: 'HotplaceList' }"
+            ><button type="button" class="btn listBtn" style="background-color: #c3e5ee">
+              목록
+            </button></router-link
+          ></span
+        >
+        <span v-if="userInfo && user">
+          <span v-if="userInfo.no == user.no || userInfo.id == 'admin'" class="deleteBtn-div">
+            <button
+              type="button"
+              class="btn deleteBtn"
+              style="background-color: #c3e5ee"
+              @click="showModalDelete"
+            >
+              <b>삭제</b>
+            </button>
+          </span>
+        </span>
       </div>
     </div>
 
@@ -77,8 +93,6 @@
         </div>
       </div>
     </div> -->
-
-    <div style="margin-top: 100px; height: 300px"></div>
   </div>
 </template>
 
@@ -133,7 +147,7 @@ export default {
       setTimeout(() => {
         var content =
           '<div style="background-color: #C3E5EE;margin-bottom: 120px; padding: 6px 10px; border-radius: 20px;' +
-          'font-weight: bold; color: #616161; font-size: 14px;">' +
+          'font-weight: bold; color: #616161; font-size: 14px; ">' +
           this.hotplace.hotplaceName;
         +"</div>";
 
@@ -236,6 +250,8 @@ export default {
   width: 80%;
   height: 100px;
   margin: auto;
+  font-family: "SUITE-Regular";
+  color: #414141;
 }
 
 .hotpl-desc-writer {
@@ -274,6 +290,15 @@ export default {
   height: 100%;
 }
 
+.polaroid {
+  background: #ffffff; /*Change this to a background image or remove*/
+  border: solid #fff;
+  border-width: 25px 25px 100px 25px;
+  box-shadow: 1px 1px 10px #333; /* Standard blur at 5px. Increase for more depth */
+  -webkit-box-shadow: 1px 1px 7px #7e7e7e;
+  -moz-box-shadow: 1px 1px 7px #7e7e7e;
+}
+
 .hotpl_pos_jibun {
   margin-bottom: -10px;
   padding-left: 20px;
@@ -295,7 +320,7 @@ export default {
 }
 
 .goodBtn-div {
-  margin-top: 50px;
+  margin-top: 100px;
   text-align: center;
 }
 
@@ -303,16 +328,21 @@ export default {
   padding: 10px 30px;
 }
 
-.deleteBtn-div {
-  margin-top: 60px;
-  text-align: right;
-  width: 90%;
-}
-
 .deleteBtn {
   padding: 10px 30px;
 }
 
+.listBtn {
+  padding: 10px 30px;
+  margin-right: 5px;
+}
+
+.list_delete_btns {
+  text-align: right;
+  width: 90%;
+  margin-top: 100px;
+  margin-bottom: 200px;
+}
 .hotpl_comment {
   width: 80%;
   margin: 100px auto 0px auto;
