@@ -83,6 +83,7 @@ export default new Vuex.Store({
               type: "HOTPLACES",
               hotplaces: data,
             });
+            payload.callback(status);
           }
         });
     },

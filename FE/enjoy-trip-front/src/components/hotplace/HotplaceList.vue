@@ -74,7 +74,13 @@ export default {
         searchCondition: this.searchCondition,
         callback: (status) => {
           if (status == 200) {
-            console.log("흠...");
+            this.$bvToast.toast("검색 완료!", {
+              title: "o(*^＠^*)o",
+              variant: "primary",
+              toaster: "b-toaster-bottom-center",
+              autoHideDelay: 2000,
+              solid: true,
+            });
           } else if (status == 500) {
             alert("서버 오류 발생!");
           }
