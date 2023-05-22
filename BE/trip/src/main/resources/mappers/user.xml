@@ -42,6 +42,12 @@
 		user
 		WHERE id = #{id}
 	</select>
+	
+	<select id="selectOne" resultMap="user">
+		SELECT *
+		FROM user
+		WHERE user_no = #{userNo}
+	</select>
 
 	<!-- 관리자 & 마이페이지 정보 수정 -->
 <!-- 관리자 & 마이페이지 정보 수정 -->

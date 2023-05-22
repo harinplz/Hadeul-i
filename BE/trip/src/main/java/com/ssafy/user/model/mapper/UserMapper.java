@@ -29,5 +29,7 @@ public interface UserMapper {
 
 	public User selectByToken(String refreshToken);
 
+	public User selectOne(int userNo) throws SQLException;
+
 
 }
