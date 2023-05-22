@@ -119,6 +119,17 @@ export default new Vuex.Store({
         });
       });
     },
+    // 핫플레이스 글 삭제
+    deleteHotplace(context, payload) {
+      http
+        .delete(`hotplace/${payload.hotplaceNo}`)
+        .then((response) => {
+          payload.callback(response.status);
+        })
+        .catch((response) => {
+          payload.callback(response.status);
+        });
+    },
     createHotplace(context, payload) {
       http
         .post("hotplace/", payload.frm, {
