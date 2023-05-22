@@ -1,6 +1,7 @@
 package com.ssafy.hotplace.model.service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,12 @@ public class HotplaceServiceImpl implements HotplaceService{
 	@Override
 	public int insert(HotplaceDto hotplace) throws SQLException {
 		return hotplaceMapper.insert(hotplace);
+	}
+
+
+	@Override
+	public ArrayList<HotplaceDto> selectAll() throws SQLException {
+		return hotplaceMapper.selectAll();
 	}
 	
 	

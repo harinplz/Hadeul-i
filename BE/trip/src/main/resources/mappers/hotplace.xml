@@ -5,6 +5,17 @@
 <mapper namespace="com.ssafy.hotplace.model.mapper.HotplaceMapper">
 
 	<!-- 2. resultMap 설정 -->
+	<resultMap type="hotplaceDto" id="hotplace">
+		<result column="hotplace_no" property="hotplaceNo"></result>
+		<result column="user_no" property="userNo" />
+		<result column="hotplace_name" property="hotplaceName" />
+		<result column="hotplace_addr" property="hotplaceAddr" />
+		<result column="category" property="category"/>
+		<result column="hotplace_content" property="hotplaceContent" />
+		<result column="jibun" property="jibun" />
+		<result column="latitude" property="latitude" />
+		<result column="longitude" property="longitude" />
+	</resultMap>
 
 	
 	<!-- 핫플레이스 등록 -->
@@ -12,6 +23,12 @@
 		insert into hotplace (user_no, hotplace_name, hotplace_addr, category, hotplace_content, jibun, latitude, longitude, img, org_img)
 		values (#{userNo}, #{hotplaceName}, #{hotplaceAddr}, #{category}, #{hotplaceContent}, #{jibun}, #{latitude}, #{longitude}, #{img}, #{orgImg})
 	</insert>
+	
+	<!-- 핫플레이스 수정 -->
+	<select id="selectAll" resultMap="hotplace">
+		select *
+		from hotplace;
+	</select>
 
 </mapper>
 

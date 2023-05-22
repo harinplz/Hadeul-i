@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -11,6 +12,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -74,7 +76,20 @@ public class HotplaceController {
 			throw new Exception();
 		}		
 	}
-
+	
+	
+	//  핫플레이스 목록 (전체 조회)
+	@GetMapping
+	public ResponseEntity<?> selectAll() throws Exception {
+		List<HotplaceDto> list = hotplaceService.selectAll();
+		if(list != null && !list.isEmpty()) {
+			return new ResponseEntity<List<HotplaceDto>>(list, HttpStatus.OK);
+		}
+		else {
+			 return new ResponseEntity<Void>(HttpStatus.NO_CONTENT); //204 
+		}
+	}
+	
 
 
 	//	public static byte[] imageToByteArray(MultipartFile file) throws Exception {
