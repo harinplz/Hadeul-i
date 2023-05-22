@@ -36,7 +36,7 @@ public class HotplaceServiceImpl implements HotplaceService{
 
 
 	@Override
-	public List<HotplaceDto> selectKeyword(SearchCondition searchCondition) throws SQLException {
+	public ArrayList<HotplaceDto> selectKeyword(SearchCondition searchCondition) throws SQLException {
 		return hotplaceMapper.selectKeyword(searchCondition);
 	}
 	

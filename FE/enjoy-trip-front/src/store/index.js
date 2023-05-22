@@ -7,6 +7,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    hotplaces: [],
     users: [],
     attractions: [],
     communities: [],
@@ -16,6 +17,9 @@ export default new Vuex.Store({
     userInfo: null,
   },
   getters: {
+    hotplaces(state) {
+      return state.hotplaces;
+    },
     userInfo(state) {
       return state.userInfo;
     },
@@ -39,6 +43,9 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    HOTPLACES(state, payload) {
+      state.hotplaces = payload.hotplaces;
+    },
     LOGOUT(state) {
       state.accessToken = null;
       state.refreshToken = null;
@@ -65,6 +72,16 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    // 핫플레이스
+    // 핫플레이스 글 모두 조회
+    getHotplaces(context) {
+      http.get(`hotplace/`).then((response) => {
+        context.commit({
+          type: "HOTPLACES",
+          hotplaces: response.data,
+        });
+      });
+    },
     createHotplace(context, payload) {
       http
         .post("hotplace/", payload.frm, {

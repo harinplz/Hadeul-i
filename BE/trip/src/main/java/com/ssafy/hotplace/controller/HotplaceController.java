@@ -4,11 +4,17 @@ import java.io.ByteArrayOutputStream;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -79,6 +85,31 @@ public class HotplaceController {
 		}		
 	}
 	
+	@GetMapping("/display")
+	public ResponseEntity<Resource> display(@Param("filename")String filename) throws Exception{
+		
+		Resource resource = resourceLoader.getResource("resources" + File.separator + "upload" + File.separator + filename);
+		String realPath = resource.getFile().getCanonicalPath();
+		
+		if(!resource.exists()) {
+			return new ResponseEntity<Resource>(HttpStatus.NOT_FOUND);
+		}
+		
+		HttpHeaders header = new HttpHeaders();
+		Path filePath = null;
+		
+		try {
+			filePath = Paths.get(realPath + filename);
+			System.out.println(filePath);
+			header.add("Content-Type", Files.probeContentType(filePath));
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);		
+	}
+	
 	
 	//  핫플레이스 목록 (전체 조회)
 	@GetMapping
@@ -98,10 +129,12 @@ public class HotplaceController {
 		
 		System.out.println(searchCondition);
 		List<HotplaceDto> keywordList = hotplaceService.selectKeyword(searchCondition);
-		if(keywordList != null && keywordList.isEmpty()) {
+		if(keywordList != null && !keywordList.isEmpty()) {
+			System.out.println(keywordList);
 			return new ResponseEntity<List<HotplaceDto>>(keywordList, HttpStatus.OK);
 		}
 		else {
+			System.out.println("이거 실행?");
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}
 	}
