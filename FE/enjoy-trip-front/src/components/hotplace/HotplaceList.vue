@@ -1,9 +1,7 @@
 <template>
   <div>
     <hotplace-header></hotplace-header>
-    <div
-      id="submitSearch"
-      class="row g-0 align-items-center flex-column-reverse flex-md-row">
+    <div id="submitSearch" class="row g-0 align-items-center flex-column-reverse flex-md-row">
       <div class="col-md-6">
         <router-link :to="{ name: 'HotplaceCreate' }">
           <button type="button" class="btn" style="background-color: #c3e5e5">
@@ -17,16 +15,13 @@
           <option>제목</option>
           <option>카테고리</option>
         </select>
-        <input
-          class="searchInput"
-          type="text"
-          placeholder="검색어 입력"
-          v-model="clientword" />
+        <input class="searchInput" type="text" placeholder="검색어 입력" v-model="clientword" />
         <button
           type="button"
           class="btn searchBtn"
           style="background-color: #ffd5e3"
-          @click="goSearch">
+          @click="goSearch"
+        >
           <b>검색</b>
         </button>
       </div>
@@ -36,7 +31,8 @@
         <hotplace-list-cardview
           v-for="hotplace in hotplaces"
           :key="hotplace.hotplaceNo"
-          :hotplace="hotplace"></hotplace-list-cardview>
+          :hotplace="hotplace"
+        ></hotplace-list-cardview>
       </div>
     </div>
   </div>
@@ -57,17 +53,14 @@ export default {
     };
   },
   components: {
-    "hotplace-header": () =>
-      import("@/components/hotplace/include/HotplaceHeader.vue"),
-    "hotplace-list-cardview": () =>
-      import("@/components/hotplace/include/HotplaceListCardview"),
+    "hotplace-header": () => import("@/components/hotplace/include/HotplaceHeader.vue"),
+    "hotplace-list-cardview": () => import("@/components/hotplace/include/HotplaceListCardview"),
   },
   methods: {
     ...mapActions(["getHotplaces", "searchHotplaces"]),
     goSearch() {
       if (this.clientkey == "제목") this.searchCondition.key = "hotplace_name";
-      else if (this.clientkey == "카테고리")
-        this.searchCondition.key = "category";
+      else if (this.clientkey == "카테고리") this.searchCondition.key = "category";
       this.searchCondition.word = this.clientword;
       console.log(this.searchCondition);
       this.searchHotplaces({
@@ -130,5 +123,6 @@ export default {
 .hotpl_all_list {
   width: 100%;
   margin-top: 50px;
+  margin-left: 100px;
 }
 </style>
