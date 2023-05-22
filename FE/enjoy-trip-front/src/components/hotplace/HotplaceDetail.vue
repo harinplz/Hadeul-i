@@ -5,8 +5,10 @@
     <div style="margin-top: 50px">
       <!-- 제목과 작성자 div -->
       <div class="hotpl_desc_title_area">
-        <div class="hotpl-desc-title">[{{ hotplace.category }}]{{ hotplace.hotplaceName }}</div>
-        <div class="hotpl-desc-writer">{{ user.name }}님</div>
+        <div class="hotpl-desc-title" v-if="hotplace">
+          [{{ hotplace.category }}]{{ hotplace.hotplaceName }}
+        </div>
+        <div class="hotpl-desc-writer" v-if="user">{{ user.name }}님</div>
       </div>
 
       <div class="row hotpl-map-desc">
@@ -18,7 +20,7 @@
           <label for="hotpl-pos" style="padding-left: 20px; font-size: 18px"
             ><b>📍 핫플레이스 위치</b></label
           >
-          <p class="hotpl_pos_jibun">
+          <p class="hotpl_pos_jibun" v-if="hotplace">
             {{ hotplace.jibun }}
             <span v-if="hotplace.hotplaceAddr != 'null'"> {{ hotplace.hotplaceAddr }}</span>
           </p>
@@ -31,7 +33,7 @@
             ><b>📍 핫플레이스 설명</b></label
           >
           <br />
-          <div class="hotpl-desc-content">{{ hotplace.hotplaceContent }}</div>
+          <div class="hotpl-desc-content" v-if="hotplace">{{ hotplace.hotplaceContent }}</div>
         </div>
       </div>
 
@@ -42,15 +44,17 @@
         </button>
       </div>
       <!-- 삭제 버튼 -->
-      <div v-if="userInfo.no == user.no || userInfo.id == 'admin'" class="deleteBtn-div">
-        <button
-          type="button"
-          class="btn deleteBtn"
-          style="background-color: #c3e5ee"
-          @click="showModalDelete"
-        >
-          <b>삭제</b>
-        </button>
+      <div v-if="userInfo && user">
+        <div v-if="userInfo.no == user.no || userInfo.id == 'admin'" class="deleteBtn-div">
+          <button
+            type="button"
+            class="btn deleteBtn"
+            style="background-color: #c3e5ee"
+            @click="showModalDelete"
+          >
+            <b>삭제</b>
+          </button>
+        </div>
       </div>
     </div>
 
