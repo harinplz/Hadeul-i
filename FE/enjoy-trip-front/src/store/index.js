@@ -8,6 +8,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     hotplaces: [],
+    hotplace: null,
     users: [],
     attractions: [],
     communities: [],
@@ -17,6 +18,9 @@ export default new Vuex.Store({
     userInfo: null,
   },
   getters: {
+    hotplace(state) {
+      return state.hotplace;
+    },
     hotplaces(state) {
       return state.hotplaces;
     },
@@ -43,6 +47,9 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    HOTPLACE(state, payload) {
+      state.hotplace = payload.hotplace;
+    },
     HOTPLACES(state, payload) {
       state.hotplaces = payload.hotplaces;
     },
@@ -93,6 +100,15 @@ export default new Vuex.Store({
         context.commit({
           type: "HOTPLACES",
           hotplaces: response.data,
+        });
+      });
+    },
+    // 핫플레이스 글 한개만 조회
+    getHotplace(context, payload) {
+      http.get(`hotplace/${payload.hotplaceNo}`).then((response) => {
+        context.commit({
+          type: "HOTPLACE",
+          hotplace: response.data,
         });
       });
     },

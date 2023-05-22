@@ -5,22 +5,30 @@
     <div style="margin-top: 50px">
       <!-- 제목과 작성자 div -->
       <div class="hotpl_desc_title_area">
-        <div class="hotpl-desc-title">[유형]제목</div>
+        <div class="hotpl-desc-title">
+          [{{ hotplace.category }}]{{ hotplace.hotplaceName }}
+        </div>
         <div class="hotpl_desc_writer_regtime">
-          <div class="hotpl-desc-writer">작성자</div>
-          <div class="hotpl_desc_regtime">작성날짜</div>
+          <div class="hotpl-desc-writer">{{ hotplace.userNo }}</div>
         </div>
       </div>
 
       <div class="row hotpl-map-desc">
         <div class="col-md-6 hotpl-img">
-          <img class="img" src="@/assets/img/hotplace-header-img1.jpg" />
+          <img class="img" :src="this.imgSrc" />
         </div>
         <div></div>
         <div class="col-md-6 hotpl-map">
           <label for="hotpl-pos" style="padding-left: 20px; font-size: 18px"
             ><b>📍 핫플레이스 위치</b></label
           >
+          <p class="hotpl_pos_jibun">
+            {{ hotplace.jibun }}
+            <span v-if="hotplace.hotplaceAddr != 'null'">
+              {{ hotplace.hotplaceAddr }}</span
+            >
+          </p>
+
           <br />
           <div id="map"></div>
           <label
@@ -29,13 +37,16 @@
             ><b>📍 핫플레이스 설명</b></label
           >
           <br />
-          <div class="hotpl-desc-content">설명입니다.</div>
+          <div class="hotpl-desc-content">{{ hotplace.hotplaceContent }}</div>
         </div>
       </div>
 
       <!-- 좋아요 버튼 -->
       <div class="goodBtn-div">
-        <button type="button" class="btn goodBtn" style="background-color: #ffd5e3">
+        <button
+          type="button"
+          class="btn goodBtn"
+          style="background-color: #ffd5e3">
           <b>좋아요 1</b>
         </button>
       </div>
@@ -66,44 +77,107 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
       map: null,
+      hotplaceNo: "",
+      imgSrc: null,
     };
   },
   components: {
-    "hotplace-header": () => import("@/components/hotplace/include/HotplaceHeader.vue"),
+    "hotplace-header": () =>
+      import("@/components/hotplace/include/HotplaceHeader.vue"),
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
-      this.loadMap();
+      this.initMap();
     } else {
-      this.loadScript();
+      const script = document.createElement("script");
+      /* global kakao */
+      script.onload = () => kakao.maps.load(this.initMap);
+      script.src =
+        "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=70697613147c4c88e83fb654db4eed6e&libraries=services";
+      document.head.appendChild(script);
     }
   },
   methods: {
-    loadScript() {
-      const script = document.createElement("script");
-      script.src =
-        "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=70697613147c4c88e83fb654db4eed6e&libraries=services,clusterer,drawing";
-
-      script.onload = () => window.kakao.maps.load(this.loadMap);
-      document.head.appendChild(script);
-    },
-    loadMap() {
+    ...mapActions(["getHotplace"]),
+    initMap() {
       var mapContainer = document.getElementById("map"),
         mapOption = {
-          center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+          center: new window.kakao.maps.LatLng(
+            this.hotplace.latitude,
+            this.hotplace.longitude
+          ),
           level: 5,
         };
       this.map = new window.kakao.maps.Map(mapContainer, mapOption);
+
+      var markerPosition = new kakao.maps.LatLng(
+        this.hotplace.latitude,
+        this.hotplace.longitude
+      );
+
+      var marker = new kakao.maps.Marker({
+        position: markerPosition,
+      });
+
+      marker.setMap(this.map);
+
+      //커스텀 오버레이에 표시할 컨텐츠 입니다
+      // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
+      // 별도의 이벤트 메소드를 제공하지 않습니다
+
+      setTimeout(() => {
+        var content =
+          '<div style="background-color: #C3E5EE;margin-bottom: 120px; padding: 6px 10px; border-radius: 20px;' +
+          'font-weight: bold; color: #616161; font-size: 14px;">' +
+          this.hotplace.hotplaceName;
+        +"</div>";
+
+        // 마커 위에 커스텀오버레이를 표시합니다
+        // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
+        var overlay = new kakao.maps.CustomOverlay({
+          content: content,
+          map: this.map,
+          position: marker.getPosition(),
+        });
+
+        // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+        kakao.maps.event.addListener(marker, "click", function () {
+          overlay.setMap(this.map);
+        });
+      }, 50);
     },
+  },
+  created() {
+    const hotplaceNo = this.$route.params.hotplaceNo;
+    this.hotplaceNo = hotplaceNo;
+
+    this.getHotplace({
+      hotplaceNo,
+    });
+
+    this.imgSrc = "http://localhost/hotplace/display?filename=";
+    setTimeout(() => {
+      this.imgSrc += this.hotplace.img;
+    }, 50);
+  },
+  computed: {
+    ...mapGetters(["hotplace"]),
   },
 };
 </script>
 
 <style scoped>
+.overlay {
+  background-color: white;
+  border: 1px solid black;
+  padding: 10px;
+}
+
 .hotpl_desc_title_area {
   border-bottom: 1px solid #c4c4c4;
   width: 80%;
@@ -140,7 +214,6 @@ export default {
   width: 100%;
   height: 100%;
   margin: auto;
-  background-color: aqua;
 }
 
 .img {
@@ -149,6 +222,11 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.hotpl_pos_jibun {
+  margin-bottom: -10px;
+  padding-left: 20px;
 }
 
 .hotpl-desc {
@@ -202,5 +280,98 @@ export default {
   height: 80%;
   font-size: 15px;
   font-weight: bold;
+}
+
+.wrap {
+  position: absolute;
+  left: 0;
+  bottom: 40px;
+  width: 288px;
+  height: 132px;
+  margin-left: -144px;
+  text-align: left;
+  overflow: hidden;
+  font-size: 12px;
+  font-family: "Malgun Gothic", dotum, "돋움", sans-serif;
+  line-height: 1.5;
+}
+.wrap * {
+  padding: 0;
+  margin: 0;
+}
+.wrap .info {
+  width: 286px;
+  height: 120px;
+  border-radius: 5px;
+  border-bottom: 2px solid #ccc;
+  border-right: 1px solid #ccc;
+  overflow: hidden;
+  background: #fff;
+}
+.wrap .info:nth-child(1) {
+  border: 0;
+  box-shadow: 0px 1px 2px #888;
+}
+.info .title {
+  padding: 5px 0 0 10px;
+  height: 30px;
+  background: #eee;
+  border-bottom: 1px solid #ddd;
+  font-size: 18px;
+  font-weight: bold;
+}
+.info .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #888;
+  width: 17px;
+  height: 17px;
+  background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png");
+}
+.info .close:hover {
+  cursor: pointer;
+}
+.info .body {
+  position: relative;
+  overflow: hidden;
+}
+.info .desc {
+  position: relative;
+  margin: 13px 0 0 90px;
+  height: 75px;
+}
+.desc .ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.desc .jibun {
+  font-size: 11px;
+  color: #888;
+  margin-top: -2px;
+}
+.info .img {
+  position: absolute;
+  top: 6px;
+  left: 5px;
+  width: 73px;
+  height: 71px;
+  border: 1px solid #ddd;
+  color: #888;
+  overflow: hidden;
+}
+.info:after {
+  content: "";
+  position: absolute;
+  margin-left: -12px;
+  left: 50%;
+  bottom: 0;
+  width: 22px;
+  height: 12px;
+  background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png");
+}
+.info .link {
+  color: #5085bb;
 }
 </style>
