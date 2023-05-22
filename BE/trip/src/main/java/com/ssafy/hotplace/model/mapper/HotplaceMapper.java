@@ -20,4 +20,6 @@ public interface HotplaceMapper {
 
 	public HotplaceDto selectOne(int hotplaceNo) throws SQLException;
 
+	public int delete(int hotplaceNo) throws SQLException;
+
 }

@@ -46,5 +46,11 @@
 		WHERE hotplace_no = #{hotplaceNo}
 	</select>
 
+	<!-- 핫플레이스 글 삭제 -->
+	<delete id="delete">
+		DELETE
+		FROM hotplace
+		WHERE hotplace_no = #{hotplaceNo}
+	</delete>
 </mapper>
 

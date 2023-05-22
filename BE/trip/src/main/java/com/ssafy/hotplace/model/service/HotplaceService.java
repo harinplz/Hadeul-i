@@ -16,6 +16,8 @@ public interface HotplaceService {
 	public ArrayList<HotplaceDto> selectKeyword(SearchCondition searchCondition) throws SQLException;
 
 	public HotplaceDto selectOne(int hotplaceNo) throws SQLException;
+
+	public int delete(int hotplaceNo) throws SQLException;
 	
 	
 

@@ -45,6 +45,12 @@ public class HotplaceServiceImpl implements HotplaceService{
 	public HotplaceDto selectOne(int hotplaceNo) throws SQLException {
 		return hotplaceMapper.selectOne(hotplaceNo);
 	}
+
+
+	@Override
+	public int delete(int hotplaceNo) throws SQLException {
+		return hotplaceMapper.delete(hotplaceNo);
+	}
 	
 	
 

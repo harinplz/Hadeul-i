@@ -18,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -148,6 +149,18 @@ public class HotplaceController {
 		}
 		else {
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	// 핫플레이스 삭제
+	@DeleteMapping("/{hotplaceNo}")
+	public ResponseEntity<?> delete(@PathVariable("hotplaceNo") int hotplaceNo) throws Exception {
+		int result = hotplaceService.delete(hotplaceNo);
+		if(result > 0) {
+			return new ResponseEntity<Integer>(result, HttpStatus.OK);
+		}
+		else {
+			throw new Exception();
 		}
 	}
 	
