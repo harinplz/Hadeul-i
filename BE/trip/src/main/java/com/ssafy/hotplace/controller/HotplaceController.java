@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.hotplace.model.dto.HotplaceDto;
+import com.ssafy.hotplace.model.dto.SearchCondition;
 import com.ssafy.hotplace.model.service.HotplaceService;
 
 
@@ -89,6 +91,21 @@ public class HotplaceController {
 			 return new ResponseEntity<Void>(HttpStatus.NO_CONTENT); //204 
 		}
 	}
+	
+	// 핫플레이스 키워드로 전체 검색
+	@PostMapping("/search")
+	public ResponseEntity<?> selectKeyword(@RequestBody SearchCondition searchCondition) throws Exception {
+		
+		System.out.println(searchCondition);
+		List<HotplaceDto> keywordList = hotplaceService.selectKeyword(searchCondition);
+		if(keywordList != null && keywordList.isEmpty()) {
+			return new ResponseEntity<List<HotplaceDto>>(keywordList, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
+	}
+	
 	
 
 

@@ -24,10 +24,19 @@
 		values (#{userNo}, #{hotplaceName}, #{hotplaceAddr}, #{category}, #{hotplaceContent}, #{jibun}, #{latitude}, #{longitude}, #{img}, #{orgImg})
 	</insert>
 	
-	<!-- 핫플레이스 수정 -->
+	<!-- 핫플레이스 전체 조회 -->
 	<select id="selectAll" resultMap="hotplace">
 		select *
 		from hotplace;
+	</select>
+	
+	<!-- 핫플레이스 검색 -->
+	<select id="selectKeyword" parameterType="searchCondition" resultMap="hotplace">
+		select *
+		from hotplace
+		<if test="key != 'none'">
+			WHERE ${key} like concat('%', #{word}, '%')
+		</if>
 	</select>
 
 </mapper>
