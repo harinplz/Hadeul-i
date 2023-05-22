@@ -9,6 +9,7 @@ export default new Vuex.Store({
   state: {
     hotplaces: [],
     hotplace: null,
+    user: null,
     users: [],
     attractions: [],
     communities: [],
@@ -32,6 +33,9 @@ export default new Vuex.Store({
     },
     refreshToken(state) {
       return state.refreshToken;
+    },
+    user(state) {
+      return state.user;
     },
     users(state) {
       return state.users;
@@ -64,6 +68,9 @@ export default new Vuex.Store({
     TOKEN(state, payload) {
       state.accessToken = payload.accessToken;
       state.refreshToken = payload.refreshToken;
+    },
+    USER(state, payload) {
+      state.user = payload.user;
     },
     USERS(state, payload) {
       state.users = payload.users;
@@ -146,6 +153,15 @@ export default new Vuex.Store({
     },
     logout({ commit }) {
       commit("LOGOUT");
+    },
+    // 회원 정보 하나 가져오기
+    getUser(context, payload) {
+      http.get(`user/mypageno/${payload.userNo}`).then((response) => {
+        context.commit({
+          type: "USER",
+          user: response.data,
+        });
+      });
     },
     getUsers(context) {
       //관리자가 회원 정보 가져오기

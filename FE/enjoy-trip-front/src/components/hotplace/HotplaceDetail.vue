@@ -8,9 +8,7 @@
         <div class="hotpl-desc-title">
           [{{ hotplace.category }}]{{ hotplace.hotplaceName }}
         </div>
-        <div class="hotpl_desc_writer_regtime">
-          <div class="hotpl-desc-writer">{{ hotplace.userNo }}</div>
-        </div>
+        <div class="hotpl-desc-writer">{{ user.name }}님</div>
       </div>
 
       <div class="row hotpl-map-desc">
@@ -83,6 +81,7 @@ export default {
     return {
       map: null,
       hotplaceNo: "",
+      userNo: "",
       imgSrc: null,
     };
   },
@@ -103,7 +102,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["getHotplace"]),
+    ...mapActions(["getHotplace", "getUser"]),
     initMap() {
       var mapContainer = document.getElementById("map"),
         mapOption = {
@@ -160,13 +159,19 @@ export default {
       hotplaceNo,
     });
 
+    const userNo = this.hotplace.userNo;
+    this.userNo = userNo;
+    this.getUser({
+      userNo,
+    });
+
     this.imgSrc = "http://localhost/hotplace/display?filename=";
     setTimeout(() => {
       this.imgSrc += this.hotplace.img;
     }, 50);
   },
   computed: {
-    ...mapGetters(["hotplace"]),
+    ...mapGetters(["hotplace", "user"]),
   },
 };
 </script>
@@ -186,12 +191,9 @@ export default {
 }
 
 .hotpl-desc-writer {
-  padding-top: 30px;
+  padding-top: 50px;
   padding-right: 20px;
   font-size: 20px;
-}
-
-.hotpl_desc_writer_regtime {
   float: right;
 }
 
