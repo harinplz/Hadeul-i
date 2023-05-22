@@ -1,5 +1,5 @@
 <template>
-  <div class="cardView wow fadeInUp">
+  <div class="cardView wow fadeInUp" @click="goHotplaceDetail">
     <div class="cardView_img">
       <img class="cardView_img_de" :src="this.imgSrc" />
     </div>
@@ -30,6 +30,14 @@ export default {
   },
   props: {
     hotplace: Object,
+  },
+  methods: {
+    goHotplaceDetail() {
+      this.$router.push({
+        name: "HotplaceDetail",
+        params: { hotplaceNo: this.input.hotplaceNo },
+      });
+    },
   },
   computed: {
     input() {

@@ -39,6 +39,12 @@ public class HotplaceServiceImpl implements HotplaceService{
 	public ArrayList<HotplaceDto> selectKeyword(SearchCondition searchCondition) throws SQLException {
 		return hotplaceMapper.selectKeyword(searchCondition);
 	}
+
+
+	@Override
+	public HotplaceDto selectOne(int hotplaceNo) throws SQLException {
+		return hotplaceMapper.selectOne(hotplaceNo);
+	}
 	
 	
 

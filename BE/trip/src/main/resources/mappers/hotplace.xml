@@ -38,6 +38,13 @@
 			WHERE ${key} like concat('%', #{word}, '%')
 		</if>
 	</select>
+	
+	<!-- 핫플레이스 하나씩 조회 -->
+	<select id="selectOne" resultMap="hotplace">
+		SELECT *
+		FROM hotplace
+		WHERE hotplace_no = #{hotplaceNo}
+	</select>
 
 </mapper>
 

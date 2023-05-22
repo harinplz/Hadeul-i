@@ -18,4 +18,6 @@ public interface HotplaceMapper {
 
 	public ArrayList<HotplaceDto> selectKeyword(SearchCondition searchCondition) throws SQLException;
 
+	public HotplaceDto selectOne(int hotplaceNo) throws SQLException;
+
 }

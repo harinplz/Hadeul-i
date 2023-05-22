@@ -139,6 +139,19 @@ public class HotplaceController {
 		}
 	}
 	
+	// 핫플레이스 1개만 조회
+	@GetMapping("/{hotplaceNo}")
+	public ResponseEntity<?> selectOne(@PathVariable("hotplaceNo") int hotplaceNo) throws Exception {
+		HotplaceDto hotplace = hotplaceService.selectOne(hotplaceNo);
+		if(hotplace != null) {
+			return new ResponseEntity<HotplaceDto>(hotplace, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	
 	
 
 
