@@ -1,9 +1,9 @@
 package com.ssafy.hotplace.controller;
 
 import java.io.ByteArrayOutputStream;
+
 import java.io.File;
 import java.io.FileInputStream;
-import java.lang.System.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.hotplace.model.dto.HotplaceDto;
 import com.ssafy.hotplace.model.service.HotplaceService;
 
-import jdk.internal.org.jline.utils.Log;
 
 @RestController
 @RequestMapping("/hotplace")
