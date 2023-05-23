@@ -132,6 +132,7 @@ export default {
   data: function () {
     return {
       user: {
+        user_no: null,
         id: null,
         name: null,
         email: null,

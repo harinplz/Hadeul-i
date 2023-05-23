@@ -71,5 +71,10 @@ public class UserServiceImpl implements UserService {
 		return userMapper.selectByToken(refreshToken);
 	}
 
+	@Override
+	public User selectOne(int userNo) throws SQLException {
+		return userMapper.selectOne(userNo);
+	}
+
 
 }

@@ -7,6 +7,11 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    hotplaces: [],
+    hotplace: null,
+    hotplaceLike: 0,
+    hotplaceLikeCheck: 0,
+    user: null,
     users: [],
     attractions: [],
     communities: [],
@@ -16,6 +21,18 @@ export default new Vuex.Store({
     userInfo: null,
   },
   getters: {
+    hotplaceLikeCheck(state) {
+      return state.hotplaceLikeCheck;
+    },
+    hotplaceLike(state) {
+      return state.hotplaceLike;
+    },
+    hotplace(state) {
+      return state.hotplace;
+    },
+    hotplaces(state) {
+      return state.hotplaces;
+    },
     userInfo(state) {
       return state.userInfo;
     },
@@ -24,6 +41,9 @@ export default new Vuex.Store({
     },
     refreshToken(state) {
       return state.refreshToken;
+    },
+    user(state) {
+      return state.user;
     },
     users(state) {
       return state.users;
@@ -39,10 +59,23 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    HOTPLACE_LIKE_CHECK(state, payload) {
+      state.hotplaceLikeCheck = payload.hotplaceLikeCheck;
+    },
+    HOTPLACE_LIKE(state, payload) {
+      state.hotplaceLike = payload.hotplaceLike;
+    },
+    HOTPLACE(state, payload) {
+      state.hotplace = payload.hotplace;
+    },
+    HOTPLACES(state, payload) {
+      state.hotplaces = payload.hotplaces;
+    },
     LOGOUT(state) {
       state.accessToken = null;
       state.refreshToken = null;
       state.userInfo = null;
+      state.hotplaceLikeCheck = 0;
     },
     USER_INFO(state, payload) {
       state.userInfo = payload.userInfo;
@@ -50,6 +83,9 @@ export default new Vuex.Store({
     TOKEN(state, payload) {
       state.accessToken = payload.accessToken;
       state.refreshToken = payload.refreshToken;
+    },
+    USER(state, payload) {
+      state.user = payload.user;
     },
     USERS(state, payload) {
       state.users = payload.users;
@@ -65,6 +101,122 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    // 관광지로 추가
+    createUserAttraction(context, payload) {
+      http
+        .post(`hotplace/addAttraction`, payload.hotplace)
+        .then((response) => {
+          payload.callback(response.status);
+        })
+        .catch((response) => {
+          payload.callback(response.status);
+        });
+    },
+    // 핫플레이스 좋아요
+    // 핫플레이스 좋아요 수 조회
+    getHotplaceLike(context, payload) {
+      http.get(`hotplace/like/${payload.hotplaceNo}`).then((response) => {
+        context.commit({
+          type: "HOTPLACE_LIKE",
+          hotplaceLike: response.data,
+        });
+      });
+    },
+    // 핫플레이스 좋아요 했는지 확인
+    getCheckLike(context, payload) {
+      http
+        .post("hotplace/like/check", payload.hotplaceLike)
+        .then((response) => {
+          context.commit({
+            type: "HOTPLACE_LIKE_CHECK",
+            hotplaceLikeCheck: response.data,
+          });
+        });
+    },
+    // 핫플레이스 좋아요 누르기
+    createHotplaceLike(context, payload) {
+      http
+        .post("hotplace/like/", payload.hotplaceLike)
+        .then((response) => {
+          payload.callback(response.status);
+        })
+        .catch((response) => {
+          payload.callback(response.data);
+        });
+    },
+    // 핫플레이스 좋아요 취소
+    deleteHotplaceLike(context, payload) {
+      http
+        .delete(
+          `hotplace/like/${payload.hotplaceLike.hotplaceNo}/${payload.hotplaceLike.userNo}`
+        )
+        .then((response) => {
+          payload.callback(response.status);
+        })
+        .catch((response) => {
+          payload.callback(response.status);
+        });
+    },
+    // 핫플레이스
+    // 핫플레이스 검색
+    searchHotplaces({ commit }, payload) {
+      http
+        .post("/hotplace/search", payload.searchCondition)
+        .then(({ status, data }) => {
+          if (status == 200) {
+            commit({
+              type: "HOTPLACES",
+              hotplaces: data,
+            });
+            payload.callback(status);
+          }
+        });
+    },
+    // 핫플레이스 글 모두 조회
+    getHotplaces(context) {
+      http.get(`hotplace/`).then((response) => {
+        context.commit({
+          type: "HOTPLACES",
+          hotplaces: response.data,
+        });
+      });
+    },
+    // 핫플레이스 글 한개만 조회
+    getHotplace(context, payload) {
+      http.get(`hotplace/${payload.hotplaceNo}`).then((response) => {
+        context.commit({
+          type: "HOTPLACE",
+          hotplace: response.data,
+        });
+      });
+    },
+    // 핫플레이스 글 삭제
+    deleteHotplace(context, payload) {
+      http
+        .delete(`hotplace/${payload.hotplaceNo}`)
+        .then((response) => {
+          payload.callback(response.status);
+        })
+        .catch((response) => {
+          payload.callback(response.status);
+        });
+    },
+    createHotplace(context, payload) {
+      http
+        .post("hotplace/", payload.frm, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log(payload.hotplace);
+          console.log(payload.frm);
+          payload.callback(response.status);
+        })
+        .catch((response) => {
+          payload.callback(response.status);
+        });
+    },
     getAccessToken({ commit }, payload) {
       http
         .post(`/user/refresh`, payload.refreshToken)
@@ -83,6 +235,15 @@ export default new Vuex.Store({
     },
     logout({ commit }) {
       commit("LOGOUT");
+    },
+    // 회원 정보 하나 가져오기
+    getUser(context, payload) {
+      http.get(`user/mypageno/${payload.userNo}`).then((response) => {
+        context.commit({
+          type: "USER",
+          user: response.data,
+        });
+      });
     },
     getUsers(context) {
       //관리자가 회원 정보 가져오기

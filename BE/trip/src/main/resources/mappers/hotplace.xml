@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.ssafy.hotplace.model.mapper.HotplaceMapper">
+
+	<!-- 2. resultMap 설정 -->
+	<resultMap type="hotplaceDto" id="hotplace">
+		<result column="hotplace_no" property="hotplaceNo"></result>
+		<result column="user_no" property="userNo" />
+		<result column="hotplace_name" property="hotplaceName" />
+		<result column="hotplace_addr" property="hotplaceAddr" />
+		<result column="category" property="category"/>
+		<result column="hotplace_content" property="hotplaceContent" />
+		<result column="jibun" property="jibun" />
+		<result column="latitude" property="latitude" />
+		<result column="longitude" property="longitude" />
+	</resultMap>
+
+	
+	<!-- 핫플레이스 등록 -->
+	<insert id="insert">
+		insert into hotplace (user_no, hotplace_name, hotplace_addr, category, hotplace_content, jibun, latitude, longitude, img, org_img)
+		values (#{userNo}, #{hotplaceName}, #{hotplaceAddr}, #{category}, #{hotplaceContent}, #{jibun}, #{latitude}, #{longitude}, #{img}, #{orgImg})
+	</insert>
+	
+	<!-- 핫플레이스 전체 조회 -->
+	<select id="selectAll" resultMap="hotplace">
+		select *
+		from hotplace;
+	</select>
+	
+	<!-- 핫플레이스 검색 -->
+	<select id="selectKeyword" parameterType="searchCondition" resultMap="hotplace">
+		select *
+		from hotplace
+		<if test="key != 'none'">
+			WHERE ${key} like concat('%', #{word}, '%')
+		</if>
+	</select>
+	
+	<!-- 핫플레이스 하나씩 조회 -->
+	<select id="selectOne" resultMap="hotplace">
+		SELECT *
+		FROM hotplace
+		WHERE hotplace_no = #{hotplaceNo}
+	</select>
+
+	<!-- 핫플레이스 글 삭제 -->
+	<delete id="delete">
+		DELETE
+		FROM hotplace_like
+		WHERE hotplace_no = #{hotplaceNo};
+		
+		DELETE
+		FROM hotplace
+		WHERE hotplace_no = #{hotplaceNo};
+	</delete>
+	
+	<!-- 핫플레이스 좋아요 조회 -->
+	<select id="countLike" resultType="_int">
+		SELECT count(user_no)
+		FROM hotplace_like
+		WHERE hotplace_no = #{hotplaceNo}
+	</select>
+	
+	<!-- 핫플레이스 좋아요 했는지 확인 -->
+	<select id="checkLike" resultType="_int">
+		SELECT count(hotplace_no)
+		FROM hotplace_like
+		WHERE hotplace_no = #{hotplaceNo} AND user_no = #{userNo}
+	</select>
+	
+	<!-- 핫플레이스 좋아요  -->
+	<insert id="hotplaceGood">
+		INSERT INTO hotplace_like
+		VALUES (#{hotplaceNo}, #{userNo})
+	</insert>
+	
+	<!-- 핫플레이스 좋아요 취소 -->
+	<delete id="hotplaceGoodCancel">
+		DELETE FROM hotplace_like
+		where hotplace_no = #{hotplaceNo} and user_no = #{userNo};
+	</delete>
+	
+	<!-- 핫플레이스 user attraction에 추가하기 -->
+	<insert id="addToUserAttraction">
+		insert into user_attraction (user_attraction_name, user_attraction_addr, category, user_attraction_content, jibun, sido_code, latitude, longitude, img)
+		values (#{hotplaceName}, #{hotplaceAddr}, #{category}, #{hotplaceContent}, #{jibun}, #{sido}, #{latitude}, #{longitude}, #{img} )
+	</insert>
+	
+	
+</mapper>
+

@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.hotplace.model.dto.HotplaceDto;
 import com.ssafy.user.model.dto.User;
 import com.ssafy.user.model.service.JwtService;
 import com.ssafy.user.model.service.UserService;
@@ -53,8 +54,6 @@ public class UserController{
 		this.userService = userService;
 		this.jwtService = jwtService;
 	}
-
-
 
 	//회원가입 구현 (일단 암호화 복호화 구현 X) - C
 	@PostMapping("/signup")
@@ -186,6 +185,18 @@ public ResponseEntity<?> refreshToken(@RequestBody String refreshToken) throws E
 	public ResponseEntity<?> userInfo(@PathVariable("userId") String userId) throws Exception {
 		User user = userService.selectId(userId);
 		if(user!=null) {
+			return new ResponseEntity<User>(user, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	//user 번호로 조회
+	@GetMapping("/mypageno/{userNo}")
+	public ResponseEntity<?> selectOne(@PathVariable("userNo") int userNo) throws Exception {
+		User user = userService.selectOne(userNo);
+		if(user != null) {
 			return new ResponseEntity<User>(user, HttpStatus.OK);
 		}
 		else {
