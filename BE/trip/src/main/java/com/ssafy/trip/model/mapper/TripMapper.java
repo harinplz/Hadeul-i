@@ -24,4 +24,6 @@ public interface TripMapper {
 	
 	public int getCount2() throws SQLException;
 
+	public List<TripDto> getTripSearchResult(String title) throws SQLException;
+
 }

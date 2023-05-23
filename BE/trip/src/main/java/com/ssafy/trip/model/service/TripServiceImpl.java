@@ -51,4 +51,11 @@ public class TripServiceImpl implements TripService {
 		}
 		
 	}
+
+
+	@Override
+	public List<TripDto> getSearchResult(String title) throws SQLException {
+
+		return tripMapper.getTripSearchResult(title);
+	}
 }

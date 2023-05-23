@@ -16,4 +16,6 @@ public interface TripService {
 
 	public int getCount(String tableType) throws SQLException;
 
+	public List<TripDto> getSearchResult(String title) throws SQLException;
+
 }

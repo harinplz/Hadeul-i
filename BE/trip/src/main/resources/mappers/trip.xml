@@ -74,6 +74,11 @@
 		<result column="table_type" property="tableType"/>
 	</resultMap>
 	
+	<!-- 여행 계획 짜기위해 title로 검색한 것에 대한 리턴 -->
+	<select id="getTripSearchResult" resultMap="attractionList" parameterType="String">
+		select * from attraction_info
+		where title like concat('%', #{title}, '%');
+	</select>
 	
 	<select id="selectAttractions" parameterType="tripSearchCondition"  resultMap="attractionList">
 		 SELECT a.content_id, a.title, a.content_type_id, a.addr1, a.first_image, a.sido_code,

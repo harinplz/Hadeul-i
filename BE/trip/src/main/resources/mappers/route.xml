@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.route.model.mapper.RouteMapper">
+	
+	<resultMap type="routeListDto" id="travelRouteList">
+		<result column="travel_route_no" property="travelRouteNo"/>
+		<result column="user_no" property="userNo"/>
+		<result column="regtime" property="regTime"/>
+		<result column="title" property="title"/>
+		<result column="arrive_date" property="arriveDate"/>
+		<result column="depart_date" property="departDate"/>
+		<result column="description" property="description"/>
+	</resultMap>
+	
+	<resultMap id="routeDetail" type="com.ssafy.route.model.dto.RouteDto">
+    	<result property="travelRouteNo" column="travel_route_no" />
+    	<result property="userNo" column="user_no" />
+    	<result property="regTime" column="reg_time" />
+    	<result property="title" column="title" />
+    	<result property="arriveDate" column="arrive_date" />
+    	<result property="departDate" column="depart_date" />
+    	<result property="description" column="description" />
+    
+    	<collection property="attractionList" ofType="com.ssafy.route.model.dto.RouteDto$RouteListDto">
+        	<result property="title" column="attraction_title" />
+        	<result property="latitude" column="latitude" />
+        	<result property="longitude" column="longitude" />
+        	<result property="order" column="order" />
+    	</collection>
+	</resultMap>
+
+	<!-- 상세 보기를 위한 쿼리 -->
+	<select id="getTravelRoute" resultMap="routeDetail">
+    	SELECT tr.travel_route_no, tr.user_no, tr.regtime, tr.title, tr.arrive_date, tr.depart_date, tr.description,
+           	rl.title AS attraction_title, rl.latitude, rl.longitude, rl.order
+	    FROM travel_route tr
+	    LEFT JOIN route_list rl ON tr.travel_route_no = rl.travel_route_no
+	    WHERE tr.travel_route_no = #{travelRouteNo}
+	</select>
+	
+	<!-- travel_route에 데이터 하나 추가  -->
+	<insert id="insertTravleRoute" parameterType="routeDto" useGeneratedKeys="true" keyProperty="travelRouteNo">
+    	INSERT INTO travel_route 
+    		(user_no, title, depart_date, arrive_date, description)
+    	VALUES 
+    		(#{userNo}, #{title}, #{departDate}, #{arriveDate}, #{description})
+	</insert>
+	
+	<!-- travel_route에 데이터추가할 때 관광지 ㅣist들 추가할 수 있는 코드 -->
+	<insert id="insertRouteList" parameterType="routeDto">
+  		<foreach collection="attractionList" item="item" separator=";" index="index">
+    		INSERT INTO route_list (travel_route_no, title, latitude, longitude, `order`)
+    		VALUES (#{travelRouteNo}, #{item.title}, #{item.latitude}, #{item.longitude}, ${index} + 1)
+  		</foreach>
+	</insert>
+	
+	<!--travle_route의 게시물들 가져옴  -->
+	<select id="getTravelRouteAll" resultMap="travelRouteList">
+		select travel_route_no, user_no, regtime, title, arrive_date, depart_date, description
+		FROM travel_route;
+	</select>
+	
+	<!-- 하린님 핫플 코드 좀 가져왔습니다. -->
+	<!-- travle_route 좋아요 조회 -->
+	<select id="countLike" resultType="_int">
+		SELECT count(user_no)
+		FROM travel_route_like
+		WHERE travel_route_no = #{travleRouteNo}
+	</select>
+	
+	<!-- travle_route 좋아요 했는지 확인 -->
+	<select id="checkLike" resultType="_int">
+		SELECT count(travel_route_no)
+		FROM travel_route_like
+		WHERE travel_route_no = #{travleRouteNo} AND user_no = #{userNo}
+	</select>
+	
+	<!-- travle_route 좋아요  -->
+	<insert id="routeGood">
+		INSERT INTO travel_route_like
+		VALUES (#{travleRouteNo}, #{userNo})
+	</insert>
+	
+	<!-- travle_route 좋아요 취소 -->
+	<delete id="routeGoodCancel">
+		DELETE FROM travel_route_like
+		where travel_route_no = #{travleRouteNo} and user_no = #{userNo};
+	</delete>
+	<!-- 좋아요 처리 끝 -->
+
+	
+	
+</mapper>
