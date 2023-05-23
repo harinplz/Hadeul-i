@@ -1,81 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.user.model.mapper.UserMapper">
 
-	<!-- 2. resultMap 설정 -->
-	<resultMap type="user" id="user">
-		<result column="user_no" property="no" />
-		<result column="id" property="id" />
-		<result column="password" property="pw" />
-		<result column="email" property="email"/>
-		<result column="name" property="name" />
-	</resultMap>
+    <!-- 2. resultMap 설정 -->
+    <resultMap type="user" id="user">
+        <result column="user_no" property="no" />
+        <result column="id" property="id" />
+        <result column="password" property="pw" />
+        <result column="email" property="email"/>
+        <result column="name" property="name" />
+    </resultMap>
 
-	<!-- 관리자 회원 등록 & 회원가입 -->
-	<insert id="insert">
-		insert into user
-		(id, password, name, email)
-		values (#{id},
-		#{pw}, #{name}, #{email})
-	</insert>
+    <!-- 관리자 회원 등록 & 회원가입 -->
+    <insert id="insert">
+        insert into user
+        (id, password, name, email)
+        values (#{id},
+        #{pw}, #{name}, #{email})
+    </insert>
 
-	<!-- 회원 로그인 -->
-	<select id="select" resultMap="user">
-		SELECT id, password, name
-		FROM user
-		WHERE id = #{id} AND password = #{pw}
-	</select>
+    <!-- 회원 로그인 -->
+    <select id="select" resultMap="user">
+        SELECT id, password, name, user_no
+        FROM user
+        WHERE id = #{id} AND password = #{pw}
+    </select>
 
-	<!-- 관리자 회원 정보 모두 조회 -->
-	<select id="searchAll" resultMap="user">
-		SELECT user_no, id, password, name, email
-		FROM
-		user
-	</select>
+    <!-- 관리자 회원 정보 모두 조회 -->
+    <select id="searchAll" resultMap="user">
+        SELECT user_no, id, password, name, email
+        FROM
+        user
+    </select>
 
-	<!-- 관리자 & 마이페이지 정보 조회 -->
-	<select id="selectId" resultMap="user">
-		SELECT id, password, name, email
-		FROM
-		user
-		WHERE id = #{id}
-	</select>
+    <!-- 관리자 & 마이페이지 정보 조회 -->
+    <select id="selectId" resultMap="user">
+        SELECT user_no, id, password, name, email
+        FROM
+        user
+        WHERE id = #{id}
+    </select>
+    
+    <select id="selectOne" resultMap="user">
+        SELECT *
+        FROM user
+        WHERE user_no = #{userNo}
+    </select>
 
-	<!-- 관리자 & 마이페이지 정보 수정 -->
+    <!-- 관리자 & 마이페이지 정보 수정 -->
 <!-- 관리자 & 마이페이지 정보 수정 -->
-	<update id="update">
-		UPDATE user
-		SET id = #{id}, password=#{pw}, name =
-		#{name}, email = #{email}
-		WHERE user_no = #{no}
-	</update>
+    <update id="update">
+        UPDATE user
+        SET id = #{id}, password=#{pw}, name =
+        #{name}, email = #{email}
+        WHERE user_no = #{no}
+    </update>
 
 
-	<!-- 관리자 & 마이페이지 탈퇴 -->
-	<delete id="delete">
-		DELETE
-		FROM user
-		WHERE id = #{id}
-	</delete>
-	
-	
-	<!-- 토큰 갱신 -->
-	<update id="updateTokenByUserId" parameterType="map">
-		UPDATE user
-		SET token = #{token}
-		WHERE id = #{id}
-	</update>
-	
-	
-	<!-- 사용자 조회 (Token 이용) -->
-		<select id="selectByToken" parameterType="string" resultType="user">
-		SELECT id, name, email
-		FROM user
-		WHERE token = #{refreshToken}
-	</select>
-	
+    <!-- 관리자 & 마이페이지 탈퇴 -->
+    <delete id="delete">
+        DELETE
+        FROM user
+        WHERE id = #{id}
+    </delete>
+    
+    
+    <!-- 토큰 갱신 -->
+    <update id="updateTokenByUserId" parameterType="map">
+        UPDATE user
+        SET token = #{token}
+        WHERE id = #{id}
+    </update>
+    
+    
+    <!-- 사용자 조회 (Token 이용) -->
+        <select id="selectByToken" parameterType="string" resultType="user">
+        SELECT id, name, email
+        FROM user
+        WHERE token = #{refreshToken}
+    </select>
+    
 
 
 </mapper>
