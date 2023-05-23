@@ -3,6 +3,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.trip.model.mapper.TripMapper">
 	
+	<!-- 
 	<resultMap type="tripDto" id="trip">
 		<result column="sido_code" property="sido"/>
 		<result column="content_type_id" property="contentId"/>
@@ -12,7 +13,6 @@
 		<result column="addr1" property="addr1"/>
 	</resultMap>
 
-	
 	<select id="selectAll" parameterType="tripDto" resultMap="trip">
 	SELECT sido_code, content_type_id, title, latitude, longitude, addr1
     FROM attraction_info
@@ -30,5 +30,100 @@
     	and title like concat('%', #{searchKeyWord}, '%')
     	order by binary(title) desc
 	</select>
-	  
+	-->
+	
+	<!-- AttractionMap 백엔드 수정 시작 #34 -->
+	 
+	 <resultMap type="tripDto" id="attractionList">
+		<result column="content_id" property="attractionNo"/>
+		<result column="title" property="attractionName"/>
+		<result column="content_type_id" property="category"/>
+		<result column="addr1" property="address"/>
+		<result column="first_image" property="imageUrl"/>
+		<result column="sido_code" property="sido"/>
+		<result column="gugun_code" property="gugun"/>
+		<result column="latitude" property="latitude"/>
+		<result column="longitude" property="longitude"/>
+		<result column="table_type" property="attractionType"/>
+		<result column="hit" property="hit"/>
+	</resultMap>
+	
+	<resultMap type="tripDto" id="userAttractionList">
+		<result column="user_attraction_no" property="attractionNo"/>
+		<result column="user_attraction_name" property="attractionName"/>
+		<result column="category" property="category"/>
+		<result column="user_attraction_addr" property="address"/>
+		<result column="img" property="imageUrl"/>
+		<result column="sido_code" property="sido"/>
+		<result column="gugun_code" property="gugun"/>
+		<result column="latitude" property="latitude"/>
+		<result column="longitude" property="longitude"/>
+		<result column="table_type" property="attractionType"/>
+		<result column="hit" property="hit"/>
+	</resultMap>
+	
+	<resultMap type="tripContentDto" id="attractionContent">
+		<result column="content_id" property="attractionNo"/>
+		<result column="content" property="content"/>
+		<result column="table_type" property="tableType"/>
+	</resultMap>
+	
+	<resultMap type="tripContentDto" id="userAttractionContent">
+		<result column="user_attraction_no" property="attractionNo"/>
+		<result column="content" property="content"/>
+		<result column="table_type" property="tableType"/>
+	</resultMap>
+	
+	
+	<select id="selectAttractions" parameterType="tripSearchCondition"  resultMap="attractionList">
+		 SELECT a.content_id, a.title, a.content_type_id, a.addr1, a.first_image, a.sido_code,
+       a.gugun_code, a.latitude, a.longitude, 1 AS table_type, COUNT(b.content_id) AS hit
+		FROM attraction_info a
+		LEFT JOIN attraction_like b ON a.content_id = b.content_id
+		WHERE sido_code = #{sido} 
+    	and content_type_id = #{category} 
+    	and title like concat('%', #{searchKeyWord}, '%')
+    	GROUP BY a.content_id, a.title, a.content_type_id, a.addr1, a.first_image, a.sido_code,
+         a.gugun_code, a.latitude, a.longitude, table_type
+    	LIMIT #{offset}, #{countPerPage}
+	</select>
+	
+	<select id="selectUserAttractions" parameterType="tripSearchCondition" resultMap="userAttractionList">
+		SELECT a.user_attraction_no, a.user_attraction_name, a.category, a.user_attraction_addr,
+		 a.img, a.sido_code,
+		 a.gugun_code, a.latitude, a.longitude, 2 AS table_type, COUNT(b.user_attraction_no) AS hit
+		FROM user_attraction a
+		LEFT JOIN attraction_user_like b ON a.user_attraction_no = b.user_attraction_no
+		WHERE sido_code = #{sido} 
+    	and category = #{category} 
+    	and user_attraction_name like concat('%', #{searchKeyWord}, '%')
+    	GROUP BY a.user_attraction_no, a.user_attraction_name, a.category, a.user_attraction_addr,
+		 a.img, a.sido_code,
+		 a.gugun_code, a.latitude, a.longitude, table_type
+    	LIMIT #{offset}, #{countPerPage}
+	</select>
+	 
+	<select id="getAttractionContent" resultMap="attractionContent">
+	select a.content_id as content_id, 1 AS table_type, b.overview as content
+	from attraction_info a
+	join attraction_description b on a.content_id = b.content_id
+	where a.content_id = ${attractionNo};
+	</select>
+	
+	<select id="getUserAttractionContent" resultMap="userAttractionContent">  
+		select user_attraction_no, user_attraction_content content, 2 AS table_type
+		from user_attraction
+		where user_attraction_no = ${attractionNo};
+	</select>
+	
+	<select id="getCount1" resultType="Integer">
+		select COUNT(*) from attraction_info; 
+	</select>
+	
+	<select id="getCount2" resultType="Integer">
+		select COUNT(*) from user_attraction; 
+	</select>
+
+	<!-- AttractionMap 백엔드 수정 끝 #34 -->
+
 </mapper>

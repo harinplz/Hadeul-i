@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.trip.model.dto.TripDto;
+import com.ssafy.trip.model.dto.TripSearchCondition;
 import com.ssafy.trip.model.mapper.TripMapper;
 
 @Service
@@ -31,4 +32,23 @@ public class TripServiceImpl implements TripService {
 	}
 
 
+	@Override
+	public List<TripDto> attractionList(TripSearchCondition dto) throws SQLException {
+		if(dto.getTableType().equals("1")) {
+			return tripMapper.selectAttractions(dto);
+		}else {
+			return tripMapper.selectUserAttractions(dto);
+		}	
+	}
+
+
+	@Override
+	public int getCount(String tableType) throws SQLException {
+		if(tableType.equals("1")) {
+			return tripMapper.getCount1();
+		}else {
+			return tripMapper.getCount2();
+		}
+		
+	}
 }
