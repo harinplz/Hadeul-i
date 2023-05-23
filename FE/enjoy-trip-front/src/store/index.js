@@ -133,6 +133,19 @@ export default new Vuex.Store({
           payload.callback(response.data);
         });
     },
+    // 핫플레이스 좋아요 취소
+    deleteHotplaceLike(context, payload) {
+      http
+        .delete(
+          `hotplace/like/${payload.hotplaceLike.hotplaceNo}/${payload.hotplaceLike.userNo}`
+        )
+        .then((response) => {
+          payload.callback(response.status);
+        })
+        .catch((response) => {
+          payload.callback(response.status);
+        });
+    },
     // 핫플레이스
     // 핫플레이스 검색
     searchHotplaces({ commit }, payload) {

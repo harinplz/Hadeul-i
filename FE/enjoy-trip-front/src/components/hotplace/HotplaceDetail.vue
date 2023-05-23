@@ -149,6 +149,7 @@ export default {
       "getHotplaceLike",
       "getCheckLike",
       "createHotplaceLike",
+      "deleteHotplaceLike",
     ]),
     initMap() {
       if (this.hotplace != null) {
@@ -205,7 +206,38 @@ export default {
       } else {
         console.log(this.hotplaceLikeCheck);
         console.log("좋아요 버튼을 눌렀습니다.");
+        this.deleteGoodBtn();
       }
+    },
+    deleteGoodBtn() {
+      const payload = {
+        hotplaceLike: {
+          hotplaceNo: this.hotplaceNo,
+          userNo: this.userInfo.no,
+        },
+        callback: (status) => {
+          if (status == 200) {
+            this.getHotplaceLike({
+              hotplaceNo: this.hotplaceNo,
+            });
+            this.getCheckLike({
+              hotplaceLike: {
+                hotplaceNo: this.hotplaceNo,
+                userNo: this.userInfo.no,
+              },
+            });
+          } else if (status == 500) {
+            this.$bvToast.toast("서버 오류 발생!", {
+              title: "핫플레이스 서버 오류 발생",
+              variant: "danger",
+              toaster: "b-toaster-bottom-center",
+              autoHideDelay: 3000,
+              solid: true,
+            });
+          }
+        },
+      };
+      this.deleteHotplaceLike(payload);
     },
     createGoodBtn() {
       const payload = {
@@ -218,6 +250,13 @@ export default {
             this.getHotplaceLike({
               hotplaceNo: this.hotplaceNo,
             });
+            this.getCheckLike({
+              hotplaceLike: {
+                hotplaceNo: this.hotplaceNo,
+                userNo: this.userInfo.no,
+              },
+            });
+            console.log(this.hotplaceLikeCheck);
           } else if (status == 500) {
             this.$bvToast.toast("서버 오류 발생!", {
               title: "핫플레이스 서버 오류 발생",
