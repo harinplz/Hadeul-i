@@ -399,6 +399,8 @@ export default {
 
       console.log(this.hotplace);
 
+      console.log("유저정보", this.userInfo);
+
       this.imgSrc += this.hotplace.img;
     }, 100);
 
