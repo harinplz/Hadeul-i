@@ -124,6 +124,18 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/travelroute",
+    name: "TravelRoute",
+    component: () => import("@/views/AppTravelRoute.vue"),
+    // children: [
+    //   {
+    //     path: "create",
+    //     name: "TravelRouteCreate",
+
+    //   }
+    // ]
+  },
 ];
 
 const router = new VueRouter({
