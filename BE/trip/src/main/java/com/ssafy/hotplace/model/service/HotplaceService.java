@@ -18,6 +18,8 @@ public interface HotplaceService {
 	public HotplaceDto selectOne(int hotplaceNo) throws SQLException;
 
 	public int delete(int hotplaceNo) throws SQLException;
+
+	public int countLike(int hotplaceNo) throws SQLException;
 	
 	
 

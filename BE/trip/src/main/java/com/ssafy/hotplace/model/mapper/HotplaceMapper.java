@@ -22,4 +22,6 @@ public interface HotplaceMapper {
 
 	public int delete(int hotplaceNo) throws SQLException;
 
+	public int countLike(int hotplaceNo) throws SQLException;
+
 }

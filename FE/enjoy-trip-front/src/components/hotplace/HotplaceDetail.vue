@@ -19,12 +19,18 @@
         <div class="col-md-6 hotpl-map">
           <label
             for="hotpl-pos"
-            style="padding-left: 20px; font-size: 18px; font-family: 'SUITE-Regular'"
+            style="
+              padding-left: 20px;
+              font-size: 18px;
+              font-family: 'SUITE-Regular';
+            "
             ><b>📍 핫플레이스 위치</b></label
           >
           <p class="hotpl_pos_jibun" v-if="hotplace">
             {{ hotplace.jibun }}
-            <span v-if="hotplace.hotplaceAddr != 'null'"> {{ hotplace.hotplaceAddr }}</span>
+            <span v-if="hotplace.hotplaceAddr != 'null'">
+              {{ hotplace.hotplaceAddr }}</span
+            >
           </p>
 
           <br />
@@ -40,13 +46,18 @@
             ><b>📍 핫플레이스 설명</b></label
           >
           <br />
-          <div class="hotpl-desc-content" v-if="hotplace">{{ hotplace.hotplaceContent }}</div>
+          <div class="hotpl-desc-content" v-if="hotplace">
+            {{ hotplace.hotplaceContent }}
+          </div>
         </div>
       </div>
 
       <!-- 좋아요 버튼 -->
       <div class="goodBtn-div">
-        <button type="button" class="btn goodBtn" style="background-color: #ffd5e3">
+        <button
+          type="button"
+          class="btn goodBtn"
+          style="background-color: #ffd5e3">
           <b>좋아요 1</b>
         </button>
       </div>
@@ -54,19 +65,23 @@
       <div class="list_delete_btns">
         <span
           ><router-link :to="{ name: 'HotplaceList' }"
-            ><button type="button" class="btn listBtn" style="background-color: #c3e5ee">
+            ><button
+              type="button"
+              class="btn listBtn"
+              style="background-color: #c3e5ee">
               목록
             </button></router-link
           ></span
         >
         <span v-if="userInfo && user">
-          <span v-if="userInfo.no == user.no || userInfo.id == 'admin'" class="deleteBtn-div">
+          <span
+            v-if="userInfo.no == user.no || userInfo.id == 'admin'"
+            class="deleteBtn-div">
             <button
               type="button"
               class="btn deleteBtn"
               style="background-color: #c3e5ee"
-              @click="showModalDelete"
-            >
+              @click="showModalDelete">
               <b>삭제</b>
             </button>
           </span>
@@ -108,7 +123,8 @@ export default {
     };
   },
   components: {
-    "hotplace-header": () => import("@/components/hotplace/include/HotplaceHeader.vue"),
+    "hotplace-header": () =>
+      import("@/components/hotplace/include/HotplaceHeader.vue"),
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
@@ -125,14 +141,21 @@ export default {
   methods: {
     ...mapActions(["getHotplace", "getUser", "deleteHotplace"]),
     initMap() {
-      var mapContainer = document.getElementById("map"),
-        mapOption = {
-          center: new window.kakao.maps.LatLng(this.hotplace.latitude, this.hotplace.longitude),
-          level: 5,
-        };
-      this.map = new window.kakao.maps.Map(mapContainer, mapOption);
-
-      var markerPosition = new kakao.maps.LatLng(this.hotplace.latitude, this.hotplace.longitude);
+      if (this.hotplace != null) {
+        var mapContainer = document.getElementById("map"),
+          mapOption = {
+            center: new window.kakao.maps.LatLng(
+              this.hotplace.latitude,
+              this.hotplace.longitude
+            ),
+            level: 5,
+          };
+        this.map = new window.kakao.maps.Map(mapContainer, mapOption);
+      }
+      var markerPosition = new kakao.maps.LatLng(
+        this.hotplace.latitude,
+        this.hotplace.longitude
+      );
 
       var marker = new kakao.maps.Marker({
         position: markerPosition,
@@ -163,7 +186,7 @@ export default {
         kakao.maps.event.addListener(marker, "click", function () {
           overlay.setMap(this.map);
         });
-      }, 50);
+      }, 500);
     },
     showModalDelete() {
       this.$bvModal

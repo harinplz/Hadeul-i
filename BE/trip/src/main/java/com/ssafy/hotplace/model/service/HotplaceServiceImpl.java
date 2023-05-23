@@ -51,6 +51,12 @@ public class HotplaceServiceImpl implements HotplaceService{
 	public int delete(int hotplaceNo) throws SQLException {
 		return hotplaceMapper.delete(hotplaceNo);
 	}
+
+
+	@Override
+	public int countLike(int hotplaceNo) throws SQLException {
+		return hotplaceMapper.countLike(hotplaceNo);
+	}
 	
 	
 

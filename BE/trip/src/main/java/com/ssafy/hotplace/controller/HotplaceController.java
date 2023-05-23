@@ -165,6 +165,23 @@ public class HotplaceController {
 	}
 	
 	
+	/*
+	 * 핫플레이스 좋아요 관련 컨트롤러
+	 */
+	
+	
+	@GetMapping("/like/{hotplaceNo}")
+	public ResponseEntity<?> countLike(@PathVariable("hotplaceNo") int hotplaceNo) throws Exception {
+		int result = hotplaceService.countLike(hotplaceNo);
+		if(result >= 0) {
+			return new ResponseEntity<Integer>(result, HttpStatus.OK);
+		}
+		else {
+			throw new Exception();
+		}
+	}
+	
+	
 	
 
 
