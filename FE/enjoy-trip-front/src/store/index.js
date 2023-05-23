@@ -9,6 +9,7 @@ export default new Vuex.Store({
   state: {
     hotplaces: [],
     hotplace: null,
+    hotplaceLike: 0,
     user: null,
     users: [],
     attractions: [],
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     userInfo: null,
   },
   getters: {
+    hotplaceLike(state) {
+      return state.hotplaceLike;
+    },
     hotplace(state) {
       return state.hotplace;
     },
@@ -51,6 +55,9 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    HOTPLACE_LIKE(state, payload) {
+      state.hotplaceLike = payload.hotplaceLike;
+    },
     HOTPLACE(state, payload) {
       state.hotplace = payload.hotplace;
     },
@@ -86,6 +93,16 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    // 핫플레이스 좋아요
+    // 핫플레이스 좋아요 수 조회
+    getHotplaceLike(context, payload) {
+      http.get(`hotplace/like/${payload.hotplaceNo}`).then((response) => {
+        context.commit({
+          type: "HOTPLACE_LIKE",
+          hotplaceLike: response.data,
+        });
+      });
+    },
     // 핫플레이스
     // 핫플레이스 검색
     searchHotplaces({ commit }, payload) {

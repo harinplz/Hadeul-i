@@ -58,7 +58,9 @@
           type="button"
           class="btn goodBtn"
           style="background-color: #ffd5e3">
-          <b>좋아요 1</b>
+          <b
+            >좋아요 <span>{{ hotplaceLike }}</span></b
+          >
         </button>
       </div>
       <!-- 삭제 버튼 -->
@@ -139,7 +141,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["getHotplace", "getUser", "deleteHotplace"]),
+    ...mapActions([
+      "getHotplace",
+      "getUser",
+      "deleteHotplace",
+      "getHotplaceLike",
+    ]),
     initMap() {
       if (this.hotplace != null) {
         var mapContainer = document.getElementById("map"),
@@ -244,6 +251,10 @@ export default {
       hotplaceNo,
     });
 
+    this.getHotplaceLike({
+      hotplaceNo,
+    });
+
     this.imgSrc = "http://localhost/hotplace/display?filename=";
     setTimeout(() => {
       const userNo = this.hotplace.userNo;
@@ -256,7 +267,7 @@ export default {
     }, 100);
   },
   computed: {
-    ...mapGetters(["hotplace", "user", "userInfo"]),
+    ...mapGetters(["hotplace", "user", "userInfo", "hotplaceLike"]),
   },
 };
 </script>
