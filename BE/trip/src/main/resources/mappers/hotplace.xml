@@ -73,5 +73,12 @@
 		VALUES (#{hotplaceNo}, #{userNo})
 	</insert>
 	
+	<!-- 핫플레이스 좋아요 취소 -->
+	<delete id="hotplaceGoodCancel">
+		DELETE FROM hotplace_like
+		where hotplace_no = #{hotplaceNo} and user_no = #{userNo};
+	</delete>
+	
+	
 </mapper>
 

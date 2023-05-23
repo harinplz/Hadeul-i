@@ -200,7 +200,7 @@ export default {
     },
     goCreateGoodBtn() {
       if (this.hotplaceLikeCheck == 0) {
-        console.log("좋아요 버튼을 누르지 않았습니다.");
+        // console.log("좋아요 버튼을 누르지 않았습니다.");
         this.createGoodBtn();
       } else {
         console.log(this.hotplaceLikeCheck);

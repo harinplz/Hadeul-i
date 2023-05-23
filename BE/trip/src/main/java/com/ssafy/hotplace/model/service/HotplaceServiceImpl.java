@@ -3,6 +3,7 @@ package com.ssafy.hotplace.model.service;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,6 +70,12 @@ public class HotplaceServiceImpl implements HotplaceService{
 	@Override
 	public int hotplaceGood(HotplaceLike hotplaceLike) throws SQLException {
 		return hotplaceMapper.hotplaceGood(hotplaceLike);
+	}
+
+
+	@Override
+	public int hotplaceGoodCancel(Map<String, Integer> map) throws SQLException {
+		return hotplaceMapper.hotplaceGoodCancel(map);
 	}
 	
 	

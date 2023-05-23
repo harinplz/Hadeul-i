@@ -3,6 +3,7 @@ package com.ssafy.hotplace.model.service;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.ssafy.hotplace.model.dto.HotplaceDto;
 import com.ssafy.hotplace.model.dto.HotplaceLike;
@@ -25,6 +26,8 @@ public interface HotplaceService {
 	public int checkLike(HotplaceLike hotplaceLike) throws SQLException;
 
 	public int hotplaceGood(HotplaceLike hotplaceLike) throws SQLException;
+
+	public int hotplaceGoodCancel(Map<String, Integer> map) throws SQLException;
 	
 	
 

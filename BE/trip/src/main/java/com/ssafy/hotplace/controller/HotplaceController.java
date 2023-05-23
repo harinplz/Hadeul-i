@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -207,6 +209,29 @@ public class HotplaceController {
 		else {
 			throw new Exception();
 		}
+	}
+
+	
+	// 사용자가 핫플레이스 좋아요를 취소할 때
+	@DeleteMapping("/like/{hotplaceNo}/{userNo}")
+	public ResponseEntity<?> hotplaceGoodCancel(@PathVariable Map<String, String> pathMap) throws Exception {
+		
+		
+		int hotplaceNo = Integer.parseInt(pathMap.get("hotplaceNo"));
+		int userNo = Integer.parseInt(pathMap.get("userNo"));
+		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("hotplaceNo", hotplaceNo);
+		map.put("userNo", userNo);
+		
+		int result = hotplaceService.hotplaceGoodCancel(map);
+		if(result > 0) {
+			return new ResponseEntity<Integer>(result, HttpStatus.OK);
+		}
+		else {
+			throw new Exception();
+		}
+		
 	}
 	
 	

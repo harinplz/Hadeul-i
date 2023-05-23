@@ -3,6 +3,7 @@ package com.ssafy.hotplace.model.mapper;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -28,5 +29,7 @@ public interface HotplaceMapper {
 	public int checkLike(HotplaceLike hotplaceLike) throws SQLException;
 
 	public int hotplaceGood(HotplaceLike hotplaceLike) throws SQLException;
+
+	public int hotplaceGoodCancel(Map<String, Integer> map) throws SQLException;
 
 }
