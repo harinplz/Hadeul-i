@@ -53,7 +53,7 @@
               type="button"
               v-else
               class="m-1 btn"
-              style="background-color: #ff5de3; padding: 10px 30px"
+              style="background-color: #ffd5e3; padding: 10px 30px"
               @click="validate"
             >
               수정
@@ -105,6 +105,7 @@ export default {
       } else {
         const payload = {
           community: {
+            boardNo: this.boardNo,
             title: this.title,
             userNo: this.userInfo.no,
             content: this.content,
@@ -145,7 +146,6 @@ export default {
     if (this.type == "modify") {
       this.boardNo = this.community.boardNo;
       this.title = this.community.title;
-      this.userId = this.community.userId;
       this.content = this.community.content;
     }
 

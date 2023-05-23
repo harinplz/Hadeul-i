@@ -7,20 +7,17 @@
     </b-row>
     <b-row>
       <b-col class="text-left">
-        <b-button variant="outline-primary" @click="listCommunity"
-          >목록</b-button
-        >
+        <b-button variant="outline-primary" @click="listCommunity">목록</b-button>
       </b-col>
-      <b-col class="text-right">
-        <b-button variant="outline-info" size="sm" @click="moveModifyCommuntiy"
-          >수정</b-button
-        >
-        <b-button variant="outline-danger" size="sm" @click="deleteCom"
-          >삭제</b-button
-        >
+      <b-col v-if="userInfo.no == community.userNo" class="text-right">
+        <b-button variant="outline-info" size="sm" @click="moveModifyCommuntiy">수정</b-button>
+        <b-button variant="outline-danger" size="sm" @click="deleteCom">삭제</b-button>
       </b-col>
     </b-row>
+
+    <div style="margin-bottom: 20px"></div>
     <view-detail :community="community"></view-detail>
+    <div style="margin-bottom: 50px"></div>
   </b-container>
 </template>
 
@@ -69,9 +66,10 @@ export default {
     this.getCommunity({
       boardNo,
     });
+    console.log(this.community);
   },
   computed: {
-    ...mapGetters(["community"]),
+    ...mapGetters(["community", "userInfo"]),
   },
 };
 </script>

@@ -19,8 +19,10 @@
       head-variant="dark"
       :items="communities"
       :fields="fields"
-      @row-clicked="rowClickListener"></b-table>
+      @row-clicked="rowClickListener"
+    ></b-table>
     <div v-else class="text-center">게시글이 없습니다.</div>
+    <div style="margin-bottom: 80px"></div>
   </b-container>
 </template>
 
@@ -41,13 +43,8 @@ export default {
           sortable: false,
         },
         {
-          key: "userId",
-          label: "작성자",
-          sortable: false,
-        },
-        {
           key: "regtime",
-          label: "작성일",
+          label: "작성날짜",
           sortable: false,
         },
       ],
@@ -69,6 +66,7 @@ export default {
   },
   created() {
     this.getCommunities();
+    console.log(this.communities);
   },
   computed: {
     ...mapGetters(["communities"]),
