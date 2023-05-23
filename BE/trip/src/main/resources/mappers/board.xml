@@ -34,7 +34,7 @@
 	
 	<insert id="insertOne" parameterType="boardDto">
 		INSERT INTO community 
-			(user_id, title, content)
-		VALUES(#{userId},#{title},#{content})
+			(user_no, title, content)
+		VALUES(#{userNo},#{title},#{content})
 	</insert>
 </mapper>
