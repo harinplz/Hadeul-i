@@ -146,6 +146,7 @@ export default {
       "getUser",
       "deleteHotplace",
       "getHotplaceLike",
+      "getCheckLike",
     ]),
     initMap() {
       if (this.hotplace != null) {
@@ -263,11 +264,26 @@ export default {
         userNo,
       });
 
+      this.getCheckLike({
+        hotplaceLike: {
+          hotplaceNo,
+          userNo,
+        },
+      });
+
       this.imgSrc += this.hotplace.img;
     }, 100);
+
+    console.log("핫플레이스 좋아요 했나요? ", this.hotplaceLikeCheck);
   },
   computed: {
-    ...mapGetters(["hotplace", "user", "userInfo", "hotplaceLike"]),
+    ...mapGetters([
+      "hotplace",
+      "user",
+      "userInfo",
+      "hotplaceLike",
+      "hotplaceLikeCheck",
+    ]),
   },
 };
 </script>

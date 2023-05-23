@@ -10,6 +10,7 @@ export default new Vuex.Store({
     hotplaces: [],
     hotplace: null,
     hotplaceLike: 0,
+    hotplaceLikeCheck: 0,
     user: null,
     users: [],
     attractions: [],
@@ -20,6 +21,9 @@ export default new Vuex.Store({
     userInfo: null,
   },
   getters: {
+    hotplaceLikeCheck(state) {
+      return state.hotplaceLikeCheck;
+    },
     hotplaceLike(state) {
       return state.hotplaceLike;
     },
@@ -55,6 +59,9 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    HOTPLACE_LIKE_CHECK(state, payload) {
+      state.hotplaceLikeCheck = payload.hotplaceLikeCheck;
+    },
     HOTPLACE_LIKE(state, payload) {
       state.hotplaceLike = payload.hotplaceLike;
     },
@@ -68,6 +75,7 @@ export default new Vuex.Store({
       state.accessToken = null;
       state.refreshToken = null;
       state.userInfo = null;
+      state.hotplaceLikeCheck = 0;
     },
     USER_INFO(state, payload) {
       state.userInfo = payload.userInfo;
@@ -102,6 +110,17 @@ export default new Vuex.Store({
           hotplaceLike: response.data,
         });
       });
+    },
+    // 핫플레이스 좋아요 했는지 확인
+    getCheckLike(context, payload) {
+      http
+        .post("/hotplace/like/check", payload.hotplaceLike)
+        .then((response) => {
+          context.commit({
+            type: "HOTPLACE_LIKE_CHECK",
+            hotplaceLikeCheck: response.data,
+          });
+        });
     },
     // 핫플레이스
     // 핫플레이스 검색
