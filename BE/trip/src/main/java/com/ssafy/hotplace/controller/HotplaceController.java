@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.hotplace.model.dto.HotplaceDto;
+import com.ssafy.hotplace.model.dto.HotplaceLike;
 import com.ssafy.hotplace.model.dto.SearchCondition;
 import com.ssafy.hotplace.model.service.HotplaceService;
 
@@ -170,9 +171,23 @@ public class HotplaceController {
 	 */
 	
 	
+	// 좋아요 수 조회
 	@GetMapping("/like/{hotplaceNo}")
 	public ResponseEntity<?> countLike(@PathVariable("hotplaceNo") int hotplaceNo) throws Exception {
 		int result = hotplaceService.countLike(hotplaceNo);
+		if(result >= 0) {
+			return new ResponseEntity<Integer>(result, HttpStatus.OK);
+		}
+		else {
+			throw new Exception();
+		}
+	}
+	
+	
+	// 사용자가 해당 핫플레이스에 좋아요를 눌렀는지 체크
+	@PostMapping("/like/check")
+	public ResponseEntity<?> checkLike(@RequestBody HotplaceLike hotplaceLike) throws Exception {
+		int result = hotplaceService.checkLike(hotplaceLike);
 		if(result >= 0) {
 			return new ResponseEntity<Integer>(result, HttpStatus.OK);
 		}

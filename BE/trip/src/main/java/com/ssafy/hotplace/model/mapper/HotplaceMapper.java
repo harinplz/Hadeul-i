@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ssafy.hotplace.model.dto.HotplaceDto;
+import com.ssafy.hotplace.model.dto.HotplaceLike;
 import com.ssafy.hotplace.model.dto.SearchCondition;
 
 @Mapper
@@ -23,5 +24,7 @@ public interface HotplaceMapper {
 	public int delete(int hotplaceNo) throws SQLException;
 
 	public int countLike(int hotplaceNo) throws SQLException;
+
+	public int checkLike(HotplaceLike hotplaceLike) throws SQLException;
 
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ssafy.hotplace.model.dto.HotplaceDto;
+import com.ssafy.hotplace.model.dto.HotplaceLike;
 import com.ssafy.hotplace.model.dto.SearchCondition;
 
 public interface HotplaceService {
@@ -20,6 +21,8 @@ public interface HotplaceService {
 	public int delete(int hotplaceNo) throws SQLException;
 
 	public int countLike(int hotplaceNo) throws SQLException;
+
+	public int checkLike(HotplaceLike hotplaceLike) throws SQLException;
 	
 	
 

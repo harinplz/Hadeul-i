@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.hotplace.model.dto.HotplaceDto;
+import com.ssafy.hotplace.model.dto.HotplaceLike;
 import com.ssafy.hotplace.model.dto.SearchCondition;
 import com.ssafy.hotplace.model.mapper.HotplaceMapper;
 
@@ -56,6 +57,12 @@ public class HotplaceServiceImpl implements HotplaceService{
 	@Override
 	public int countLike(int hotplaceNo) throws SQLException {
 		return hotplaceMapper.countLike(hotplaceNo);
+	}
+
+
+	@Override
+	public int checkLike(HotplaceLike hotplaceLike) throws SQLException {
+		return hotplaceMapper.checkLike(hotplaceLike);
 	}
 	
 	

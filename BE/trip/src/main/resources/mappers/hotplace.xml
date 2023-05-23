@@ -59,5 +59,13 @@
 		FROM hotplace_like
 		WHERE hotplace_no = #{hotplaceNo}
 	</select>
+	
+	<!-- 핫플레이스 좋아요 했는지 확인 -->
+	<select id="checkLike" resultType="_int">
+		SELECT count(hotplace_no)
+		FROM hotplace_like
+		WHERE hotplace_no = #{hotplaceNo} AND user_no = #{userNo}
+	</select>
+	
 </mapper>
 
