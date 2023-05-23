@@ -78,4 +78,21 @@ public class TripController {
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}
 	}
+	
+	@GetMapping("/trips/{title}")
+	public ResponseEntity<?> getSearchResult(@PathVariable String title) {
+		List<TripDto> list = null;
+		try {
+			list = tripService.getSearchResult(title);
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		if(list != null) {
+			return new ResponseEntity<List<TripDto>>(list,HttpStatus.OK );
+		}else {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
+	}
 }
