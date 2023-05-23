@@ -164,51 +164,54 @@ export default {
     ]),
     initMap() {
       if (this.hotplace != null) {
-        var mapContainer = document.getElementById("map"),
-          mapOption = {
-            center: new window.kakao.maps.LatLng(
-              this.hotplace.latitude,
-              this.hotplace.longitude
-            ),
-            level: 5,
-          };
-        this.map = new window.kakao.maps.Map(mapContainer, mapOption);
+        setTimeout(() => {
+          var mapContainer = document.getElementById("map"),
+            mapOption = {
+              center: new window.kakao.maps.LatLng(
+                this.hotplace.latitude,
+                this.hotplace.longitude
+              ),
+              level: 5,
+            };
+          this.map = new window.kakao.maps.Map(mapContainer, mapOption);
+
+          var markerPosition = new kakao.maps.LatLng(
+            this.hotplace.latitude,
+            this.hotplace.longitude
+          );
+
+          var marker = new kakao.maps.Marker({
+            position: markerPosition,
+          });
+
+          marker.setMap(this.map);
+
+          // 커스텀 오버레이에 표시할 컨텐츠 입니다
+          // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
+          // 별도의 이벤트 메소드를 제공하지 않습니다
+
+          setTimeout(() => {
+            var content =
+              '<div style="background-color: #C3E5EE;margin-bottom: 120px; padding: 6px 10px; border-radius: 20px;' +
+              'font-weight: bold; color: #616161; font-size: 14px; ">' +
+              this.hotplace.hotplaceName;
+            +"</div>";
+
+            // 마커 위에 커스텀오버레이를 표시합니다
+            // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
+            var overlay = new kakao.maps.CustomOverlay({
+              content: content,
+              map: this.map,
+              position: marker.getPosition(),
+            });
+
+            // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
+            kakao.maps.event.addListener(marker, "click", function () {
+              overlay.setMap(this.map);
+            });
+          }, 300);
+        }, 400);
       }
-      var markerPosition = new kakao.maps.LatLng(
-        this.hotplace.latitude,
-        this.hotplace.longitude
-      );
-
-      var marker = new kakao.maps.Marker({
-        position: markerPosition,
-      });
-
-      marker.setMap(this.map);
-
-      // 커스텀 오버레이에 표시할 컨텐츠 입니다
-      // 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
-      // 별도의 이벤트 메소드를 제공하지 않습니다
-
-      setTimeout(() => {
-        var content =
-          '<div style="background-color: #C3E5EE;margin-bottom: 120px; padding: 6px 10px; border-radius: 20px;' +
-          'font-weight: bold; color: #616161; font-size: 14px; ">' +
-          this.hotplace.hotplaceName;
-        +"</div>";
-
-        // 마커 위에 커스텀오버레이를 표시합니다
-        // 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
-        var overlay = new kakao.maps.CustomOverlay({
-          content: content,
-          map: this.map,
-          position: marker.getPosition(),
-        });
-
-        // 마커를 클릭했을 때 커스텀 오버레이를 표시합니다
-        kakao.maps.event.addListener(marker, "click", function () {
-          overlay.setMap(this.map);
-        });
-      }, 500);
     },
     goCreateGoodBtn() {
       if (this.hotplaceLikeCheck == 0) {
