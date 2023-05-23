@@ -114,12 +114,23 @@ export default new Vuex.Store({
     // 핫플레이스 좋아요 했는지 확인
     getCheckLike(context, payload) {
       http
-        .post("/hotplace/like/check", payload.hotplaceLike)
+        .post("hotplace/like/check", payload.hotplaceLike)
         .then((response) => {
           context.commit({
             type: "HOTPLACE_LIKE_CHECK",
             hotplaceLikeCheck: response.data,
           });
+        });
+    },
+    // 핫플레이스 좋아요 누르기
+    createHotplaceLike(context, payload) {
+      http
+        .post("hotplace/like/", payload.hotplaceLike)
+        .then((response) => {
+          payload.callback(response.status);
+        })
+        .catch((response) => {
+          payload.callback(response.data);
         });
     },
     // 핫플레이스

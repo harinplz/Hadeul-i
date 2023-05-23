@@ -57,7 +57,8 @@
         <button
           type="button"
           class="btn goodBtn"
-          style="background-color: #ffd5e3">
+          style="background-color: #ffd5e3"
+          @click="goCreateGoodBtn">
           <b
             >좋아요 <span>{{ hotplaceLike }}</span></b
           >
@@ -147,6 +148,7 @@ export default {
       "deleteHotplace",
       "getHotplaceLike",
       "getCheckLike",
+      "createHotplaceLike",
     ]),
     initMap() {
       if (this.hotplace != null) {
@@ -195,6 +197,39 @@ export default {
           overlay.setMap(this.map);
         });
       }, 500);
+    },
+    goCreateGoodBtn() {
+      if (this.hotplaceLikeCheck == 0) {
+        console.log("좋아요 버튼을 누르지 않았습니다.");
+        this.createGoodBtn();
+      } else {
+        console.log(this.hotplaceLikeCheck);
+        console.log("좋아요 버튼을 눌렀습니다.");
+      }
+    },
+    createGoodBtn() {
+      const payload = {
+        hotplaceLike: {
+          hotplaceNo: this.hotplaceNo,
+          userNo: this.userInfo.no,
+        },
+        callback: (status) => {
+          if (status == 201) {
+            this.getHotplaceLike({
+              hotplaceNo: this.hotplaceNo,
+            });
+          } else if (status == 500) {
+            this.$bvToast.toast("서버 오류 발생!", {
+              title: "핫플레이스 서버 오류 발생",
+              variant: "danger",
+              toaster: "b-toaster-bottom-center",
+              autoHideDelay: 3000,
+              solid: true,
+            });
+          }
+        },
+      };
+      this.createHotplaceLike(payload);
     },
     showModalDelete() {
       this.$bvModal
@@ -267,14 +302,14 @@ export default {
       this.getCheckLike({
         hotplaceLike: {
           hotplaceNo,
-          userNo,
+          userNo: this.userInfo.no,
         },
       });
 
       this.imgSrc += this.hotplace.img;
     }, 100);
 
-    console.log("핫플레이스 좋아요 했나요? ", this.hotplaceLikeCheck);
+    // console.log("핫플레이스 좋아요 했나요? ", this.hotplaceLikeCheck);
   },
   computed: {
     ...mapGetters([
