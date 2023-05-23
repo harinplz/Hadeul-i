@@ -49,8 +49,12 @@
 	<!-- 핫플레이스 글 삭제 -->
 	<delete id="delete">
 		DELETE
+		FROM hotplace_like
+		WHERE hotplace_no = #{hotplaceNo};
+		
+		DELETE
 		FROM hotplace
-		WHERE hotplace_no = #{hotplaceNo}
+		WHERE hotplace_no = #{hotplaceNo};
 	</delete>
 	
 	<!-- 핫플레이스 좋아요 조회 -->
