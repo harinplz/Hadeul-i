@@ -101,6 +101,17 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    // 관광지로 추가
+    createUserAttraction(context, payload) {
+      http
+        .post(`hotplace/addAttraction`, payload.hotplace)
+        .then((response) => {
+          payload.callback(response.status);
+        })
+        .catch((response) => {
+          payload.callback(response.status);
+        });
+    },
     // 핫플레이스 좋아요
     // 핫플레이스 좋아요 수 조회
     getHotplaceLike(context, payload) {

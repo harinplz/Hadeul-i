@@ -17,6 +17,8 @@ public class HotplaceDto {
 	private String img;
 	private String orgImg;
 	
+	private int sido;
+	
 	public int getHotplaceNo() {
 		return hotplaceNo;
 	}
@@ -84,6 +86,15 @@ public class HotplaceDto {
 		this.orgImg = orgImg;
 	}
 	
+	
+	
+	
+	public int getSido() {
+		return sido;
+	}
+	public void setSido(int sido) {
+		this.sido = sido;
+	}
 	public HotplaceDto() {
 		super();
 	}
@@ -105,6 +116,24 @@ public class HotplaceDto {
 	}
 	
 	
+	
+	public HotplaceDto(int hotplaceNo, String userNo, String hotplaceName, String hotplaceAddr, String category,
+			String hotplaceContent, String jibun, String latitude, String longitude, String img, String orgImg,
+			int sido) {
+		super();
+		this.hotplaceNo = hotplaceNo;
+		this.userNo = userNo;
+		this.hotplaceName = hotplaceName;
+		this.hotplaceAddr = hotplaceAddr;
+		this.category = category;
+		this.hotplaceContent = hotplaceContent;
+		this.jibun = jibun;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.img = img;
+		this.orgImg = orgImg;
+		this.sido = sido;
+	}
 	@Override
 	public String toString() {
 		return "HotplaceDto [hotplaceNo=" + hotplaceNo + ", userNo=" + userNo + ", hotplaceName=" + hotplaceName

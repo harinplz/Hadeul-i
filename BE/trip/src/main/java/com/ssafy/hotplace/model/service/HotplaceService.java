@@ -28,6 +28,8 @@ public interface HotplaceService {
 	public int hotplaceGood(HotplaceLike hotplaceLike) throws SQLException;
 
 	public int hotplaceGoodCancel(Map<String, Integer> map) throws SQLException;
+
+	public int addToUserAttraction(HotplaceDto hotplaceDto) throws SQLException;
 	
 	
 

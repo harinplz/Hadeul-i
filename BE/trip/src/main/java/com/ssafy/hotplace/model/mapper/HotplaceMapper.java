@@ -32,4 +32,6 @@ public interface HotplaceMapper {
 
 	public int hotplaceGoodCancel(Map<String, Integer> map) throws SQLException;
 
+	public int addToUserAttraction(HotplaceDto hotplaceDto) throws SQLException;
+
 }

@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -234,8 +235,22 @@ public class HotplaceController {
 		
 	}
 	
+	/*
+	 * 관광지 추가
+	 */
 	
 	
+	// 관리자가 관광지를 추가할 때
+	@PostMapping("/addAttraction")
+	public ResponseEntity<?> addToUserAttraction(@RequestBody HotplaceDto hotplaceDto) throws Exception {
+		int result = hotplaceService.addToUserAttraction(hotplaceDto);
+		if(result > 0) {
+			return new ResponseEntity<Integer>(result, HttpStatus.CREATED);
+		}
+		else {
+			throw new Exception();
+		}
+	}
 
 
 	//	public static byte[] imageToByteArray(MultipartFile file) throws Exception {

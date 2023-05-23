@@ -66,6 +66,16 @@
       </div>
       <!-- 삭제 버튼 -->
       <div class="list_delete_btns">
+        <span v-if="userInfo.id == 'admin'">
+          <button
+            type="button"
+            class="btn listBtn"
+            style="background-color: #ffd5e3"
+            @click="addUserAttraction">
+            관광지로 추가
+          </button></span
+        >
+
         <span
           ><router-link :to="{ name: 'HotplaceList' }"
             ><button
@@ -150,6 +160,7 @@ export default {
       "getCheckLike",
       "createHotplaceLike",
       "deleteHotplaceLike",
+      "createUserAttraction",
     ]),
     initMap() {
       if (this.hotplace != null) {
@@ -208,6 +219,44 @@ export default {
         console.log("좋아요 버튼을 눌렀습니다.");
         this.deleteGoodBtn();
       }
+    },
+    //관광지로 추가 버튼
+    addUserAttraction() {
+      const payload = {
+        hotplace: {
+          hotplaceNo: this.hotplace.hotplaceNo,
+          category: this.hotplace.category,
+          hotplaceAddr: this.hotplace.hotplaceAddr,
+          hotplaceContent: this.hotplace.hotplaceContent,
+          hotplaceName: this.hotplace.hotplaceName,
+          img: this.hotplace.img,
+          jibun: this.hotplace.jibun,
+          latitude: this.hotplace.latitude,
+          longitude: this.hotplace.longitude,
+          userNo: this.hotplace.userNo,
+        },
+        callback: (status) => {
+          if (status == 201) {
+            this.$bvToast.toast("관광지로 추가되었습니다!", {
+              title: "（*＾-＾*）",
+              variant: "primary",
+              toaster: "b-toaster-bottom-center",
+              autoHideDelay: 3000,
+              solid: true,
+            });
+          } else if (status == 500) {
+            // 서버 오류 Toast 출력
+            this.$bvToast.toast("서버 오류 발생!", {
+              title: "회원 관리 알림",
+              variant: "danger",
+              toaster: "b-toaster-bottom-center",
+              autoHideDelay: 3000,
+              solid: true,
+            });
+          }
+        },
+      };
+      this.createUserAttraction(payload);
     },
     deleteGoodBtn() {
       const payload = {
@@ -344,6 +393,8 @@ export default {
           userNo: this.userInfo.no,
         },
       });
+
+      console.log(this.hotplace);
 
       this.imgSrc += this.hotplace.img;
     }, 100);
