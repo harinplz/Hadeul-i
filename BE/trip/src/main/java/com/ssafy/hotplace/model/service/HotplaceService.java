@@ -23,6 +23,8 @@ public interface HotplaceService {
 	public int countLike(int hotplaceNo) throws SQLException;
 
 	public int checkLike(HotplaceLike hotplaceLike) throws SQLException;
+
+	public int hotplaceGood(HotplaceLike hotplaceLike) throws SQLException;
 	
 	
 

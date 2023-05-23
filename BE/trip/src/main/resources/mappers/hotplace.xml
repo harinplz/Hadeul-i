@@ -67,5 +67,11 @@
 		WHERE hotplace_no = #{hotplaceNo} AND user_no = #{userNo}
 	</select>
 	
+	<!-- 핫플레이스 좋아요  -->
+	<insert id="hotplaceGood">
+		INSERT INTO hotplace_like
+		VALUES (#{hotplaceNo}, #{userNo})
+	</insert>
+	
 </mapper>
 

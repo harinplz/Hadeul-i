@@ -27,4 +27,6 @@ public interface HotplaceMapper {
 
 	public int checkLike(HotplaceLike hotplaceLike) throws SQLException;
 
+	public int hotplaceGood(HotplaceLike hotplaceLike) throws SQLException;
+
 }

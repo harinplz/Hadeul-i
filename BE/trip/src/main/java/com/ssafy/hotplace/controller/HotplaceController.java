@@ -197,6 +197,19 @@ public class HotplaceController {
 	}
 	
 	
+	// 사용자가 핫플레이스를 좋아요 할 때
+	@PostMapping("/like")
+	public ResponseEntity<?> hotplaceGood(@RequestBody HotplaceLike hotplaceLike) throws Exception {
+		int result = hotplaceService.hotplaceGood(hotplaceLike);
+		if(result > 0) {
+			return new ResponseEntity<Integer>(result, HttpStatus.CREATED);
+		}
+		else {
+			throw new Exception();
+		}
+	}
+	
+	
 	
 
 

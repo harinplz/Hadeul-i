@@ -64,6 +64,12 @@ public class HotplaceServiceImpl implements HotplaceService{
 	public int checkLike(HotplaceLike hotplaceLike) throws SQLException {
 		return hotplaceMapper.checkLike(hotplaceLike);
 	}
+
+
+	@Override
+	public int hotplaceGood(HotplaceLike hotplaceLike) throws SQLException {
+		return hotplaceMapper.hotplaceGood(hotplaceLike);
+	}
 	
 	
 
