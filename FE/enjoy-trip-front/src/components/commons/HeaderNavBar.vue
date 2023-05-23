@@ -13,28 +13,20 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item>
-            <router-link class="nav_item" :to="{ name: 'home' }"
-              >HOME</router-link
-            >
+          <b-nav-item class="nav_item" :to="{ name: 'home' }">
+            HOME
           </b-nav-item>
-          <b-nav-item>
-            <router-link class="nav_item" :to="{ name: 'attractions' }"
-              >관광지 조회</router-link
-            >
+          <b-nav-item class="nav_item" :to="{ name: 'attractions' }">
+            관광지 조회
           </b-nav-item>
           <b-nav-item class="nav_item" :to="{ name: 'TravelRoute' }"
             >여행 계획</b-nav-item
           >
-          <b-nav-item>
-            <router-link class="nav_item" :to="{ name: 'Hotplace' }"
-              >핫플레이스</router-link
-            ></b-nav-item
+          <b-nav-item class="nav_item" :to="{ name: 'Hotplace' }">
+            핫플레이스</b-nav-item
           >
-          <b-nav-item>
-            <router-link class="nav_item" :to="{ name: 'communities' }"
-              >커뮤니티</router-link
-            ></b-nav-item
+          <b-nav-item class="nav_item" :to="{ name: 'communities' }">
+            커뮤니티</b-nav-item
           >
         </b-navbar-nav>
 

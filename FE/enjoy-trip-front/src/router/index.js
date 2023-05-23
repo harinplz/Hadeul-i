@@ -128,13 +128,27 @@ const routes = [
     path: "/travelroute",
     name: "TravelRoute",
     component: () => import("@/views/AppTravelRoute.vue"),
-    // children: [
-    //   {
-    //     path: "create",
-    //     name: "TravelRouteCreate",
-
-    //   }
-    // ]
+    redirect: "/travelroute/list",
+    children: [
+      {
+        path: "list",
+        name: "TravelRouteList",
+        component: () =>
+          import("@/components/travelroutes/TravelRouteList.vue"),
+      },
+      {
+        path: "create",
+        name: "TravelRouteCreate",
+        component: () =>
+          import("@/components/travelroutes/TravelRouteCreate.vue"),
+      },
+      {
+        path: "detail",
+        name: "TravelRouteDetail",
+        component: () =>
+          import("@/components/travelroutes/TravelRouteDetail.vue"),
+      },
+    ],
   },
 ];
 
