@@ -21,12 +21,13 @@
         #{pw}, #{name}, #{email})
     </insert>
 
-    <!-- 회원 로그인 -->
-    <select id="select" resultMap="user">
-        SELECT id, password, name, user_no
-        FROM user
-        WHERE id = #{id} AND password = #{pw}
-    </select>
+	<!-- 회원 로그인 -->
+	<select id="select" resultMap="user">
+		SELECT id, password, name, user_no
+		FROM user
+		WHERE id = #{id} AND password = #{pw}
+	</select>
+
 
     <!-- 관리자 회원 정보 모두 조회 -->
     <select id="searchAll" resultMap="user">
@@ -35,19 +36,20 @@
         user
     </select>
 
-    <!-- 관리자 & 마이페이지 정보 조회 -->
-    <select id="selectId" resultMap="user">
-        SELECT user_no, id, password, name, email
-        FROM
-        user
-        WHERE id = #{id}
-    </select>
-    
-    <select id="selectOne" resultMap="user">
-        SELECT *
-        FROM user
-        WHERE user_no = #{userNo}
-    </select>
+	<!-- 관리자 & 마이페이지 정보 조회 -->
+	<select id="selectId" resultMap="user">
+		SELECT user_no, id, password, name, email
+		FROM
+		user
+		WHERE id = #{id}
+	</select>
+	
+	<select id="selectOne" resultMap="user">
+		SELECT *
+		FROM user
+		WHERE user_no = #{userNo}
+	</select>
+
 
     <!-- 관리자 & 마이페이지 정보 수정 -->
 <!-- 관리자 & 마이페이지 정보 수정 -->
