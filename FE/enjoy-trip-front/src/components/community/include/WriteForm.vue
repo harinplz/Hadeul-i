@@ -13,56 +13,60 @@
             id="title-group"
             label="제목:"
             label-for="title"
-            description="제목을 입력하세요.">
+            description="제목을 입력하세요."
+          >
             <b-form-input
               id="title"
               ref="title"
               v-model="title"
               type="text"
               required
-              placeholder="제목 입력..." />
-          </b-form-group>
-          <b-form-group
-            label-cols="12"
-            id="userId-group"
-            label="작성자:"
-            label-for="userId"
-            description="작성자를 입력하세요.">
-            <b-form-input
-              id="userId"
-              ref="userId"
-              v-model="userId"
-              type="text"
-              required
-              placeholder="작성자 입력..." />
+              placeholder="제목 입력..."
+            />
           </b-form-group>
           <b-form-group
             label-cols="12"
             id="content-group"
             label="내용:"
             label-for="content"
-            ref="content">
+            ref="content"
+          >
             <b-form-textarea
               id="content"
               v-model="content"
               placeholder="내용 입력..."
               rows="10"
-              max-rows="15"></b-form-textarea>
+              max-rows="15"
+            ></b-form-textarea>
           </b-form-group>
-
-          <b-button
-            v-if="type == 'create'"
-            variant="primary"
-            class="m-1"
-            @click="validate"
-            >등록</b-button
-          >
-          <b-button v-else variant="success" class="m-1" @click="validate"
-            >수정</b-button
-          >
-          <b-button variant="primary" class="m-1" @click="moveList"
-            >목록</b-button
-          >
+          <div style="text-align: center; margin-bottom: 20px">
+            <button
+              type="button"
+              v-if="type == 'create'"
+              class="m-1 btn"
+              style="background-color: #ffd5e3; padding: 10px 30px"
+              @click="validate"
+            >
+              등록
+            </button>
+            <button
+              type="button"
+              v-else
+              class="m-1 btn"
+              style="background-color: #ffd5e3; padding: 10px 30px"
+              @click="validate"
+            >
+              수정
+            </button>
+            <button
+              type="button"
+              class="m-1 btn"
+              style="background-color: #c3e5ee; padding: 10px 30px"
+              @click="moveList"
+            >
+              목록
+            </button>
+          </div>
         </b-form>
       </b-col>
     </b-row>
@@ -91,17 +95,9 @@ export default {
       let errMsg = "";
 
       !this.title
-        ? ((isValid = false),
-          (errMsg = "제목을 입력해주세요."),
-          this.$refs.title.focus())
-        : !this.userId
-        ? ((isValid = false),
-          (errMsg = "작성자를 입력해주세요."),
-          this.$refs.userId.focus())
+        ? ((isValid = false), (errMsg = "제목을 입력해주세요."), this.$refs.title.focus())
         : !this.content
-        ? ((isValid = false),
-          (errMsg = "내용을 입력해주세요."),
-          this.$refs.content.focus())
+        ? ((isValid = false), (errMsg = "내용을 입력해주세요."), this.$refs.content.focus())
         : (isValid = true);
 
       if (!isValid) {
@@ -111,7 +107,7 @@ export default {
           community: {
             boardNo: this.boardNo,
             title: this.title,
-            userId: this.userId,
+            userNo: this.userInfo.no,
             content: this.content,
           },
           callback: (status) => {
@@ -150,12 +146,13 @@ export default {
     if (this.type == "modify") {
       this.boardNo = this.community.boardNo;
       this.title = this.community.title;
-      this.userId = this.community.userId;
       this.content = this.community.content;
     }
+
+    console.log(this.userInfo);
   },
   computed: {
-    ...mapGetters(["community"]),
+    ...mapGetters(["community", "userInfo"]),
     writeFormTitle: function () {
       return this.type == "create" ? "글 등록" : "글 수정";
     },

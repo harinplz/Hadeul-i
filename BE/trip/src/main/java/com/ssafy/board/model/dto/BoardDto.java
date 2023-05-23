@@ -2,7 +2,7 @@ package com.ssafy.board.model.dto;
 
 public class BoardDto {
 	private int boardNo;
-	private String userId;
+	private int userNo;
 	private String title;
 	private String content;
 	private String regtime;
@@ -13,11 +13,12 @@ public class BoardDto {
 	public void setBoardNo(int boardNo) {
 		this.boardNo = boardNo;
 	}
-	public String getUserId() {
-		return userId;
+	
+	public int getUserNo() {
+		return userNo;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setUserNo(int userNo) {
+		this.userNo = userNo;
 	}
 	public String getTitle() {
 		return title;
@@ -37,10 +38,11 @@ public class BoardDto {
 	public void setRegtime(String regtime) {
 		this.regtime = regtime;
 	}
-	public BoardDto(int boardNo, String userId, String title, String content, String regtime) {
+
+	public BoardDto(int boardNo, int userNo, String title, String content, String regtime) {
 		super();
 		this.boardNo = boardNo;
-		this.userId = userId;
+		this.userNo = userNo;
 		this.title = title;
 		this.content = content;
 		this.regtime = regtime;
@@ -48,12 +50,12 @@ public class BoardDto {
 	public BoardDto() {
 		super();
 	}
-	
 	@Override
 	public String toString() {
-		return "BoardDto [board_no=" + boardNo + ", userId=" + userId + ", title=" + title + ", content=" + content
+		return "BoardDto [boardNo=" + boardNo + ", userNo=" + userNo + ", title=" + title + ", content=" + content
 				+ ", regtime=" + regtime + "]";
 	}
 	
+
 	
 }

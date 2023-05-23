@@ -5,10 +5,10 @@
 	
 	<resultMap type="boardDto" id="board">
 		<result column="board_no" property="boardNo"/>
-		<result column="user_id" property="userId"/>
+		<result column="user_no" property="userNo"/>
 		<result column="title" property="title"/>
 		<result column="content" property="content"/>
-		<result column="regtime" property="regtime"/>
+		<result column="reg_time" property="regtime"/>
 	</resultMap>
 	
 	<select id="getBoards" resultMap="board">
@@ -16,7 +16,7 @@
 	</select>
 	
 	<select id="getOne" resultMap="board" parameterType="int">
-		SELECT board_no,user_id,title,content,regtime
+		SELECT board_no,user_no,title,content,reg_time
 		FROM community
 		WHERE board_no = #{boardNo}
 	</select>
@@ -34,7 +34,7 @@
 	
 	<insert id="insertOne" parameterType="boardDto">
 		INSERT INTO community 
-			(user_id, title, content)
-		VALUES(#{userId},#{title},#{content})
+			(user_no, title, content)
+		VALUES(#{userNo},#{title},#{content})
 	</insert>
 </mapper>
