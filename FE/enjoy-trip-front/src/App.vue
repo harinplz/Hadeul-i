@@ -2,7 +2,10 @@
   <div id="app">
     <header-nav-bar></header-nav-bar>
     <router-view></router-view>
-    <footer-nav-bar v-if="$route.name != 'HotplaceCreate'"></footer-nav-bar>
+    <footer-nav-bar
+      v-if="
+        $route.name != 'HotplaceCreate' && $route.name != 'TravelRouteCreate'
+      "></footer-nav-bar>
   </div>
 </template>
 

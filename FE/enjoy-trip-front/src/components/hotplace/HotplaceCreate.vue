@@ -1,9 +1,12 @@
 <template>
   <div id="bg">
     <div class="hotpl_create_title wow fadeInUp" data-wow-delay="0.05s">
-      <div class="hotpl_create_title_text">당신의 <b>핫플레이스</b>를 자랑해주세요!</div>
+      <div class="hotpl_create_title_text">
+        당신의 <b>핫플레이스</b>를 자랑해주세요!
+      </div>
     </div>
-    <div class="map-and-create row g-0 align-items-center flex-column-reverse flex-md-row">
+    <div
+      class="map-and-create row g-0 align-items-center flex-column-reverse flex-md-row">
       <div class="wow fadeInUp col-md-6" data-wow-delay="0.1s">
         <div id="map"></div>
       </div>
@@ -31,8 +34,7 @@
             class="hotplace-name"
             type="text"
             placeholder="핫플레이스 이름"
-            v-model="hotplace.hotplaceName"
-          />
+            v-model="hotplace.hotplaceName" />
         </div>
         <div class="input-box">
           <label for="hotpl-addr-label">핫플레이스 추가 주소</label> <br />
@@ -40,14 +42,18 @@
             class="hotplace-addr"
             type="text"
             placeholder="핫플레이스 추가 주소"
-            v-model="hotplace.hotplaceAddr"
-          />
+            v-model="hotplace.hotplaceAddr" />
         </div>
         <div class="hotpl-img">
           <label for="hotpl-img-label">핫플레이스 사진</label> <br />
           <!-- <input type="file"> -->
           <form enctype="multipart/form-data">
-            <input type="file" id="upfile" name="upfile" @change="fileSelect()" ref="upfile" />
+            <input
+              type="file"
+              id="upfile"
+              name="upfile"
+              @change="fileSelect()"
+              ref="upfile" />
           </form>
           <!-- <b-form-file multiple v-model="upfile">
             <template slot="file-name" slot-scope="{ names }">
@@ -63,15 +69,17 @@
           <textarea
             class="hotpl-desc-text"
             placeholder="나만의 핫플레이스를 자랑해주세요!"
-            v-model="hotplace.hotplaceContent"
-          />
+            v-model="hotplace.hotplaceContent" />
         </div>
       </div>
       <!-- </transition> -->
     </div>
     <div class="create-list-btns wow fadeInUp">
       <router-link :to="{ name: 'HotplaceList' }">
-        <button type="button" class="btn hotplBtn" style="background-color: #c3e5e5">
+        <button
+          type="button"
+          class="btn hotplBtn"
+          style="background-color: #c3e5e5">
           <b>목록</b>
         </button>
       </router-link>
@@ -79,8 +87,7 @@
         type="button"
         class="btn hotplBtn"
         style="background-color: #ffd5e3"
-        @click="testUser"
-      >
+        @click="testUser">
         <b>등록</b>
       </button>
     </div>
@@ -110,8 +117,10 @@ export default {
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
+      console.log("2번쨰");
       this.initMap();
     } else {
+      console.log("첫번쨰");
       const script = document.createElement("script");
       /* global kakao */
       script.onload = () => kakao.maps.load(this.initMap);
@@ -206,35 +215,42 @@ export default {
       const thiz = this;
       // 지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
       kakao.maps.event.addListener(map, "click", function (mouseEvent) {
-        searchDetailAddrFromCoords(mouseEvent.latLng, function (result, status) {
-          if (status === kakao.maps.services.Status.OK) {
-            thiz.hotplace.jibun = result[0].address.address_name;
-            console.log("jibun:", result[0].address.address_name);
+        searchDetailAddrFromCoords(
+          mouseEvent.latLng,
+          function (result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+              thiz.hotplace.jibun = result[0].address.address_name;
+              console.log("jibun:", result[0].address.address_name);
 
-            thiz.hotplace.latitude = mouseEvent.latLng.getLat();
-            thiz.hotplace.longitude = mouseEvent.latLng.getLng();
+              thiz.hotplace.latitude = mouseEvent.latLng.getLat();
+              thiz.hotplace.longitude = mouseEvent.latLng.getLng();
 
-            var detailAddr = "";
-            if (result[0].road_address) {
-              detailAddr = "<div>도로명주소 : " + result[0].road_address.address_name + "</div>";
+              var detailAddr = "";
+              if (result[0].road_address) {
+                detailAddr =
+                  "<div>도로명주소 : " +
+                  result[0].road_address.address_name +
+                  "</div>";
+              }
+              detailAddr +=
+                "<div>지번 주소 : " + result[0].address.address_name + "</div>";
+
+              var content =
+                '<div class="bAddr">' +
+                '<span class="title"><b>법정동 주소정보</b></span>' +
+                detailAddr +
+                "</div>";
+
+              // 마커를 클릭한 위치에 표시합니다
+              marker.setPosition(mouseEvent.latLng);
+              marker.setMap(map);
+
+              // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
+              infowindow.setContent(content);
+              infowindow.open(map, marker);
             }
-            detailAddr += "<div>지번 주소 : " + result[0].address.address_name + "</div>";
-
-            var content =
-              '<div class="bAddr">' +
-              '<span class="title"><b>법정동 주소정보</b></span>' +
-              detailAddr +
-              "</div>";
-
-            // 마커를 클릭한 위치에 표시합니다
-            marker.setPosition(mouseEvent.latLng);
-            marker.setMap(map);
-
-            // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
-            infowindow.setContent(content);
-            infowindow.open(map, marker);
           }
-        });
+        );
       });
 
       // 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
