@@ -21,6 +21,12 @@
 		WHERE board_no = #{boardNo}
 	</select>
 	
+	<!-- deleteComments 게시글 삭제 시댓글들 모두 삭제되도록 SQL문 추가 -->
+	<delete id="deleteComments">
+		DELETE FROM community_comment
+		WHERE board_no = #{boardNo}
+	</delete>
+	
 	<delete id="deleteOne" parameterType="int">
 		DELETE FROM community
 		WHERE board_no = #{boardNo}

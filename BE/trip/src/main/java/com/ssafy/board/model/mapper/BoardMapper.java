@@ -20,4 +20,6 @@ public interface BoardMapper {
 
 	public int insertOne(BoardDto boardDto) throws SQLException;
 
+	public void deleteComments(int boardNo)  throws SQLException;
+
 }
