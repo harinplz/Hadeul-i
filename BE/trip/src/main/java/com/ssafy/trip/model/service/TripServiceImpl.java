@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.ssafy.trip.model.dto.AttractionLikeDto;
 import com.ssafy.trip.model.dto.TripDto;
 import com.ssafy.trip.model.dto.TripSearchCondition;
 import com.ssafy.trip.model.mapper.TripMapper;
@@ -52,10 +53,65 @@ public class TripServiceImpl implements TripService {
 		
 	}
 
-
 	@Override
 	public List<TripDto> getSearchResult(String title) throws SQLException {
-
 		return tripMapper.getTripSearchResult(title);
+	}
+
+	/*
+	 * 좋아요 관련 메서드들 시작
+	 * */
+	@Override
+	public int checkLike(AttractionLikeDto attractionLike) throws SQLException {
+
+		if(attractionLike.getAttractionType().equals("1")) {
+			return tripMapper.checkLike1(attractionLike);
+		}else {
+			return tripMapper.checkLike2(attractionLike);
+		}
+		
+	}
+
+
+	@Override
+	public int attractionGood(AttractionLikeDto attractionLike) throws SQLException {
+		
+		if(attractionLike.getAttractionType().equals("1")) {
+			return tripMapper.attractionGood1(attractionLike);
+		}else {
+			return tripMapper.attractionGood2(attractionLike);
+		}
+	}
+
+
+	@Override
+	public int attractionGoodCancel(AttractionLikeDto dto) throws SQLException {
+
+		if(dto.getAttractionType().equals("1")) {
+			return tripMapper.attractionGoodCancel1(dto);
+		}else {
+			return tripMapper.attractionGoodCancel2(dto);
+		}
+	}
+
+
+	@Override
+	public int countLike(AttractionLikeDto dto) throws SQLException {
+		if(dto.getAttractionType().equals("1")) {
+			return tripMapper.countLike1(dto);
+		}else {
+			return tripMapper.countLike2(dto);
+		}
+	}
+
+
+	@Override
+	public String getDescription(AttractionLikeDto dto) throws SQLException {
+		
+		if(dto.getAttractionType().equals("1")) {
+			return tripMapper.getDescription1(dto);
+		}else {
+			return tripMapper.getDescription2(dto);
+		}
 	}
 }
