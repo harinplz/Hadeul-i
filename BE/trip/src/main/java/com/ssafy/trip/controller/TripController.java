@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.trip.model.dto.AttractionLike;
+import com.ssafy.trip.model.dto.AttractionLikeDto;
 import com.ssafy.trip.model.dto.TripDto;
 import com.ssafy.trip.model.dto.TripSearchCondition;
 import com.ssafy.trip.model.service.TripService;
@@ -99,7 +99,7 @@ public class TripController {
 	}
 
 	@PostMapping("/trips/description")
-	public ResponseEntity<?> getDescription(@RequestBody AttractionLike dto) throws Exception {
+	public ResponseEntity<?> getDescription(@RequestBody AttractionLikeDto dto) throws Exception {
 		System.out.println(dto);
 		
 		String res = null;
@@ -123,7 +123,7 @@ public class TripController {
 
 	// 좋아요 했는지 체크
 	@PostMapping("/trips/like/check")
-	public ResponseEntity<?> checkLike(@RequestBody AttractionLike attractionLike) throws Exception {
+	public ResponseEntity<?> checkLike(@RequestBody AttractionLikeDto attractionLike) throws Exception {
 		System.out.println(attractionLike);
 		int result = tripService.checkLike(attractionLike);
 		if (result > 0) {
@@ -135,7 +135,7 @@ public class TripController {
 
 	// 사용자가 핫플레이스를 좋아요 할 때
 	@PostMapping("/trips/like")
-	public ResponseEntity<?> attractionGood(@RequestBody AttractionLike attractionLike) throws Exception {
+	public ResponseEntity<?> attractionGood(@RequestBody AttractionLikeDto attractionLike) throws Exception {
 		int result = tripService.attractionGood(attractionLike);
 		
 		if (result > 0) {
@@ -149,7 +149,7 @@ public class TripController {
 	@DeleteMapping("trips/like/{attractionType}/{attractionNo}/{userNo}")
 	public ResponseEntity<?> attractionGoodCancel(@PathVariable Map<String, String> pathMap) throws Exception {
 		
-		AttractionLike dto = new AttractionLike();
+		AttractionLikeDto dto = new AttractionLikeDto();
 		dto.setAttractionNo(pathMap.get("attractionNo"));
 		dto.setAttractionType(pathMap.get("attractionType"));
 		dto.setUserNo(Integer.parseInt(pathMap.get("userNo")));
@@ -169,7 +169,7 @@ public class TripController {
 	public ResponseEntity<?> countLike(@PathVariable("attractionNo") String attractionNo, 
 										@PathVariable("attractionType") String attractionType) throws Exception {
 		
-		AttractionLike dto = new AttractionLike();
+		AttractionLikeDto dto = new AttractionLikeDto();
 		dto.setAttractionNo(attractionNo);
 		dto.setAttractionType(attractionType);
 		
