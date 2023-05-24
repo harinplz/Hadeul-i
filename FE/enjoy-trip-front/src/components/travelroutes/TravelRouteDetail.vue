@@ -7,14 +7,23 @@
         <div id="map"></div>
       </div>
       <div class="desc_div col-md-5">
-        <div class="desc_title">제목</div>
-        <div class="desc_time">시작일: 2023.05.21 ~ 종료일: 2023.05.23</div>
-        <div class="desc_content">정말 강력 추천하는 여행 계획입니다!!</div>
+        <div class="desc_title">{{ travelRoute.title }}</div>
+        <div class="desc_time">
+          시작일: {{ travelRoute.departDate }} <br />
+          종료일: {{ travelRoute.arriveDate }}
+        </div>
+        <div class="desc_content">{{ travelRoute.description }}</div>
       </div>
     </div>
     <div class="goodBtn-div">
-      <button type="button" class="btn goodBtn" style="background-color: #ffd5e3">
-        <b>좋아요 <span>1</span></b>
+      <button
+        type="button"
+        class="btn goodBtn"
+        style="background-color: #ffd5e3"
+        @click="goCreateGoodBtn">
+        <b
+          >좋아요 <span>{{ travelRouteLike }}</span></b
+        >
       </button>
     </div>
 
@@ -27,11 +36,13 @@
         <div class="col-md-10">
           <textarea
             class="travelrt_comment_create_input"
-            placeholder="댓글을 입력해주세요 ... "
-          ></textarea>
+            placeholder="댓글을 입력해주세요 ... "></textarea>
         </div>
         <div class="col-md-2">
-          <button type="button" class="btn commentBtn" style="background-color: #c3e5ee">
+          <button
+            type="button"
+            class="btn commentBtn"
+            style="background-color: #c3e5ee">
             입력
           </button>
         </div>
@@ -42,11 +53,21 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   data() {
     return {
       map: null,
+      travelRouteNo: "",
+      travelRouteAttractions: [],
     };
+  },
+  components: {
+    "travel-route-header": () =>
+      import("@/components/travelroutes/include/TravelRouteHeader"),
+    "travel-route-comment": () =>
+      import("@/components/travelroutes/include/TravelRouteComment.vue"),
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
@@ -61,6 +82,13 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      "getTravelRoute",
+      "getTravelRouteLike",
+      "getTravelRouteLikeCheck",
+      "createTravelRouteLike",
+      "deleteTravelRouteLike",
+    ]),
     initMap() {
       var mapContainer = document.getElementById("map"),
         mapOption = {
@@ -68,12 +96,151 @@ export default {
           level: 5,
         };
       this.map = new window.kakao.maps.Map(mapContainer, mapOption);
+      // 경로 가져오는 함수 실행
+      setTimeout(() => {
+        this.showTravelRoutes();
+      }, 300);
+    },
+    showTravelRoutes() {
+      var markers = [];
+      for (var i = 0; i < this.travelRouteAttractions.length; i++) {
+        if (i == 0) {
+          this.map.setCenter(
+            new kakao.maps.LatLng(
+              this.travelRouteAttractions[i].latitude,
+              this.travelRouteAttractions[i].longitude
+            )
+          );
+        }
+        console.log(i);
+        var marker = new kakao.maps.Marker({
+          position: new kakao.maps.LatLng(
+            this.travelRouteAttractions[i].latitude,
+            this.travelRouteAttractions[i].longitude
+          ),
+        });
+        markers.push(marker);
+        marker.setMap(this.map);
+      }
+
+      var linePath = [];
+      for (var j = 0; j < markers.length; j++) {
+        linePath.push(markers[j].getPosition());
+      }
+      var polyLine = new kakao.maps.Polyline({
+        path: linePath,
+        strokeWeight: 4,
+        strokeColor: "red",
+        strokeOpacity: 0.7,
+        strokeStyle: "solid",
+      });
+
+      polyLine.setMap(this.map);
+
+      console.log(markers);
+    },
+    goCreateGoodBtn() {
+      console.log("좋아요 눌렀나요: " + this.travelRouteLikeCheck);
+      if (this.travelRouteLikeCheck == 0) {
+        this.createGoodBtn();
+      } else {
+        console.log("좋아요 누른 상태에요");
+        this.deleteGoodBtn();
+      }
+    },
+    createGoodBtn() {
+      const payload = {
+        travelRouteLike: {
+          travelRouteNo: this.travelRouteNo,
+          userNo: this.userInfo.no,
+        },
+        callback: (status) => {
+          if (status == 201) {
+            this.getTravelRouteLike({
+              travelRouteNo: this.travelRouteNo,
+            });
+
+            this.getTravelRouteLikeCheck({
+              travelRouteLike: {
+                travelRouteNo: this.travelRouteNo,
+                userNo: this.userInfo.no,
+              },
+            });
+          } else if (status == 500) {
+            this.$bvToast.toast("서버 오류 발생!", {
+              title: "여행 계획 서버 오류 발생",
+              variant: "danger",
+              toaster: "b-toaster-bottom-center",
+              autoHideDelay: 3000,
+              solid: true,
+            });
+          }
+        },
+      };
+      this.createTravelRouteLike(payload);
+    },
+    deleteGoodBtn() {
+      const payload = {
+        travelRouteLike: {
+          travelRouteNo: this.travelRouteNo,
+          userNo: this.userInfo.no,
+        },
+        callback: (status) => {
+          if (status == 200) {
+            this.getTravelRouteLike({
+              travelRouteNo: this.travelRouteNo,
+            });
+
+            this.getTravelRouteLikeCheck({
+              travelRouteLike: {
+                travelRouteNo: this.travelRouteNo,
+                userNo: this.userInfo.no,
+              },
+            });
+          } else if (status == 500) {
+            this.$bvToast.toast("서버 오류 발생!", {
+              title: "여행 계획 서버 오류 발생",
+              variant: "danger",
+              toaster: "b-toaster-bottom-center",
+              autoHideDelay: 3000,
+              solid: true,
+            });
+          }
+        },
+      };
+      this.deleteTravelRouteLike(payload);
     },
   },
-  components: {
-    "travel-route-header": () => import("@/components/travelroutes/include/TravelRouteHeader"),
-    "travel-route-comment": () =>
-      import("@/components/travelroutes/include/TravelRouteComment.vue"),
+  created() {
+    const travelRouteNo = this.$route.params.travelRouteNo;
+    this.travelRouteNo = travelRouteNo;
+
+    this.getTravelRoute({
+      travelRouteNo,
+    });
+
+    this.getTravelRouteLike({
+      travelRouteNo,
+    });
+
+    this.getTravelRouteLikeCheck({
+      travelRouteLike: {
+        travelRouteNo,
+        userNo: this.userInfo.no,
+      },
+    });
+
+    setTimeout(() => {
+      this.travelRouteAttractions = this.travelRoute.attractionList;
+    }, 300);
+  },
+  computed: {
+    ...mapGetters([
+      "travelRoute",
+      "userInfo",
+      "travelRouteLike",
+      "travelRouteLikeCheck",
+    ]),
   },
 };
 </script>

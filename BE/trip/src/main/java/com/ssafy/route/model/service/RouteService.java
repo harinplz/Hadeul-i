@@ -22,6 +22,6 @@ public interface RouteService {
 
 	int routeGood(RouteLike routeLike) throws SQLException;
 
-	int routeGoodCancel(RouteLike routeLike) throws SQLException;
+	int routeGoodCancel(Map<String, Integer> map) throws SQLException;
 
 }
