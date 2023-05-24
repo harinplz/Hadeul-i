@@ -11,7 +11,7 @@
         <result column="password" property="pw" />
         <result column="email" property="email"/>
         <result column="name" property="name" />
-    </resultMap>
+     </resultMap>
 
     <!-- 관리자 회원 등록 & 회원가입 -->
     <insert id="insert">
@@ -84,6 +84,57 @@
         WHERE token = #{refreshToken}
     </select>
     
-
-
+	<!-- 
+		마이페이지 관련 기능 시작
+	 -->
+	 <resultMap type="mypageDto" id="mypageContent">
+    	<result column="user_no" property="no" />
+        <result column="id" property="id" />
+        <result column="password" property="pw" />
+        <result column="email" property="email"/>
+        <result column="name" property="name" />
+        
+        <result column="com_title" property="communityTitle"/>
+        <result column="com_no" property="communityNo"/>
+        <result column="trav_title" property="travelRouteTitle"/>
+        <result column="trav_no" property="travelRouteNo"/>
+        <result column="hot_name" property="hotplaceTitle"/> 
+        <result column="hot_no" property="hotplaceNo"/>
+    </resultMap>
+	 <!--마이페이지 로딩 시 community travel_route hotplace-->
+	<select id="getMypageContent" resultMap="mypageContent">
+		SELECT u.user_no user_no, u.id id, u.password password, u.email email, u.name name,
+			c.title com_title, c.board_no com_no,
+			t.title trav_title, t.travel_route_no trav_no,
+			h.hotplace_name hot_name, h.hotplace_no hot_no
+		FROM user u
+		LEFT JOIN
+			(
+				SELECT user_no, title, board_no
+				FROM community
+				WHERE user_no = #{userNo}
+				ORDER BY board_no DESC
+				LIMIT 1
+			) c
+		ON u.user_no = c.user_no
+		LEFT JOIN
+			(
+				SELECT user_no, title, travel_route_no
+				FROM travel_route
+				WHERE user_no = #{userNo}
+				ORDER BY travel_route_no DESC
+				LIMIT 1
+			) t
+		ON u.user_no = t.user_no
+		LEFT JOIN
+			(
+				SELECT user_no, hotplace_name, hotplace_no
+				FROM hotplace
+				WHERE user_no = #{userNo}
+				ORDER BY hotplace_no DESC
+				LIMIT 1
+			) h
+		ON u.user_no = h.user_no
+		WHERE u.user_no = #{userNo};
+	</select>
 </mapper>
