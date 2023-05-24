@@ -130,7 +130,8 @@ public class RouteDto {
 		
 		private String listNo;
 		private String travelRouteNo;
-		private String title;
+		private String attractionName;
+		private String address;
 		private String latitude;
 		private String longitude;
 		private String order;
@@ -147,11 +148,18 @@ public class RouteDto {
 		public void setTravelRouteNo(String travelRouteNo) {
 			this.travelRouteNo = travelRouteNo;
 		}
-		public String getTitle() {
-			return title;
+
+		public String getAttractionName() {
+			return attractionName;
 		}
-		public void setTitle(String title) {
-			this.title = title;
+		public void setAttractionName(String attractionName) {
+			this.attractionName = attractionName;
+		}
+		public String getAddress() {
+			return address;
+		}
+		public void setAddress(String address) {
+			this.address = address;
 		}
 		public String getLatitude() {
 			return latitude;
@@ -172,25 +180,21 @@ public class RouteDto {
 			this.order = order;
 		}
 		
-		public RouteListDto(String listNo, String travelRouteNo, String title, String latitude, String longitude,
-				String order) {
+		
+		public RouteListDto(String listNo, String travelRouteNo, String attractionName, String address, String latitude,
+				String longitude, String order) {
 			super();
 			this.listNo = listNo;
 			this.travelRouteNo = travelRouteNo;
-			this.title = title;
+			this.attractionName = attractionName;
+			this.address = address;
 			this.latitude = latitude;
 			this.longitude = longitude;
 			this.order = order;
 		}
-		
 		public RouteListDto() {
 			super();
 		}
 		
-		@Override
-		public String toString() {
-			return "RouteListDto [listNo=" + listNo + ", travelRouteNo=" + travelRouteNo + ", title=" + title
-					+ ", latitude=" + latitude + ", longitude=" + longitude + ", order=" + order + "]";
-		}
 	}
 }

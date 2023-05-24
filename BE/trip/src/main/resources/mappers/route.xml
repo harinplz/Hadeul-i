@@ -23,7 +23,8 @@
     	<result property="description" column="description" />
     
     	<collection property="attractionList" ofType="com.ssafy.route.model.dto.RouteDto$RouteListDto">
-        	<result property="title" column="attraction_title" />
+        	<result property="attractionName" column="title" />
+        	<result property="address" column="jibun" />
         	<result property="latitude" column="latitude" />
         	<result property="longitude" column="longitude" />
         	<result property="order" column="order" />
@@ -50,8 +51,8 @@
 	<!-- travel_route에 데이터추가할 때 관광지 ㅣist들 추가할 수 있는 코드 -->
 	<insert id="insertRouteList" parameterType="routeDto">
   		<foreach collection="attractionList" item="item" separator=";" index="index">
-    		INSERT INTO route_list (travel_route_no, title, latitude, longitude, `order`)
-    		VALUES (#{travelRouteNo}, #{item.title}, #{item.latitude}, #{item.longitude}, ${index} + 1)
+    		INSERT INTO route_list (travel_route_no, jibun, title, latitude, longitude, `order`)
+    		VALUES (#{travelRouteNo}, #{item.address}, #{item.attractionName}, #{item.latitude}, #{item.longitude}, ${index} + 1)
   		</foreach>
 	</insert>
 	

@@ -9,7 +9,11 @@
           <span class="highlight">여행 경로 등록하기</span>
         </div>
         <span class="travelroute_create_title">제목</span>
-        <input class="create_title_input" type="text" placeholder="제목 입력" />
+        <input
+          class="create_title_input"
+          type="text"
+          placeholder="제목 입력"
+          v-model="routeTitle" />
         <div class="row create_calender">
           <div class="col-md-6 start_date_div">
             <div class="start_date_text">시작일</div>
@@ -17,7 +21,8 @@
               type="date"
               data-placeholder="날짜 선택"
               required
-              aria-required="true" />
+              aria-required="true"
+              v-model="routeStartDate" />
           </div>
           <div class="col-md-6 end_date_div">
             <div class="end_date_text">종료일</div>
@@ -25,18 +30,21 @@
               type="date"
               data-placeholder="날짜 선택"
               required
-              aria-required="true" />
+              aria-required="true"
+              v-model="routeEndDate" />
           </div>
         </div>
         <div class="travelroute_create_content_text">내용</div>
         <textarea
           class="travelroute_create_content"
-          placeholder="여행 계획을 설명해주세요!" />
+          placeholder="여행 계획을 설명해주세요!"
+          v-model="routeContent" />
         <div class="travelroute_create_btn">
           <button
             class="btn searchBtn"
             type="button"
-            style="background-color: #ffd5e3">
+            style="background-color: #ffd5e3"
+            @click="createFinalTravelRoute">
             등록
           </button>
         </div>
@@ -157,6 +165,10 @@ export default {
       travelRoutes: [],
       markers: [],
       lines: [],
+      routeTitle: null,
+      routeStartDate: null,
+      routeEndDate: null,
+      routeContent: null,
     };
   },
   mounted() {
@@ -172,7 +184,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["getRouteAttractions"]),
+    ...mapActions(["getRouteAttractions", "createTravelRoute"]),
     initMap() {
       var mapContainer = document.getElementById("map"),
         mapOption = {
@@ -180,6 +192,50 @@ export default {
           level: 5,
         };
       this.map = new window.kakao.maps.Map(mapContainer, mapOption);
+    },
+    createFinalTravelRoute() {
+      // console.log(this.travelRoutes);
+      const payload = {
+        travelRoutes: {
+          userNo: this.userInfo.no,
+          title: this.routeTitle,
+          arriveDate: this.routeStartDate,
+          departDate: this.routeEndDate,
+          description: this.routeContent,
+          attractionList: this.travelRoutes,
+        },
+        callback: (status) => {
+          if (status == 200) {
+            this.$bvToast.toast("여행 계획 등록 완료!", {
+              title: "여행 계획",
+              variant: "primary",
+              toaster: "b-toaster-bottom-center",
+              autoHideDelay: 2000,
+              solid: true,
+            });
+
+            this.$router.push({ name: "TravelRouteList" });
+          } else if (status == 500) {
+            // 서버 오류 Toast 출력
+            this.$bvToast.toast("서버 오류 발생!", {
+              title: "여행 계획 알림",
+              variant: "danger",
+              toaster: "b-toaster-bottom-center",
+              autoHideDelay: 3000,
+              solid: true,
+            });
+          }
+        },
+      };
+      this.createTravelRoute(payload);
+      console.log("등록시: ", this.userInfo.no);
+      console.log(
+        this.routeTitle,
+        this.routeStartDate,
+        this.routeEndDate,
+        this.routeContent
+      );
+      console.log(this.travelRoutes);
     },
     showLocation(routeAttraction) {
       this.map.setCenter(
@@ -337,7 +393,7 @@ export default {
   },
   created() {},
   computed: {
-    ...mapGetters(["routeAttractions"]),
+    ...mapGetters(["routeAttractions", "userInfo"]),
   },
 };
 </script>
@@ -346,7 +402,6 @@ export default {
 .black-bg {
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4);
   position: fixed;
   z-index: 1;
 }
@@ -354,11 +409,12 @@ export default {
 .white-bg {
   font-family: "SUITE-Regular";
   width: 40%;
-  height: 520px;
+  height: 540px;
   margin: 80px auto;
   background: white;
   border-radius: 20px;
   padding: 30px 40px 20px 40px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
 .travelroute_create_title {
