@@ -20,35 +20,13 @@
         type="button"
         class="btn goodBtn"
         style="background-color: #ffd5e3"
-        @click="goCreateGoodBtn">
+        @click="goCreateGoodBtn"
+      >
         <b
           >좋아요 <span>{{ travelRouteLike }}</span></b
         >
       </button>
     </div>
-
-    <!-- 댓글 구현 부분 -->
-    <div class="travelrt_comment">
-      <!-- 댓글 갯수 -->
-      <div class="travelrt_comment_title">댓글 1</div>
-      <!-- 댓글 등록 -->
-      <div class="travelrt_comment_create row">
-        <div class="col-md-10">
-          <textarea
-            class="travelrt_comment_create_input"
-            placeholder="댓글을 입력해주세요 ... "></textarea>
-        </div>
-        <div class="col-md-2">
-          <button
-            type="button"
-            class="btn commentBtn"
-            style="background-color: #c3e5ee">
-            입력
-          </button>
-        </div>
-      </div>
-    </div>
-    <travel-route-comment></travel-route-comment>
   </div>
 </template>
 
@@ -64,10 +42,7 @@ export default {
     };
   },
   components: {
-    "travel-route-header": () =>
-      import("@/components/travelroutes/include/TravelRouteHeader"),
-    "travel-route-comment": () =>
-      import("@/components/travelroutes/include/TravelRouteComment.vue"),
+    "travel-route-header": () => import("@/components/travelroutes/include/TravelRouteHeader"),
   },
   mounted() {
     if (window.kakao && window.kakao.maps) {
@@ -235,12 +210,7 @@ export default {
     }, 300);
   },
   computed: {
-    ...mapGetters([
-      "travelRoute",
-      "userInfo",
-      "travelRouteLike",
-      "travelRouteLikeCheck",
-    ]),
+    ...mapGetters(["travelRoute", "userInfo", "travelRouteLike", "travelRouteLikeCheck"]),
   },
 };
 </script>
@@ -271,27 +241,6 @@ export default {
 
 .goodBtn {
   padding: 10px 30px;
-}
-
-.travelrt_comment {
-  width: 80%;
-  margin: 100px auto 30px auto;
-}
-
-.travelrt_comment_title {
-  font-size: 18px;
-  font-weight: bold;
-  padding-bottom: 15px;
-}
-
-.travelrt_comment_create_input {
-  width: 100%;
-  height: 100px;
-  border: 1px solid #bbb;
-  border-radius: 8px;
-  font-size: 16px;
-  resize: none;
-  padding: 20px;
 }
 
 .commentBtn {

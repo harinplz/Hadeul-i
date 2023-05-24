@@ -18,6 +18,28 @@
     <div style="margin-bottom: 20px"></div>
     <view-detail :community="community"></view-detail>
     <div style="margin-bottom: 50px"></div>
+
+    <!-- 댓글 구현 부분 -->
+    <div class="travelrt_comment">
+      <!-- 댓글 갯수 -->
+      <div class="travelrt_comment_title">댓글 1</div>
+      <!-- 댓글 등록 -->
+      <div class="travelrt_comment_create row">
+        <div class="col-md-10">
+          <textarea
+            class="travelrt_comment_create_input"
+            placeholder="댓글을 입력해주세요 ... "
+          ></textarea>
+        </div>
+        <div class="col-md-2">
+          <button type="button" class="btn commentBtn" style="background-color: #c3e5ee">
+            입력
+          </button>
+        </div>
+      </div>
+    </div>
+    <community-comment></community-comment>
+    <div style="margin-bottom: 100px"></div>
   </b-container>
 </template>
 
@@ -32,6 +54,7 @@ export default {
   },
   components: {
     "view-detail": () => import("@/components/community/include/ViewDetail"),
+    "community-comment": () => import("@/components/community/include/CommunityComment"),
   },
   methods: {
     ...mapActions(["getCommunity", "deleteCommunity"]),
@@ -73,3 +96,34 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.travelrt_comment {
+  width: 90%;
+  margin: 100px auto 50px auto;
+}
+
+.travelrt_comment_title {
+  font-size: 18px;
+  font-weight: bold;
+  padding-bottom: 15px;
+}
+
+.travelrt_comment_create_input {
+  width: 100%;
+  height: 100px;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  font-size: 16px;
+  resize: none;
+  padding: 20px;
+}
+
+.commentBtn {
+  margin-top: 7px;
+  width: 80%;
+  height: 80%;
+  font-size: 15px;
+  font-weight: bold;
+}
+</style>
