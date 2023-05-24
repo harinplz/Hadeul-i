@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.board.model.mapper.CommentMapper">
+	<!-- 
+		community_comment 
+		
+		comment_no, board_no, user_no, reg_date, comment
+		
+		boardNo; commentNo; userNo; userName; registDate; comment;
+	-->
+	<resultMap type="commentDto" id="comment">
+		<result column="comment_no" property="commentNo"/>
+		<result column="board_no" property="boardNo"/>
+		<result column="user_no" property="userNo"/>
+		<result column="reg_date" property="registDate"/>
+		<result column="comment" property="comment"/>
+		<result column="u_name" property="userName"/>
+	</resultMap>
+	
+	<!-- getList -->
+	<select id="getList" resultMap="comment">
+		SELECT comment_no, board_no, c.user_no, reg_date, comment, u.name u_name
+		FROM community_comment c
+		INNER JOIN
+			(
+				SELECT user_no, name
+				FROM user
+			) u
+			ON u.user_no = c.user_no
+		WHERE board_no = #{boardNo}
+	</select>
+	
+	<!-- insertComment -->
+	<insert id="insertComment">
+		INSERT INTO community_comment
+			(board_no, user_no, comment)
+		VALUES(
+			#{boardNo}, #{userNo}, #{comment}
+		)
+	</insert>
+	
+	<!--  updateComment  -->
+	<update id="updateComment">
+		UPDATE community_comment
+			SET comment = #{comment}
+		WHERE comment_no = #{commentNo}
+	</update>
+	
+	<!-- deleteComment  -->
+	<delete id="deleteComment">
+		DELETE FROM community_comment
+		WHERE comment_no = #{commentNo}
+	</delete>
+</mapper>
