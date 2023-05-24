@@ -34,6 +34,7 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public boolean deleteOne(int boardNo) throws SQLException {
+		mapper.deleteComments(boardNo);
 		if(mapper.deleteOne(boardNo) == 1) {
 			return true;
 		}else {
@@ -43,6 +44,7 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public boolean updateOne(BoardDto boardDto) throws SQLException {
+		
 		if(mapper.updateOne(boardDto) == 1) {
 			return true;
 		}else {
