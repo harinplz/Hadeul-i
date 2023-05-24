@@ -67,26 +67,26 @@
 	<select id="countLike" resultType="_int">
 		SELECT count(user_no)
 		FROM travel_route_like
-		WHERE travel_route_no = #{travleRouteNo}
+		WHERE travel_route_no = #{travelRouteNo}
 	</select>
 	
 	<!-- travle_route 좋아요 했는지 확인 -->
 	<select id="checkLike" resultType="_int">
 		SELECT count(travel_route_no)
 		FROM travel_route_like
-		WHERE travel_route_no = #{travleRouteNo} AND user_no = #{userNo}
+		WHERE travel_route_no = #{travelRouteNo} AND user_no = #{userNo}
 	</select>
 	
 	<!-- travle_route 좋아요  -->
 	<insert id="routeGood">
 		INSERT INTO travel_route_like
-		VALUES (#{travleRouteNo}, #{userNo})
+		VALUES (#{travelRouteNo}, #{userNo})
 	</insert>
 	
 	<!-- travle_route 좋아요 취소 -->
 	<delete id="routeGoodCancel">
 		DELETE FROM travel_route_like
-		where travel_route_no = #{travleRouteNo} and user_no = #{userNo};
+		where travel_route_no = #{travelRouteNo} and user_no = #{userNo};
 	</delete>
 	<!-- 좋아요 처리 끝 -->
 

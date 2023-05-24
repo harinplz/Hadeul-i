@@ -22,6 +22,8 @@ export default new Vuex.Store({
     routeAttractions: [],
     travelRoutes: [],
     travelRoute: {},
+    travelRouteLike: 0,
+    travelRouteLikeCheck: 0,
   },
   getters: {
     hotplaceLikeCheck(state) {
@@ -68,6 +70,12 @@ export default new Vuex.Store({
     },
     travelRoute(state) {
       return state.travelRoute;
+    },
+    travelRouteLike(state) {
+      return state.travelRouteLike;
+    },
+    travelRouteLikeCheck(state) {
+      return state.travelRouteLikeCheck;
     },
   },
   mutations: {
@@ -120,6 +128,12 @@ export default new Vuex.Store({
     TRAVEL_ROUTE(state, payload) {
       state.travelRoute = payload.travelRoute;
     },
+    TRAVEL_ROUTE_LIKE(state, payload) {
+      state.travelRouteLike = payload.travelRouteLike;
+    },
+    TRAVEL_ROUTE_LIKE_CHECK(state, payload) {
+      state.travelRouteLikeCheck = payload.travelRouteLikeCheck;
+    },
   },
   actions: {
     // 여행 계획 action입니다. //
@@ -156,6 +170,52 @@ export default new Vuex.Store({
           travelRoute: response.data,
         });
       });
+    },
+    // 여행 계획 좋아요 구현
+    // 여행 계획 좋아요 수 조회
+    getTravelRouteLike(context, payload) {
+      http.get(`route/like/${payload.travelRouteNo}`).then((response) => {
+        context.commit({
+          type: "TRAVEL_ROUTE_LIKE",
+          travelRouteLike: response.data,
+        });
+      });
+    },
+    // 여행 계획 좋아요 했는지 확인
+    getTravelRouteLikeCheck(context, payload) {
+      http
+        .post("route/like/check", payload.travelRouteLike)
+        .then((response) => {
+          context.commit({
+            type: "TRAVEL_ROUTE_LIKE_CHECK",
+            travelRouteLikeCheck: response.data,
+          });
+        });
+    },
+    // 여행 계획 좋아요 누르기
+    createTravelRouteLike(context, payload) {
+      http
+        .post("route/like", payload.travelRouteLike)
+        .then((response) => {
+          payload.callback(response.status);
+        })
+        .catch((response) => {
+          payload.callback(response.status);
+        });
+    },
+    // 여행 계획 좋아요 취소
+    deleteTravelRouteLike(context, payload) {
+      console.log(payload);
+      http
+        .delete(
+          `route/like/${payload.travelRouteLike.travelRouteNo}/${payload.travelRouteLike.userNo}`
+        )
+        .then((response) => {
+          payload.callback(response.status);
+        })
+        .catch((response) => {
+          payload.callback(response.status);
+        });
     },
     // 관광지로 추가
     createUserAttraction(context, payload) {
@@ -197,7 +257,7 @@ export default new Vuex.Store({
           payload.callback(response.status);
         })
         .catch((response) => {
-          payload.callback(response.data);
+          payload.callback(response.status);
         });
     },
     // 핫플레이스 좋아요 취소

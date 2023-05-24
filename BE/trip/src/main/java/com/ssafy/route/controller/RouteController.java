@@ -120,10 +120,16 @@ public class RouteController {
 	}
 
 	// 사용자가 핫플레이스 좋아요를 취소할 때
-	@DeleteMapping("route/like")
-	public ResponseEntity<?> hotplaceGoodCancel(@RequestBody RouteLike routeLike) throws Exception {
-
-		int result = routeService.routeGoodCancel(routeLike);
+	@DeleteMapping("route/like/{travelRouteNo}/{userNo}")
+	public ResponseEntity<?> routeGoodCancel(@PathVariable Map<String, String> pathMap) throws Exception {
+		
+		int travelRouteNo = Integer.parseInt(pathMap.get("travelRouteNo"));
+		int userNo = Integer.parseInt(pathMap.get("userNo"));
+		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("travelRouteNo", travelRouteNo);
+		map.put("userNo", userNo);
+		int result = routeService.routeGoodCancel(map);
 		if (result > 0) {
 			return new ResponseEntity<Integer>(result, HttpStatus.OK);
 		} else {

@@ -64,8 +64,8 @@ public class RouteServiceImpl implements RouteService {
 	}
 
 	@Override
-	public int routeGoodCancel(RouteLike routeLike) throws SQLException {
-		return routeMapper.routeGoodCancel(routeLike);
+	public int routeGoodCancel(Map<String, Integer> map) throws SQLException {
+		return routeMapper.routeGoodCancel(map);
 	}
 
 }

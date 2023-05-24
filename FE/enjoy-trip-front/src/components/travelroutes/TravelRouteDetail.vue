@@ -19,8 +19,11 @@
       <button
         type="button"
         class="btn goodBtn"
-        style="background-color: #ffd5e3">
-        <b>좋아요 <span>1</span></b>
+        style="background-color: #ffd5e3"
+        @click="goCreateGoodBtn">
+        <b
+          >좋아요 <span>{{ travelRouteLike }}</span></b
+        >
       </button>
     </div>
 
@@ -79,7 +82,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["getTravelRoute"]),
+    ...mapActions([
+      "getTravelRoute",
+      "getTravelRouteLike",
+      "getTravelRouteLikeCheck",
+      "createTravelRouteLike",
+      "deleteTravelRouteLike",
+    ]),
     initMap() {
       var mapContainer = document.getElementById("map"),
         mapOption = {
@@ -130,6 +139,77 @@ export default {
 
       console.log(markers);
     },
+    goCreateGoodBtn() {
+      console.log("좋아요 눌렀나요: " + this.travelRouteLikeCheck);
+      if (this.travelRouteLikeCheck == 0) {
+        this.createGoodBtn();
+      } else {
+        console.log("좋아요 누른 상태에요");
+        this.deleteGoodBtn();
+      }
+    },
+    createGoodBtn() {
+      const payload = {
+        travelRouteLike: {
+          travelRouteNo: this.travelRouteNo,
+          userNo: this.userInfo.no,
+        },
+        callback: (status) => {
+          if (status == 201) {
+            this.getTravelRouteLike({
+              travelRouteNo: this.travelRouteNo,
+            });
+
+            this.getTravelRouteLikeCheck({
+              travelRouteLike: {
+                travelRouteNo: this.travelRouteNo,
+                userNo: this.userInfo.no,
+              },
+            });
+          } else if (status == 500) {
+            this.$bvToast.toast("서버 오류 발생!", {
+              title: "여행 계획 서버 오류 발생",
+              variant: "danger",
+              toaster: "b-toaster-bottom-center",
+              autoHideDelay: 3000,
+              solid: true,
+            });
+          }
+        },
+      };
+      this.createTravelRouteLike(payload);
+    },
+    deleteGoodBtn() {
+      const payload = {
+        travelRouteLike: {
+          travelRouteNo: this.travelRouteNo,
+          userNo: this.userInfo.no,
+        },
+        callback: (status) => {
+          if (status == 200) {
+            this.getTravelRouteLike({
+              travelRouteNo: this.travelRouteNo,
+            });
+
+            this.getTravelRouteLikeCheck({
+              travelRouteLike: {
+                travelRouteNo: this.travelRouteNo,
+                userNo: this.userInfo.no,
+              },
+            });
+          } else if (status == 500) {
+            this.$bvToast.toast("서버 오류 발생!", {
+              title: "여행 계획 서버 오류 발생",
+              variant: "danger",
+              toaster: "b-toaster-bottom-center",
+              autoHideDelay: 3000,
+              solid: true,
+            });
+          }
+        },
+      };
+      this.deleteTravelRouteLike(payload);
+    },
   },
   created() {
     const travelRouteNo = this.$route.params.travelRouteNo;
@@ -139,13 +219,28 @@ export default {
       travelRouteNo,
     });
 
+    this.getTravelRouteLike({
+      travelRouteNo,
+    });
+
+    this.getTravelRouteLikeCheck({
+      travelRouteLike: {
+        travelRouteNo,
+        userNo: this.userInfo.no,
+      },
+    });
+
     setTimeout(() => {
       this.travelRouteAttractions = this.travelRoute.attractionList;
-      console.log(this.travelRouteAttractions);
     }, 300);
   },
   computed: {
-    ...mapGetters(["travelRoute", "userInfo"]),
+    ...mapGetters([
+      "travelRoute",
+      "userInfo",
+      "travelRouteLike",
+      "travelRouteLikeCheck",
+    ]),
   },
 };
 </script>
