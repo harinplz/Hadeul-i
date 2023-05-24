@@ -143,7 +143,7 @@ const routes = [
           import("@/components/travelroutes/TravelRouteCreate.vue"),
       },
       {
-        path: "detail",
+        path: "detail/:travelRouteNo",
         name: "TravelRouteDetail",
         component: () =>
           import("@/components/travelroutes/TravelRouteDetail.vue"),

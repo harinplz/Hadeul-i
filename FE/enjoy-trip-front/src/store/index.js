@@ -19,10 +19,13 @@ export default new Vuex.Store({
     accessToken: null,
     refreshToken: null,
     userInfo: null,
-
     attractionLikeCheck: 0, //관광지 좋아요 체크를 위한 state
     attractionDetail: "", //관광지 상세 설명
     attractionLike: 0,
+
+    routeAttractions: [],
+    travelRoutes: [],
+
   },
   getters: {
     attractionLikeCheck(state) {
@@ -73,6 +76,12 @@ export default new Vuex.Store({
     },
     community(state) {
       return state.community;
+    },
+    routeAttractions(state) {
+      return state.routeAttractions;
+    },
+    travelRoutes(state) {
+      return state.travelRoutes;
     },
   },
   mutations: {
@@ -132,8 +141,41 @@ export default new Vuex.Store({
     COMMUNITY(state, payload) {
       state.community = payload.community;
     },
+    ROUTE_ATTRACTIONS(state, payload) {
+      state.routeAttractions = payload.routeAttractions;
+    },
+    TRAVEL_ROUTES(state, payload) {
+      state.travelRoutes = payload.travelRoutes;
+    },
   },
   actions: {
+    // 여행 계획 action입니다. //
+    getRouteAttractions(context, payload) {
+      http.get(`trips/${payload.searchTitle}`).then((response) => {
+        context.commit({
+          type: "ROUTE_ATTRACTIONS",
+          routeAttractions: response.data,
+        });
+      });
+    },
+    createTravelRoute(context, payload) {
+      http
+        .post("/route", payload.travelRoutes)
+        .then((response) => {
+          payload.callback(response.status);
+        })
+        .catch((response) => {
+          payload.callback(response.status);
+        });
+    },
+    getTravelRoutes(context) {
+      http.get("/routes").then((response) => {
+        context.commit({
+          type: "TRAVEL_ROUTES",
+          travelRoutes: response.data,
+        });
+      });
+    },
     // 관광지로 추가
     createUserAttraction(context, payload) {
       http

@@ -9,21 +9,42 @@
           <span class="highlight">여행 경로 등록하기</span>
         </div>
         <span class="travelroute_create_title">제목</span>
-        <input class="create_title_input" type="text" placeholder="제목 입력" />
+        <input
+          class="create_title_input"
+          type="text"
+          placeholder="제목 입력"
+          v-model="routeTitle" />
         <div class="row create_calender">
           <div class="col-md-6 start_date_div">
             <div class="start_date_text">시작일</div>
-            <input type="date" data-placeholder="날짜 선택" required aria-required="true" />
+            <input
+              type="date"
+              data-placeholder="날짜 선택"
+              required
+              aria-required="true"
+              v-model="routeStartDate" />
           </div>
           <div class="col-md-6 end_date_div">
             <div class="end_date_text">종료일</div>
-            <input type="date" data-placeholder="날짜 선택" required aria-required="true" />
+            <input
+              type="date"
+              data-placeholder="날짜 선택"
+              required
+              aria-required="true"
+              v-model="routeEndDate" />
           </div>
         </div>
         <div class="travelroute_create_content_text">내용</div>
-        <textarea class="travelroute_create_content" placeholder="여행 계획을 설명해주세요!" />
+        <textarea
+          class="travelroute_create_content"
+          placeholder="여행 계획을 설명해주세요!"
+          v-model="routeContent" />
         <div class="travelroute_create_btn">
-          <button class="btn searchBtn" type="button" style="background-color: #ffd5e3">
+          <button
+            class="btn searchBtn"
+            type="button"
+            style="background-color: #ffd5e3"
+            @click="createFinalTravelRoute">
             등록
           </button>
         </div>
@@ -31,7 +52,9 @@
     </div>
 
     <div class="travelRt_create_title wow fadeInUp" data-wow-delay="0.05s">
-      <div class="travelRt_create_title_text">함께 <b>여행 계획</b>을 세워봐요!</div>
+      <div class="travelRt_create_title_text">
+        함께 <b>여행 계획</b>을 세워봐요!
+      </div>
     </div>
 
     <div class="map-and-create row wow fadeInUp">
@@ -41,16 +64,40 @@
         </div>
         <p class="search_area_desc_text">여행을 떠날 관광지를 검색해주세요!</p>
         <div class="search">
-          <input class="searchInput" type="text" placeholder="검색어 입력" />
-          <button type="button" class="btn searchBtn" style="background-color: #ffd5e3">
+          <input
+            class="searchInput"
+            type="text"
+            placeholder="검색어 입력"
+            v-model="searchTitle" />
+          <button
+            type="button"
+            class="btn searchBtn"
+            style="background-color: #ffd5e3"
+            @click="searchStart">
             <b>검색</b>
           </button>
         </div>
         <div class="container">
-          <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-          <br /><br /><br /><br /><br /><br />
-          <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-          <br /><br /><br /><br /><br /><br />
+          <div
+            class="content"
+            v-for="routeAttraction in routeAttractions"
+            :key="routeAttraction.attractionNo"
+            :routeAttraction="routeAttraction">
+            <div class="attraction_title">
+              {{ routeAttraction.attractionName }}
+            </div>
+            <div class="attraction_jibun">{{ routeAttraction.address }}</div>
+            <div class="attraction_btns">
+              <button
+                class="btn deleteBtn"
+                @click="showLocation(routeAttraction)">
+                위치확인
+              </button>
+              <button class="btn addBtn" @click="addRoute(routeAttraction)">
+                추가
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <div class="map_area col-6">
@@ -61,14 +108,32 @@
           <span class="highlight_pink">나만의 여행 계획</span>
         </div>
         <p class="search_area_desc_text">관광지를 통해 여행 계획을 세워봐요!</p>
-        <div class="container"></div>
+        <div class="container">
+          <div
+            class="content"
+            v-for="travelRoute in travelRoutes"
+            :key="travelRoute.attractionNo"
+            :travelRoute="travelRoute">
+            <div class="attraction_title">
+              {{ travelRoute.attractionName }}
+            </div>
+            <div class="attraction_jibun">{{ travelRoute.address }}</div>
+            <div class="attraction_btns">
+              <button class="btn addBtn" @click="showLocation(travelRoute)">
+                위치확인
+              </button>
+              <button class="btn deleteBtn" @click="deleteRoute(travelRoute)">
+                삭제
+              </button>
+            </div>
+          </div>
+        </div>
         <div class="createBtn_div">
           <button
             type="button"
             class="btn searchBtn"
             style="background-color: #c3e5ee; margin-top: 20px"
-            @click="openModal = true"
-          >
+            @click="openModal = true">
             <b>등록</b>
           </button>
         </div>
@@ -78,7 +143,10 @@
 
     <div class="create-list-btns wow fadeInUp">
       <router-link :to="{ name: 'TravelRouteList' }">
-        <button type="button" class="btn travelRtBtn" style="background-color: #ffd5e3">
+        <button
+          type="button"
+          class="btn travelRtBtn"
+          style="background-color: #ffd5e3">
           <b>목록</b>
         </button>
       </router-link>
@@ -87,11 +155,20 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
       map: null,
       openModal: false,
+      searchTitle: null,
+      travelRoutes: [],
+      markers: [],
+      lines: [],
+      routeTitle: null,
+      routeStartDate: null,
+      routeEndDate: null,
+      routeContent: null,
     };
   },
   mounted() {
@@ -107,6 +184,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["getRouteAttractions", "createTravelRoute"]),
     initMap() {
       var mapContainer = document.getElementById("map"),
         mapOption = {
@@ -115,13 +193,207 @@ export default {
         };
       this.map = new window.kakao.maps.Map(mapContainer, mapOption);
     },
+    createFinalTravelRoute() {
+      // console.log(this.travelRoutes);
+      const payload = {
+        travelRoutes: {
+          userNo: this.userInfo.no,
+          title: this.routeTitle,
+          arriveDate: this.routeStartDate,
+          departDate: this.routeEndDate,
+          description: this.routeContent,
+          attractionList: this.travelRoutes,
+        },
+        callback: (status) => {
+          if (status == 200) {
+            this.$bvToast.toast("여행 계획 등록 완료!", {
+              title: "여행 계획",
+              variant: "primary",
+              toaster: "b-toaster-bottom-center",
+              autoHideDelay: 2000,
+              solid: true,
+            });
+
+            this.$router.push({ name: "TravelRouteList" });
+          } else if (status == 500) {
+            // 서버 오류 Toast 출력
+            this.$bvToast.toast("서버 오류 발생!", {
+              title: "여행 계획 알림",
+              variant: "danger",
+              toaster: "b-toaster-bottom-center",
+              autoHideDelay: 3000,
+              solid: true,
+            });
+          }
+        },
+      };
+      this.createTravelRoute(payload);
+      console.log("등록시: ", this.userInfo.no);
+      console.log(
+        this.routeTitle,
+        this.routeStartDate,
+        this.routeEndDate,
+        this.routeContent
+      );
+      console.log(this.travelRoutes);
+    },
+    showLocation(routeAttraction) {
+      this.map.setCenter(
+        new kakao.maps.LatLng(
+          routeAttraction.latitude,
+          routeAttraction.longitude
+        )
+      );
+    },
+    addRoute(routeAttraction) {
+      console.log(routeAttraction.attractionName, "추가되었습니다.");
+      this.travelRoutes.push(routeAttraction);
+      console.log(this.travelRoutes);
+
+      var marker = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(
+          routeAttraction.latitude,
+          routeAttraction.longitude
+        ),
+      });
+
+      this.map.setCenter(
+        new kakao.maps.LatLng(
+          routeAttraction.latitude,
+          routeAttraction.longitude
+        )
+      );
+      marker.setMap(this.map);
+
+      this.markers.push(marker);
+
+      // this.makeLine();
+      this.makeLine(this.markers, "add");
+    },
+    deleteRoute(routeAttraction) {
+      var flag = false;
+      for (var i = 0; i < this.travelRoutes.length; i++) {
+        if (this.travelRoutes[i].attractionNo == routeAttraction.attractionNo) {
+          console.log(routeAttraction.attractionName, "삭제되었습니다.");
+          this.travelRoutes.splice(i, 1);
+          flag = true;
+          break;
+        }
+      }
+
+      console.log("삭제 여부", flag);
+      console.log(this.travelRoutes);
+
+      for (var m = 0; m < this.markers.length; m++) {
+        console.log(this.markers[m].getPosition().getLat());
+        console.log(routeAttraction.latitude);
+        if (
+          Math.abs(
+            this.markers[m].getPosition().getLat() - routeAttraction.latitude
+          ) <= 0.000000001 &&
+          Math.abs(
+            this.markers[m].getPosition().getLng() - routeAttraction.longitude
+          ) <= 0.000000001
+        ) {
+          console.log("같은 마커 찾음!!!");
+
+          this.markers[m].setMap(null);
+          this.markers.splice(m, 1);
+        }
+      }
+
+      // this.makeLine();
+      this.makeLine(this.markers, "delete");
+    },
+    makeLine(markers, cmdName) {
+      if (this.lines.length > 0) {
+        console.log(this.lines);
+        console.log("삭제가능????");
+        for (var k = 0; k < this.lines.length; k++) {
+          this.lines[k].setMap(null);
+        }
+      }
+
+      var linePath = [];
+      console.log(markers.length);
+      for (var j = 0; j < markers.length; ++j) {
+        linePath.push(markers[j].getPosition());
+      }
+
+      var polyLine = new kakao.maps.Polyline({
+        path: linePath,
+        strokeWeight: 2,
+        strokeColor: "red",
+        strokeOpacity: 0.7,
+        strokeStyle: "solid",
+      });
+
+      this.lines.push(polyLine);
+
+      polyLine.setMap(this.map);
+      console.log(cmdName);
+      // console.log(markers);
+      // if (cmdName == "add") {
+      // }
+
+      // lines.push(polyLine);
+      // if (cmdName == "delete") {
+      //   console.log("삭제할 때 경로");
+
+      // }
+      // var linePath;
+      // var lineLine = new kakao.maps.Polyline();
+      // var distance;
+      // console.log(distance);
+
+      // for (var j = 0; j < this.travelRoutes.length; j++) {
+      //   // console.log(this.travelRoutes[j].);
+      //   if (j != 0) {
+      //     linePath = [
+      //       new kakao.maps.LatLng(
+      //         this.travelRoutes[j - 1].latitude,
+      //         this.travelRoutes[j - 1].longitude
+      //       ),
+      //       new kakao.maps.LatLng(
+      //         this.travelRoutes[j].latitude,
+      //         this.travelRoutes[j].longitude
+      //       ),
+      //     ];
+      //   }
+      //   lineLine.setPath(linePath);
+
+      //   var drawLine = new kakao.maps.Polyline({
+      //     map: this.map,
+      //     path: linePath,
+      //     strokeWeight: 3,
+      //     strokeColor: "#db4040",
+      //     strokeOpacity: 1,
+      //     strokeStyle: "solid",
+      //   });
+      //   console.log(drawLine);
+
+      //   distance = Math.round(lineLine.getLength());
+      // }
+    },
     close(event) {
-      if (event.target.classList.contains("black-bg") || event.target.classList.contains("close")) {
+      if (
+        event.target.classList.contains("black-bg") ||
+        event.target.classList.contains("close")
+      ) {
         this.openModal = false;
       } else if (event.target.classList.contains("white-bg")) {
         this.openModal = true;
       }
     },
+    searchStart() {
+      this.getRouteAttractions({
+        searchTitle: this.searchTitle,
+      });
+    },
+  },
+  created() {},
+  computed: {
+    ...mapGetters(["routeAttractions", "userInfo"]),
   },
 };
 </script>
@@ -130,7 +402,6 @@ export default {
 .black-bg {
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4);
   position: fixed;
   z-index: 1;
 }
@@ -138,11 +409,12 @@ export default {
 .white-bg {
   font-family: "SUITE-Regular";
   width: 40%;
-  height: 520px;
+  height: 540px;
   margin: 80px auto;
   background: white;
   border-radius: 20px;
   padding: 30px 40px 20px 40px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
 .travelroute_create_title {
@@ -383,5 +655,44 @@ input[type="date"]:valid::before {
 
 .container::-webkit-scrollbar-track {
   background: #c3e5ee44; /*스크롤바 뒷 배경 색상*/
+}
+
+.content {
+  width: 100%;
+  height: 120px;
+  padding: 20px 0px;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+}
+
+.attraction_title {
+  font-size: 18px;
+  font-weight: bold;
+  font-family: "SUITE-Regular";
+}
+
+.attraction_jibun {
+  font-family: "SUITE-Regular";
+  font-size: 16px;
+}
+
+.attraction_btns {
+  margin-top: 15px;
+  text-align: right;
+  padding-right: 10px;
+
+  font-size: 10px;
+}
+
+.addBtn {
+  margin: 0px 5px;
+  padding: 5px 10px;
+  background-color: #c3e5ee;
+}
+
+.deleteBtn {
+  margin: 0px 5px;
+  padding: 5px 10px;
+  background-color: #ffd5e3;
 }
 </style>
