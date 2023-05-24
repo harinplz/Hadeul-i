@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.user.model.dto.MyPageDto;
 import com.ssafy.user.model.dto.User;
 import com.ssafy.user.model.mapper.UserMapper;
 
@@ -74,6 +75,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User selectOne(int userNo) throws SQLException {
 		return userMapper.selectOne(userNo);
+	}
+
+	@Override
+	public MyPageDto onload(String userNo) throws SQLException {
+		
+		return userMapper.getMypageContent(userNo);
 	}
 
 
