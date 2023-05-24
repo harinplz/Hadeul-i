@@ -19,6 +19,7 @@ export default new Vuex.Store({
     accessToken: null,
     refreshToken: null,
     userInfo: null,
+    routeAttractions: [],
   },
   getters: {
     hotplaceLikeCheck(state) {
@@ -56,6 +57,9 @@ export default new Vuex.Store({
     },
     community(state) {
       return state.community;
+    },
+    routeAttractions(state) {
+      return state.routeAttractions;
     },
   },
   mutations: {
@@ -99,8 +103,20 @@ export default new Vuex.Store({
     COMMUNITY(state, payload) {
       state.community = payload.community;
     },
+    ROUTE_ATTRACTIONS(state, payload) {
+      state.routeAttractions = payload.routeAttractions;
+    },
   },
   actions: {
+    // 여행 계획 action입니다. //
+    getRouteAttractions(context, payload) {
+      http.get(`trips/${payload.searchTitle}`).then((response) => {
+        context.commit({
+          type: "ROUTE_ATTRACTIONS",
+          routeAttractions: response.data,
+        });
+      });
+    },
     // 관광지로 추가
     createUserAttraction(context, payload) {
       http

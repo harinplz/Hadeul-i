@@ -19,8 +19,7 @@
       head-variant="dark"
       :items="communities"
       :fields="fields"
-      @row-clicked="rowClickListener"
-    ></b-table>
+      @row-clicked="rowClickListener"></b-table>
     <div v-else class="text-center">게시글이 없습니다.</div>
     <div style="margin-bottom: 80px"></div>
   </b-container>
