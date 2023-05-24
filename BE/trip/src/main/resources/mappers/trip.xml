@@ -130,5 +130,78 @@
 	</select>
 
 	<!-- AttractionMap 백엔드 수정 끝 #34 -->
+	
+	<!-- 
+		좋아요 관련 기능 구현
+	 -->
+	 
+	<!-- attraction_info 좋아요 조회 -->
+	<select id="countLike1" resultType="_int">
+		SELECT count(user_no)
+		FROM attraction_like
+		WHERE content_id = #{attractionNo}
+	</select>
+	
+	<!-- attraction_info 좋아요 했는지 확인 -->
+	<select id="checkLike1" resultType="_int">
+		SELECT count(user_no)
+		FROM attraction_like
+		WHERE content_id = #{attractionNo} AND user_no = #{userNo}
+	</select>
+	
+	<!-- attraction_info 좋아요  -->
+	<insert id="attractionGood1">
+		INSERT INTO attraction_like
+		VALUES (#{attractionNo}, #{userNo})
+	</insert>
+	
+	<!-- attraction_info 좋아요 취소 -->
+	<delete id="attractionGoodCancel1">
+		DELETE FROM attraction_like
+		where content_id = #{attractionNo} and user_no = #{userNo};
+	</delete>
+	
+	<!-- user attraction -->
+	
+	<!-- user_attraction 좋아요 조회 -->
+	<select id="countLike2" resultType="_int">
+		SELECT count(user_no)
+		FROM attraction_user_like
+		WHERE user_attraction_no = #{attractionNo}
+	</select>
+	
+	<!-- user_attraction 좋아요 했는지 확인 -->
+	<select id="checkLike2" resultType="_int">
+		SELECT count(user_attraction_no)
+		FROM attraction_user_like
+		WHERE user_attraction_no = #{attractionNo} AND user_no = #{userNo}
+	</select>
+	
+	<!-- user_attraction 좋아요  -->
+	<insert id="attractionGood2">
+		INSERT INTO attraction_user_like
+		VALUES (#{attractionNo}, #{userNo})
+	</insert>
+	
+	<!-- user_attraction 좋아요 취소 -->
+	<delete id="attractionGoodCancel2">
+		DELETE FROM attraction_user_like
+		where user_attraction_no = #{attractionNo} and user_no = #{userNo};
+	</delete>
+	
+	<!-- 
+		관광지 상세설명 가져오기
+	 -->
+	 <select id="getDescription1" resultType="String">
+	 	SELECT overview
+	 	FROM attraction_description
+	 	WHERE content_id = #{attractionNo};
+	 </select>
+	 
+	 <select id="getDescription2" resultType="String">
+	 	SELECT user_attraction_content
+	 	FROM user_attraction
+	 	WHERE user_attraction_no = #{attractionNo}
+	 </select>
 
 </mapper>
