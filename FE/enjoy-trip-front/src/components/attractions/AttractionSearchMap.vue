@@ -58,8 +58,8 @@
             class="form-select me-2"
             v-model="tableType">
             <option value="0">검색필터</option>
-            <option value="1">핫플레이스</option>
-            <option value="2">유명관광지</option>
+            <option value="1">유명관광지</option>
+            <option value="2">핫플레이스</option>
           </select>
 
           <input
@@ -135,7 +135,7 @@
           <b-col><h5>상세 설명</h5></b-col>
         </b-row>
         <p align="center">
-          상세설명입니다.상세설명입니다.상세설명입니다.상세설명입니다.상세설명입니다.상세설명입니다.상세설명입니다.상세설명입니다.상세설명입니다.상세설명입니다.상세설명입니다.상세설명입니다.
+          {{ modalContent.description }}
         </p>
 
         <hr style="background-color: rgb(23, 162, 184)" />
@@ -143,13 +143,19 @@
           <b-col>
             <button
               type="button"
+              class="btn"
+              style="background-color: #ffd5e3"
               @click="
                 likeEvent(
                   modalContent.attractionNo,
                   modalContent.attractionType
                 )
               ">
-              {{ modalContent.hit }}
+              <b
+                >좋아요<span>
+                  {{ attractionLike }}
+                </span>
+              </b>
             </button>
           </b-col>
         </b-row>
@@ -160,7 +166,6 @@
 
 <script>
 //let markers = [];
-import http from "@/util/http-commons";
 
 export default {
   name: "AttractionSearchMap",
@@ -197,8 +202,19 @@ export default {
     attractions() {
       //getter: attractions 정보 얻어옴
       /* eslint-disable */
-
       return this.$store.getters.attractions;
+    },
+
+    attractionLikeCheck() {
+      return this.$store.getters.attractionLikeCheck;
+    },
+
+    attractionLike() {
+      return this.$store.getters.attractionLike;
+    },
+
+    attractionDetail() {
+      return this.$store.getters.attractionDetail;
     },
 
     userInfo() {
@@ -215,23 +231,39 @@ export default {
     this.pagingMethod(this.page);
   },
   created() {
-    http.get(`/trips/type/1`).then(({ status, data }) => {
-      if (status == 200) {
-        this.total1 = data;
-        console.log("1번 테이블의 total : ", this.total1);
-        this.pagingMethod(1);
-      }
-    });
-
-    http.get(`/trips/type/2`).then(({ status, data }) => {
-      if (status == 200) {
-        this.total2 = data;
-        console.log("2번 테이블의 total : ", this.total2);
-        this.pagingMethod(1);
-      }
-    });
+    //페이지네이션을 위한 모든 record 조회
+    // http.get(`/trips/type/1`).then(({ status, data }) => {
+    //   if (status == 200) {
+    //     this.total1 = data;
+    //     console.log("1번 테이블의 total : ", this.total1);
+    //     this.pagingMethod(1);
+    //   }
+    // });
+    // http.get(`/trips/type/2`).then(({ status, data }) => {
+    //   if (status == 200) {
+    //     this.total2 = data;
+    //     console.log("2번 테이블의 total : ", this.total2);
+    //     this.pagingMethod(1);
+    //   }
+    // });
   },
   methods: {
+    getAttractionCheckLike(attractionLike) {
+      this.$store.dispatch("getAttractionCheckLike", { attractionLike });
+    },
+    getAttractionDetail(attractionInfo) {
+      this.$store.dispatch("getAttractionDetail", { attractionInfo });
+    },
+    getAttractionLike(attractionInfo) {
+      this.$store.dispatch("getAttractionLike", { attractionInfo });
+    },
+    createAttractionLike(attractionInfo) {
+      this.$store.dispatch("createAttractionLike", { attractionInfo });
+    },
+    deleteAttractionLike(attractionInfo) {
+      this.$store.dispatch("deleteAttractionLike", { attractionInfo });
+    },
+
     pagingMethod(page) {
       //페이지 클릭 시 일어나는 일들..!
 
@@ -273,25 +305,94 @@ export default {
     },
 
     likeEvent(no, type) {
-      // alert(this.userInfo.no);
-      console.log(this.userInfo);
-
-      const payload = {
-        no,
-        type,
-        user: this.userInfo.no,
-      };
-      this.$store.dispatch("attractionLike", payload);
-
-      /*
-      http.post(`/trips/like`, info).then(({ data, status }) => {
-        if (status == 200) {
-          //하트 등록하기..
-        } else {
+      if (this.attractionLikeCheck == 0) {
+        this.createGoodBtn(no, type);
+      } else {
+        let flag = confirm("좋아요를 누르셨습니다 삭제하시겠습니까?");
+        if (flag) {
+          this.deleteGoodBtn(no, type);
         }
-      });
-      */
+      }
     },
+
+    deleteGoodBtn(no, type) {
+      const payload = {
+        info: {
+          attractionNo: no,
+          attractionType: type,
+          userNo: this.userInfo.no,
+        },
+
+        callback: (status) => {
+          if (status == 200) {
+            this.getAttractionLike({
+              attractionNo: no,
+              attractionType: type,
+            });
+
+            this.getAttractionCheckLike({
+              attractionNo: no,
+              attractionType: type,
+              userNo: this.userInfo.no,
+            });
+          } else if (status == 500) {
+            this.$bvToast.toast("서버 오류 발생!", {
+              title: "trip like 서버 오류 발생",
+              variant: "danger",
+              toaster: "b-toaster-bottom-center",
+              autoHideDelay: 3000,
+              solid: true,
+            });
+          }
+        },
+      };
+
+      this.deleteAttractionLike(payload);
+    },
+
+    createGoodBtn(no, type) {
+      const payload = {
+        info: {
+          attractionNo: no,
+          attractionType: type,
+          userNo: this.userInfo.no,
+        },
+
+        callback: (status) => {
+          if (status == 200) {
+            console.log("11111111111");
+            this.getAttractionLike({
+              attractionNo: no,
+              attractionType: type,
+            });
+
+            console.log("222222222");
+
+            this.getAttractionCheckLike({
+              attractionNo: no,
+              attractionType: type,
+              userNo: this.userInfo.no,
+            });
+
+            console.log(
+              "created 시 getAttractionCheckLike됐나 확인 : ",
+              this.attractionLikeCheck
+            );
+          } else if (status == 500) {
+            this.$bvToast.toast("서버 오류 발생!", {
+              title: "trip like 서버 오류 발생",
+              variant: "danger",
+              toaster: "b-toaster-bottom-center",
+              autoHideDelay: 3000,
+              solid: true,
+            });
+          }
+        },
+      };
+
+      this.createAttractionLike(payload);
+    },
+
     searchTrips() {
       const payload = {
         attractionSearchInfo: {
@@ -437,9 +538,23 @@ export default {
     makeDetailModal(thiz, attInfo) {
       //클릭 시 모달을 띄우는 이벤트 등록
       return function () {
-        console.log(attInfo);
-        // this.$refs['detail-modal'].show()
+        const userNo = thiz.userInfo.no;
+
+        let info = {
+          attractionNo: attInfo.attractionNo,
+          attractionType: attInfo.attractionType,
+          userNo: userNo,
+        };
+        thiz.getAttractionCheckLike(info);
+
+        thiz.getAttractionDetail(info);
+
+        thiz.getAttractionLike(info);
+
+        attInfo.description = thiz.attractionDetail;
+
         thiz.modalOpen = true;
+
         thiz.modalContent = attInfo;
       };
     },

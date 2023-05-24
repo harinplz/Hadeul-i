@@ -19,6 +19,10 @@ export default new Vuex.Store({
     accessToken: null,
     refreshToken: null,
     userInfo: null,
+    attractionLikeCheck: 0, //관광지 좋아요 체크를 위한 state
+    attractionDetail: "", //관광지 상세 설명
+    attractionLike: 0,
+
     routeAttractions: [],
     travelRoutes: [],
     travelRoute: {},
@@ -26,6 +30,19 @@ export default new Vuex.Store({
     travelRouteLikeCheck: 0,
   },
   getters: {
+    attractionLikeCheck(state) {
+      //관광지 좋아요 체크를 위한 getters
+      return state.attractionLikeCheck;
+    },
+
+    attractionLike(state) {
+      return state.attractionLike;
+    },
+
+    attractionDetail(state) {
+      return state.attractionDetail;
+    },
+
     hotplaceLikeCheck(state) {
       return state.hotplaceLikeCheck;
     },
@@ -79,6 +96,19 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    ATTRACTIONS_LIKE_CHECK(state, payload) {
+      //관광지 좋아요 체크를 위한 뮤테이션
+      state.attractionLikeCheck = payload.attractionLikeCheck;
+    },
+
+    ATTRACTION_LIKE(state, payload) {
+      state.attractionLike = payload.attractionLike;
+    },
+
+    ATTRACTION_DETAIL(state, payload) {
+      state.attractionDetail = payload.attractionDetail;
+    },
+
     HOTPLACE_LIKE_CHECK(state, payload) {
       state.hotplaceLikeCheck = payload.hotplaceLikeCheck;
     },
@@ -96,6 +126,9 @@ export default new Vuex.Store({
       state.refreshToken = null;
       state.userInfo = null;
       state.hotplaceLikeCheck = 0;
+
+      state.attractionLikeCheck = 0; //로그아웃 시 관광지 좋아요 체크 값 초기화
+      state.attractionDetail = "";
     },
     USER_INFO(state, payload) {
       state.userInfo = payload.userInfo;
@@ -228,6 +261,89 @@ export default new Vuex.Store({
           payload.callback(response.status);
         });
     },
+
+    getAttractionLike(context, payload) {
+      console.log(payload, "getAttraction 페이로드 조회");
+      http
+        .get(
+          `trips/like/${payload.attractionInfo.attractionType}/${payload.attractionInfo.attractionNo}`
+        )
+        .then((response) => {
+          context.commit({
+            type: "ATTRACTION_LIKE",
+            attractionLike: response.data,
+          });
+        });
+    },
+
+    //게시물 상세보기 요청을 받습니다.
+    getAttractionDetail(context, payload) {
+      http
+        .post("trips/description", payload.attractionInfo)
+        .then((response) => {
+          context.commit({
+            type: "ATTRACTION_DETAIL",
+            attractionDetail: response.data,
+          });
+        });
+    },
+    /*
+    관광지 좋아요 시작
+    */
+    //관광지 좋아요 했는지 확인
+    getAttractionCheckLike(context, payload) {
+      console.log(payload.attractionLike); //페이로드 체크해보기
+      http.post("trips/like/check", payload.attractionLike).then((response) => {
+        console.log("응답 성공");
+        context.commit({
+          type: "ATTRACTIONS_LIKE_CHECK",
+          attractionLikeCheck: response.data,
+        });
+      });
+    },
+
+    //관광지 좋아요 기능입니다.
+    createAttractionLike(context, payload) {
+      //console.log(payload, " 관광지 좋아요 기능");
+      http.post("trips/like", payload.attractionInfo.info).then((response) => {
+        const updatedAttractionLike = response.data;
+        context.commit("ATTRACTION_LIKE", {
+          attractionLike: updatedAttractionLike,
+        });
+
+        payload.attractionInfo.callback(response.status);
+      });
+    },
+
+    //관광지 좋아요 취소 기능입니다.
+    deleteAttractionLike(context, payload) {
+      http
+        .delete(
+          `trips/like/${payload.attractionInfo.info.attractionType}/${payload.attractionInfo.info.attractionNo}/${payload.attractionInfo.info.userNo}`
+        )
+        .then((response) => {
+          const updatedAttractionLike = response.data;
+          context.commit("ATTRACTION_LIKE", {
+            attractionLike: updatedAttractionLike,
+          });
+
+          payload.attractionInfo.callback(response.status);
+        });
+    },
+
+    // deleteHotplaceLike(context, payload) {
+    //   http
+    //     .delete(
+    //       `hotplace/like/${payload.hotplaceLike.hotplaceNo}/${payload.hotplaceLike.userNo}`
+    //     )
+    //     .then((response) => {
+    //       payload.callback(response.status);
+    //     })
+    //     .catch((response) => {
+    //       payload.callback(response.status);
+    //     });
+    // },
+
     // 핫플레이스 좋아요
     // 핫플레이스 좋아요 수 조회
     getHotplaceLike(context, payload) {
