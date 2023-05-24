@@ -44,12 +44,12 @@ export default {
           sortable: false,
         },
         {
-          key: "arriveDate",
+          key: "departDate",
           label: "시작일",
           sortable: false,
         },
         {
-          key: "departDate",
+          key: "arriveDate",
           label: "종료일",
           sortable: false,
         },

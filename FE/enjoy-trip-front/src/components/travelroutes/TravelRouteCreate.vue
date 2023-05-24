@@ -199,8 +199,8 @@ export default {
         travelRoutes: {
           userNo: this.userInfo.no,
           title: this.routeTitle,
-          arriveDate: this.routeStartDate,
-          departDate: this.routeEndDate,
+          departDate: this.routeStartDate,
+          arriveDate: this.routeEndDate,
           description: this.routeContent,
           attractionList: this.travelRoutes,
         },
@@ -307,8 +307,6 @@ export default {
     },
     makeLine(markers, cmdName) {
       if (this.lines.length > 0) {
-        console.log(this.lines);
-        console.log("삭제가능????");
         for (var k = 0; k < this.lines.length; k++) {
           this.lines[k].setMap(null);
         }
@@ -322,7 +320,7 @@ export default {
 
       var polyLine = new kakao.maps.Polyline({
         path: linePath,
-        strokeWeight: 2,
+        strokeWeight: 4,
         strokeColor: "red",
         strokeOpacity: 0.7,
         strokeStyle: "solid",
