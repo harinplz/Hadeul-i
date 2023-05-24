@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.ssafy.user.model.dto.MyPageDto;
 import com.ssafy.user.model.dto.User;
 
 @Mapper
@@ -30,6 +31,8 @@ public interface UserMapper {
 	public User selectByToken(String refreshToken);
 
 	public User selectOne(int userNo) throws SQLException;
+
+	public MyPageDto getMypageContent(String userNo) throws SQLException;
 
 
 }

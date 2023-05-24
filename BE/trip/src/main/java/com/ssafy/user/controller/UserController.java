@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.hotplace.model.dto.HotplaceDto;
+import com.ssafy.user.model.dto.MyPageDto;
 import com.ssafy.user.model.dto.User;
 import com.ssafy.user.model.service.JwtService;
 import com.ssafy.user.model.service.UserService;
@@ -230,4 +231,26 @@ public ResponseEntity<?> refreshToken(@RequestBody String refreshToken) throws E
 		}
 	}
 
+	/*
+	 * 마이페이지 관련 SH 구현 시작 
+	 * */
+	@GetMapping("/mypage/onload/{userNo}")
+	public ResponseEntity<?> onload (@PathVariable("userNo") String userNo) throws Exception {
+		
+		MyPageDto res = null;
+		
+		try {
+			res = userService.onload(userNo);
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		if(res != null) {
+			return new ResponseEntity<MyPageDto>(res, HttpStatus.OK);
+		}
+		else {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
+	}
 }

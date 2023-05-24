@@ -3,6 +3,7 @@ package com.ssafy.user.model.service;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.ssafy.user.model.dto.MyPageDto;
 import com.ssafy.user.model.dto.User;
 
 
@@ -27,5 +28,7 @@ public interface UserService {
 	public User selectByToken(String refreshToken);
 
 	public User selectOne(int userNo) throws SQLException;
+
+	public MyPageDto onload(String userNo) throws SQLException;
 
 }
