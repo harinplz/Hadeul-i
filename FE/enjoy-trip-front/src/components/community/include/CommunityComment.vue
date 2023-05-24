@@ -11,12 +11,11 @@
 
 <style scoped>
 .comments {
-  width: 80%;
+  width: 100%;
   height: 120px;
   margin: 10px auto 10px auto;
   border-top: 1px solid #cacaca;
   padding: 10px;
-  background-color: rgb(249, 250, 250);
 }
 
 .comment_name {
