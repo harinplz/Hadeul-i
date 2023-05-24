@@ -68,6 +68,11 @@ const routes = [
     component: () => import("@/views/AppAdmin"),
   },
   {
+    path: "/mypage",
+    name: "Mypage",
+    component: () => import("@/components/user/UserMyPage.vue"),
+  },
+  {
     path: "/attractions",
     name: "attractions",
     component: () => import("@/views/AppAttraction.vue"),
@@ -133,20 +138,17 @@ const routes = [
       {
         path: "list",
         name: "TravelRouteList",
-        component: () =>
-          import("@/components/travelroutes/TravelRouteList.vue"),
+        component: () => import("@/components/travelroutes/TravelRouteList.vue"),
       },
       {
         path: "create",
         name: "TravelRouteCreate",
-        component: () =>
-          import("@/components/travelroutes/TravelRouteCreate.vue"),
+        component: () => import("@/components/travelroutes/TravelRouteCreate.vue"),
       },
       {
         path: "detail/:travelRouteNo",
         name: "TravelRouteDetail",
-        component: () =>
-          import("@/components/travelroutes/TravelRouteDetail.vue"),
+        component: () => import("@/components/travelroutes/TravelRouteDetail.vue"),
       },
     ],
   },
