@@ -71,18 +71,20 @@ const routes = [
     path: "/mypage",
     name: "Mypage",
     component: () => import("@/components/user/UserMyPage.vue"),
+    beforeEnter: onlyAuthUser,
   },
   {
     path: "/attractions",
     name: "attractions",
     component: () => import("@/views/AppAttraction.vue"),
-    // beforeEnter: onlyAuthUser, //나중에 주석 풀기
+    beforeEnter: onlyAuthUser,
   },
   {
     path: "/community",
     name: "communities",
     component: () => import("@/views/AppCommunity.vue"),
     redirect: "/community/list",
+    beforeEnter: onlyAuthUser,
     children: [
       {
         path: "list",
@@ -111,6 +113,7 @@ const routes = [
     name: "Hotplace",
     component: () => import("@/views/AppHotplace.vue"),
     redirect: "/hotplace/list",
+    beforeEnter: onlyAuthUser,
     children: [
       {
         path: "list",
@@ -134,21 +137,25 @@ const routes = [
     name: "TravelRoute",
     component: () => import("@/views/AppTravelRoute.vue"),
     redirect: "/travelroute/list",
+    beforeEnter: onlyAuthUser,
     children: [
       {
         path: "list",
         name: "TravelRouteList",
-        component: () => import("@/components/travelroutes/TravelRouteList.vue"),
+        component: () =>
+          import("@/components/travelroutes/TravelRouteList.vue"),
       },
       {
         path: "create",
         name: "TravelRouteCreate",
-        component: () => import("@/components/travelroutes/TravelRouteCreate.vue"),
+        component: () =>
+          import("@/components/travelroutes/TravelRouteCreate.vue"),
       },
       {
         path: "detail/:travelRouteNo",
         name: "TravelRouteDetail",
-        component: () => import("@/components/travelroutes/TravelRouteDetail.vue"),
+        component: () =>
+          import("@/components/travelroutes/TravelRouteDetail.vue"),
       },
     ],
   },
