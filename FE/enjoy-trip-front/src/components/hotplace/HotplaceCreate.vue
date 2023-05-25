@@ -17,14 +17,14 @@
           <div style="margin-bottom: 20px">
             <select id="searchSelect" v-model="hotplace.category">
               <option selected>핫플레이스 유형</option>
-              <option value="관광지">관광지</option>
-              <option value="문화시설">문화시설</option>
-              <option value="축제공연행사">축제공연행사</option>
-              <option value="여행코스">여행코스</option>
-              <option value="레포츠">레포츠</option>
-              <option value="숙박">숙박</option>
-              <option value="쇼핑">쇼핑</option>
-              <option value="음식점">음식점</option>
+              <option value="12">관광지</option>
+              <option value="14">문화시설</option>
+              <option value="15">축제공연행사</option>
+              <option value="25">여행코스</option>
+              <option value="28">레포츠</option>
+              <option value="32">숙박</option>
+              <option value="38">쇼핑</option>
+              <option value="39">음식점</option>
             </select>
           </div>
         </div>

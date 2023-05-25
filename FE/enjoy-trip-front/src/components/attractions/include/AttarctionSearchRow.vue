@@ -2,7 +2,7 @@
   <tr>
     <td scope="col">
       <img
-        style="width: 100px"
+        style="height: 55px; width: 100px"
         :src="attraction.imageUrl"
         @error="defaultImg" />
     </td>
@@ -12,7 +12,7 @@
     <td
       scope="col"
       @click="moveCenterEmit(attraction.latitude, attraction.longitude)"
-      class="btn btn-outline-success"
+      class="btn btn-outline-success mt-3"
       type="button">
       위치 보기
     </td>

@@ -102,6 +102,9 @@ public class HotplaceServiceImpl implements HotplaceService{
 		sidoMap.put("전남", 38);
 		sidoMap.put("제주", 39);
 		
+		String prefix = "http://localhost/hotplace/display?filename=";
+		hotplaceDto.setImg(prefix+hotplaceDto.getImg());
+		
 		String key = hotplaceDto.getJibun().substring(0, 2);
 		hotplaceDto.setSido(sidoMap.get(key));
 		
