@@ -94,7 +94,7 @@
           @moveCenter="moveCenter"
           ref="tableList"></attraction-search-list>
       </div>
-
+      <!-- 
       <the-pagination
         v-if="this.tableType == '1'"
         :pageSetting="pageDataSetting(total1, limit, block, this.page)"
@@ -106,7 +106,7 @@
       <the-pagination
         v-else
         :pageSetting="pageDataSetting(total, limit, block, this.page)"
-        @paging="pagingMethod" />
+        @paging="pagingMethod" /> -->
     </div>
 
     <!-- 상세보기 모달 start -->
@@ -197,8 +197,8 @@ export default {
   components: {
     "attraction-search-list": () =>
       import("@/components/attractions/AttractionSearchList.vue"),
-    "the-pagination": () =>
-      import("@/components/attractions/include/ThePagination.vue"),
+    // "the-pagination": () =>
+    //   import("@/components/attractions/include/ThePagination.vue"),
   },
   computed: {
     attractions() {
