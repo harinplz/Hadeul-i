@@ -5,6 +5,8 @@ public class HotplaceLike {
 	private int hotplaceNo;
 	private int userNo;
 	
+	public HotplaceLike() {}
+	
 	public HotplaceLike(int hotplaceNo, int userNo) {
 		super();
 		this.hotplaceNo = hotplaceNo;

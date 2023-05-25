@@ -62,7 +62,7 @@
 }
 
 .title_desc {
-  padding-top: 280px;
+  padding-top: 320px;
   font-size: 20px;
 }
 
