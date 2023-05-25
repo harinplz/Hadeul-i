@@ -6,7 +6,33 @@
       <!-- 제목과 작성자 div -->
       <div class="hotpl_desc_title_area">
         <div class="hotpl-desc-title" v-if="hotplace">
-          [{{ hotplace.category }}] {{ hotplace.hotplaceName }}
+          <span v-if="hotplace.category == 12"
+            >[관광지] {{ hotplace.hotplaceName }}</span
+          >
+          <span v-else-if="hotplace.category == 14"
+            >[문화시설] {{ hotplace.hotplaceName }}</span
+          >
+          <span v-else-if="hotplace.category == 15"
+            >[축제공연행사] {{ hotplace.hotplaceName }}</span
+          >
+          <span v-else-if="hotplace.category == 25"
+            >[여행코스] {{ hotplace.hotplaceName }}</span
+          >
+          <span v-else-if="hotplace.category == 28"
+            >[레포츠] {{ hotplace.hotplaceName }}</span
+          >
+          <span v-else-if="hotplace.category == 32"
+            >[숙박] {{ hotplace.hotplaceName }}</span
+          >
+          <span v-else-if="hotplace.category == 38"
+            >[쇼핑] {{ hotplace.hotplaceName }}</span
+          >
+          <span v-else-if="hotplace.category == 39"
+            >[음식점] {{ hotplace.hotplaceName }}</span
+          >
+          <span v-else
+            >[{{ hotplace.category }}] {{ hotplace.hotplaceName }}</span
+          >
         </div>
         <div class="hotpl-desc-writer" v-if="user">{{ user.name }}님</div>
       </div>

@@ -5,11 +5,39 @@
     </div>
     <div class="cardView_desc">
       <b-icon icon="geo-alt-fill" style="color: #58d3f7"></b-icon>
-      <span class="cardView_title"> [{{ input.category }}] {{ input.hotplaceName }}</span>
+      <span class="cardView_title" v-if="input.category == 12">
+        [관광지] {{ input.hotplaceName }}</span
+      >
+      <span class="cardView_title" v-else-if="input.category == 14">
+        [문화시설] {{ input.hotplaceName }}</span
+      >
+      <span class="cardView_title" v-else-if="input.category == 15">
+        [축제공연행사] {{ input.hotplaceName }}</span
+      >
+      <span class="cardView_title" v-else-if="input.category == 25">
+        [여행코스] {{ input.hotplaceName }}</span
+      >
+      <span class="cardView_title" v-else-if="input.category == 28">
+        [레포츠] {{ input.hotplaceName }}</span
+      >
+      <span class="cardView_title" v-else-if="input.category == 32">
+        [숙박] {{ input.hotplaceName }}</span
+      >
+      <span class="cardView_title" v-else-if="input.category == 38">
+        [쇼핑] {{ input.hotplaceName }}</span
+      >
+      <span class="cardView_title" v-else-if="input.category == 39">
+        [음식점] {{ input.hotplaceName }}</span
+      >
+      <span class="cardView_title" v-else>
+        [{{ input.category }}] {{ input.hotplaceName }}</span
+      >
       <br />
       <div class="cardView_addr">
         <span class="cardView_jibun">{{ input.jibun }}</span>
-        <span v-if="input.hotplaceAddr != 'null'"> {{ input.hotplaceAddr }}</span>
+        <span v-if="input.hotplaceAddr != 'null'">
+          {{ input.hotplaceAddr }}</span
+        >
       </div>
 
       <p class="cardView_content">{{ input.hotplaceContent }}</p>
@@ -41,7 +69,8 @@ export default {
     },
   },
   created() {
-    this.imgSrc = "http://localhost/hotplace/display?filename=" + this.input.img;
+    this.imgSrc =
+      "http://localhost/hotplace/display?filename=" + this.input.img;
   },
 };
 </script>
