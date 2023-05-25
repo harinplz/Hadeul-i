@@ -385,25 +385,27 @@ export default {
 
     this.imgSrc = "http://localhost/hotplace/display?filename=";
     setTimeout(() => {
-      const userNo = this.hotplace.userNo;
-      this.userNo = userNo;
-      this.getUser({
-        userNo,
-      });
+      if (this.hotplace != null) {
+        const userNo = this.hotplace.userNo;
+        this.userNo = userNo;
+        this.getUser({
+          userNo,
+        });
 
-      this.getCheckLike({
-        hotplaceLike: {
-          hotplaceNo,
-          userNo: this.userInfo.no,
-        },
-      });
+        this.getCheckLike({
+          hotplaceLike: {
+            hotplaceNo,
+            userNo: this.userInfo.no,
+          },
+        });
 
-      console.log(this.hotplace);
+        console.log(this.hotplace);
 
-      console.log("유저정보", this.userInfo);
+        console.log("유저정보", this.userInfo);
 
-      this.imgSrc += this.hotplace.img;
-    }, 100);
+        this.imgSrc += this.hotplace.img;
+      }
+    }, 300);
 
     // console.log("핫플레이스 좋아요 했나요? ", this.hotplaceLikeCheck);
   },
