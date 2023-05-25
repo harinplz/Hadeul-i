@@ -1,6 +1,11 @@
 <template>
   <tr>
-    <td scope="col"><img style="width: 100px" :src="attraction.imageUrl" /></td>
+    <td scope="col">
+      <img
+        style="width: 100px"
+        :src="attraction.imageUrl"
+        @error="defaultImg" />
+    </td>
     <td scope="col">{{ attraction.attractionName }}</td>
     <td scope="col">{{ attraction.address }}</td>
     <td scope="col">{{ attraction.hit }}</td>
@@ -23,6 +28,9 @@ export default {
     moveCenterEmit(lat, longi) {
       console.log(this.attraction);
       this.$emit("moveCenterEmit2", lat, longi);
+    },
+    defaultImg(e) {
+      e.target.src = "http://enjoytrip.jaen.kr:9000/img/no-image.b6aeb20b.png";
     },
   },
 };
