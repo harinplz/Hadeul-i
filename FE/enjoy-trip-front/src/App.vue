@@ -4,7 +4,9 @@
     <router-view></router-view>
     <footer-nav-bar
       v-if="
-        $route.name != 'HotplaceCreate' && $route.name != 'TravelRouteCreate'
+        $route.name != 'HotplaceCreate' &&
+        $route.name != 'TravelRouteCreate' &&
+        $route.name != 'home'
       "></footer-nav-bar>
   </div>
 </template>
