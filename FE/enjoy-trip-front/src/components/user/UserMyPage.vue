@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="mypage_memory wow fadeInUp">
-      <div class="memory_title"><span class="highlight">하들이와 함께한 추억을 돌아봐요</span></div>
+      <div class="memory_title">
+        <span class="highlight">하들이와 함께한 추억을 돌아봐요</span>
+      </div>
       <div style="text-align: center; padding-top: 5px">
         저희와 함께한 최근의 추억을 보여드릴게요!
       </div>
@@ -21,7 +23,9 @@
       </div>
     </div>
     <div class="mypage_userinfo wow fadeInUp">
-      <div class="memory_title"><span class="highlight_pink">김싸피님의 정보</span></div>
+      <div class="memory_title">
+        <span class="highlight_pink">김싸피님의 정보</span>
+      </div>
       <div class="memory_content">
         <div class="row memory_row">
           <div class="col-md-3"><b>아이디</b></div>
@@ -72,8 +76,8 @@
       <!-- 수정 모달 창 Footer 작성 -->
       <div class="text-center">
         <b-button-group>
-          <b-button variant="outline-secondary" @click="modify">수정</b-button>
-          <b-button variant="secondary" @click="showModalDelete">삭제</b-button>
+          <b-button variant="outline-secondary">수정</b-button>
+          <b-button variant="secondary">삭제</b-button>
         </b-button-group>
       </div>
     </b-modal>
