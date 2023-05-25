@@ -29,6 +29,7 @@
 			) u
 			ON u.user_no = c.user_no
 		WHERE board_no = #{boardNo}
+		ORDER BY comment_no desc;
 	</select>
 	
 	<!-- insertComment -->
