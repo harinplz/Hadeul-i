@@ -68,7 +68,7 @@ const routes = [
     component: () => import("@/views/AppAdmin"),
   },
   {
-    path: "/mypage",
+    path: "/mypage/:userNo",
     name: "Mypage",
     component: () => import("@/components/user/UserMyPage.vue"),
     beforeEnter: onlyAuthUser,

@@ -58,7 +58,9 @@
               {{ userInfo.name }}님 안녕하세요!&nbsp;
             </div>
             <div class="login-no-link" @click="logout">로그아웃&nbsp;</div>
-            <router-link class="login-no-link" :to="{ name: 'Mypage' }"
+            <router-link
+              class="login-no-link"
+              :to="{ name: 'Mypage', params: { userNo: userInfo.no } }"
               >마이페이지&nbsp;</router-link
             >
           </div>
