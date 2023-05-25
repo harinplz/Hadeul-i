@@ -13,6 +13,8 @@ public class HotplaceLike {
 		this.userNo = userNo;
 	}
 	
+	public HotplaceLike() {}
+	
 	public int getHotplaceNo() {
 		return hotplaceNo;
 	}
@@ -30,8 +32,4 @@ public class HotplaceLike {
 	public String toString() {
 		return "HotplaceLike [hotplaceNo=" + hotplaceNo + ", userNo=" + userNo + "]";
 	}
-	
-	
-	
-
 }

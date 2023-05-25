@@ -47,16 +47,19 @@ export default {
           key: "departDate",
           label: "시작일",
           sortable: false,
+          formatter: (value) => value.split(" ")[0],
         },
         {
           key: "arriveDate",
           label: "종료일",
           sortable: false,
+          formatter: (value) => value.split(" ")[0],
         },
         {
           key: "regTime",
           label: "작성날짜",
           sortable: false,
+          formatter: (value) => value.split(" ")[0],
         },
       ],
     };
