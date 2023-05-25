@@ -1,46 +1,58 @@
 <template>
-  <b-container>
-    <b-row>
-      <b-col class="text-center">
-        <h3>글 정보</h3>
-      </b-col>
-    </b-row>
-    <b-row>
-      <b-col class="text-left">
-        <b-button variant="outline-primary" @click="listCommunity">목록</b-button>
-      </b-col>
-      <b-col v-if="userInfo.no == community.userNo" class="text-right">
-        <b-button variant="outline-info" size="sm" @click="moveModifyCommuntiy">수정</b-button>
-        <b-button variant="outline-danger" size="sm" @click="deleteCom">삭제</b-button>
-      </b-col>
-    </b-row>
-
-    <div style="margin-bottom: 20px"></div>
-    <view-detail :community="community"></view-detail>
+  <div>
+    <div class="hotpl_create_title wow fadeInUp">
+      <div class="hotpl_create_title_text">커뮤니티 글 조회</div>
+    </div>
     <div style="margin-bottom: 50px"></div>
+    <b-container>
+      <b-row>
+        <b-col class="text-left">
+          <b-button variant="outline-primary" @click="listCommunity"
+            >목록</b-button
+          >
+        </b-col>
+        <b-col v-if="userInfo.no == community.userNo" class="text-right">
+          <b-button
+            variant="outline-info"
+            size="sm"
+            @click="moveModifyCommuntiy"
+            >수정</b-button
+          >
+          <b-button variant="outline-danger" size="sm" @click="deleteCom"
+            >삭제</b-button
+          >
+        </b-col>
+      </b-row>
 
-    <!-- 댓글 구현 부분 -->
-    <div class="travelrt_comment">
-      <!-- 댓글 갯수 -->
-      <div class="travelrt_comment_title">댓글 1</div>
-      <!-- 댓글 등록 -->
-      <div class="travelrt_comment_create row">
-        <div class="col-md-10">
-          <textarea
-            class="travelrt_comment_create_input"
-            placeholder="댓글을 입력해주세요 ... "
-          ></textarea>
-        </div>
-        <div class="col-md-2">
-          <button type="button" class="btn commentBtn" style="background-color: #c3e5ee">
-            입력
-          </button>
+      <div style="margin-bottom: 20px"></div>
+      <view-detail :community="community"></view-detail>
+      <div style="margin-bottom: 50px"></div>
+
+      <!-- 댓글 구현 부분 -->
+      <div class="travelrt_comment">
+        <!-- 댓글 갯수 -->
+        <div class="travelrt_comment_title">댓글 1</div>
+        <!-- 댓글 등록 -->
+        <div class="travelrt_comment_create row">
+          <div class="col-md-10">
+            <textarea
+              class="travelrt_comment_create_input"
+              placeholder="댓글을 입력해주세요 ... "></textarea>
+          </div>
+          <div class="col-md-2">
+            <button
+              type="button"
+              class="btn commentBtn"
+              style="background-color: #c3e5ee">
+              입력
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-    <community-comment></community-comment>
-    <div style="margin-bottom: 100px"></div>
-  </b-container>
+      <community-comment></community-comment>
+      <div style="margin-bottom: 100px"></div>
+    </b-container>
+  </div>
 </template>
 
 <script>
@@ -54,7 +66,8 @@ export default {
   },
   components: {
     "view-detail": () => import("@/components/community/include/ViewDetail"),
-    "community-comment": () => import("@/components/community/include/CommunityComment"),
+    "community-comment": () =>
+      import("@/components/community/include/CommunityComment"),
   },
   methods: {
     ...mapActions(["getCommunity", "deleteCommunity"]),
@@ -125,5 +138,21 @@ export default {
   height: 80%;
   font-size: 15px;
   font-weight: bold;
+}
+
+.hotpl_create_title {
+  font-size: 25px;
+  padding-top: 50px;
+  text-align: center;
+  color: #7c7877;
+  font-family: "SUITE-Regular";
+}
+
+.hotpl_create_title_text {
+  width: 470px;
+  padding: 20px;
+  background-color: rgba(243, 243, 243, 0.6);
+  border-radius: 30px;
+  margin: auto;
 }
 </style>
