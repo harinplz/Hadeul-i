@@ -236,19 +236,12 @@ export default {
 }
 .goodBtn-div {
   margin-top: 50px;
+  margin-bottom: 100px;
   text-align: center;
 }
 
 .goodBtn {
   padding: 10px 30px;
-}
-
-.commentBtn {
-  margin-top: 7px;
-  width: 80%;
-  height: 80%;
-  font-size: 15px;
-  font-weight: bold;
 }
 
 .desc_title {

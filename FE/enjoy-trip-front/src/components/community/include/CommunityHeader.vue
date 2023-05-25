@@ -1,0 +1,46 @@
+<template>
+  <div>
+    <div id="hotplace-header" class="container-fluid header p-0 wow fadeIn">
+      <div class="row g-0 align-items-center flex-column-reverse flex-md-row">
+        <div id="hotplace-desc" class="col-md-6">
+          <div class="hotplace-desc-text">
+            <div class="hotplace-desc-subject">커뮤니티</div>
+            <div>이야기를 자유롭게 나눠보세요!</div>
+          </div>
+        </div>
+        <div id="hotplace-pic" class="col-md-6">
+          <img class="img" src="@/assets/img/community_header_img.jpg" />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+#hotplace-header {
+  height: 450px;
+  width: 80%;
+  margin: auto;
+}
+#hotplace-desc {
+  background-color: #fafafa;
+  height: 450px;
+}
+#hotplace-pic {
+  height: 450px;
+}
+.hotplace-desc-text {
+  padding-top: 180px;
+  padding-left: 30px;
+}
+.hotplace-desc-subject {
+  font-size: 30px;
+}
+.img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+</style>
