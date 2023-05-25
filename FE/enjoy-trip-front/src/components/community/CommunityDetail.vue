@@ -31,25 +31,27 @@
       <!-- 댓글 구현 부분 -->
       <div class="travelrt_comment">
         <!-- 댓글 갯수 -->
-        <div class="travelrt_comment_title">댓글 1</div>
+        <div class="travelrt_comment_title">댓글 {{ comments.length }}</div>
         <!-- 댓글 등록 -->
         <div class="travelrt_comment_create row">
           <div class="col-md-10">
             <textarea
               class="travelrt_comment_create_input"
-              placeholder="댓글을 입력해주세요 ... "></textarea>
+              placeholder="댓글을 입력해주세요 ... "
+              v-model="comment"></textarea>
           </div>
           <div class="col-md-2">
             <button
               type="button"
               class="btn commentBtn"
-              style="background-color: #c3e5ee">
+              style="background-color: #c3e5ee"
+              @click="InsertComment">
               입력
             </button>
           </div>
         </div>
       </div>
-      <community-comment></community-comment>
+      <community-comment :comments="comments"></community-comment>
       <div style="margin-bottom: 100px"></div>
     </b-container>
   </div>
@@ -57,11 +59,14 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import http from "@/util/http-commons";
 
 export default {
   data: function () {
     return {
       boardNo: "",
+      comments: [],
+      comment: "",
     };
   },
   components: {
@@ -71,6 +76,20 @@ export default {
   },
   methods: {
     ...mapActions(["getCommunity", "deleteCommunity"]),
+
+    InsertComment() {
+      const info = {
+        userNo: this.userInfo.no,
+        boardNo: this.boardNo,
+        comment: this.comment,
+      };
+
+      http.post(`/community/comment`, info).then((response) => {
+        this.comments = response.data;
+        this.comment = "";
+      });
+    },
+
     listCommunity() {
       this.$router.push({ name: "CommunityList" });
     },
@@ -102,7 +121,17 @@ export default {
     this.getCommunity({
       boardNo,
     });
-    console.log(this.community);
+
+    /* 
+      댓글 부분 구현 시작.. 추후에 vuex로..
+    */
+
+    http.get(`/community/comment/${boardNo}`).then((response) => {
+      console.log("서버에서 어떤걸 보내줬을까?", response);
+      if (response.status == 200) {
+        this.comments = response.data;
+      }
+    });
   },
   computed: {
     ...mapGetters(["community", "userInfo"]),
