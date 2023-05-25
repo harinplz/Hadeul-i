@@ -2,8 +2,8 @@
   <div>
     <community-header></community-header>
     <div style="margin-top: 50px"></div>
-    <b-container>
-      <b-row class="mb-1">
+    <div style="width: 80%; margin: auto">
+      <b-row>
         <b-col class="search">
           <select class="searchSelect">
             <option selected>검색 조건</option>
@@ -36,7 +36,7 @@
         :fields="fields"
         @row-clicked="rowClickListener"></b-table>
       <div v-else class="text-center">게시글이 없습니다.</div>
-    </b-container>
+    </div>
     <div style="text-align: center">
       <div class="pagination">
         <a href="#">&laquo;</a>
@@ -105,9 +105,7 @@ export default {
 
 <style scoped>
 .search {
-  position: relative;
-  text-align: right;
-  padding-right: 140px;
+  text-align: left;
   margin-bottom: 20px;
 }
 .searchSelect {
