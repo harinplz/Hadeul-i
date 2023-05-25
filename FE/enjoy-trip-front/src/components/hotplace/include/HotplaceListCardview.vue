@@ -30,7 +30,7 @@
         [음식점] {{ input.hotplaceName }}</span
       >
       <span class="cardView_title" v-else>
-        [기타] {{ input.hotplaceName }}</span
+        [{{ input.category }}] {{ input.hotplaceName }}</span
       >
       <br />
       <div class="cardView_addr">

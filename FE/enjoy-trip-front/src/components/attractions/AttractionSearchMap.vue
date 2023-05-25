@@ -362,24 +362,16 @@ export default {
 
         callback: (status) => {
           if (status == 200) {
-            console.log("11111111111");
             this.getAttractionLike({
               attractionNo: no,
               attractionType: type,
             });
-
-            console.log("222222222");
 
             this.getAttractionCheckLike({
               attractionNo: no,
               attractionType: type,
               userNo: this.userInfo.no,
             });
-
-            console.log(
-              "created 시 getAttractionCheckLike됐나 확인 : ",
-              this.attractionLikeCheck
-            );
           } else if (status == 500) {
             this.$bvToast.toast("서버 오류 발생!", {
               title: "trip like 서버 오류 발생",
@@ -547,17 +539,16 @@ export default {
           attractionType: attInfo.attractionType,
           userNo: userNo,
         };
-        thiz.getAttractionCheckLike(info);
 
         thiz.getAttractionDetail(info);
-
-        thiz.getAttractionLike(info);
-
         attInfo.description = thiz.attractionDetail;
 
-        thiz.modalOpen = true;
+        thiz.getAttractionCheckLike(info);
+        thiz.getAttractionLike(info);
 
         thiz.modalContent = attInfo;
+        thiz.modalOpen = true;
+        //thiz.modalContent = attInfo;
       };
     },
 

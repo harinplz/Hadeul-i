@@ -10,8 +10,8 @@
       <div class="memory_content">
         <div class="row memory_row">
           <div class="col-md-3"><b>여행 경로</b></div>
-          <div class="col-md-9" v-if="this.userMypage.communityTitle">
-            {{ userMypage.communityTitle }}
+          <div class="col-md-9" v-if="this.userMypage.travelRouteTitle">
+            {{ userMypage.travelRouteTitle }}
           </div>
           <div class="col-md-9" v-else>
             아직 여행 계획 등록을 하지 않았어요.
@@ -28,8 +28,8 @@
         </div>
         <div class="row memory_row">
           <div class="col-md-3"><b>커뮤니티</b></div>
-          <div class="col-md-9" v-if="this.userMypage.travelRouteTitle">
-            {{ userMypage.travelRouteTitle }}
+          <div class="col-md-9" v-if="this.userMypage.communityTitle">
+            {{ userMypage.communityTitle }}
           </div>
           <div class="col-md-9" v-else>
             아직 커뮤니티에 글을 작성하지 않았어요.
