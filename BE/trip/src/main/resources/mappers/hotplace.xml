@@ -86,8 +86,13 @@
 	<!-- 핫플레이스 user attraction에 추가하기 -->
 	<insert id="addToUserAttraction">
 		insert into user_attraction (user_attraction_name, user_attraction_addr, category, user_attraction_content, jibun, sido_code, latitude, longitude, img)
-		values (#{hotplaceName}, #{hotplaceAddr}, #{category}, #{hotplaceContent}, #{jibun}, #{sido}, #{latitude}, #{longitude}, #{img} )
+		values (#{hotplaceName}, #{jibun}, #{category}, #{hotplaceContent}, #{jibun}, #{sido}, #{latitude}, #{longitude}, #{img} )
 	</insert>
+	<!--  
+	<insert id="addToUserAttraction">
+		insert into user_attraction (user_attraction_name, user_attraction_addr, category, user_attraction_content, jibun, sido_code, latitude, longitude, img)
+		values (#{hotplaceName}, #{hotplaceAddr}, #{category}, #{hotplaceContent}, #{jibun}, #{sido}, #{latitude}, #{longitude}, #{img} )
+	</insert>-->
 	
 	
 </mapper>
