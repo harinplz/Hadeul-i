@@ -2,82 +2,83 @@
   <b-container>
     <!-- 중앙 center content end -->
     <div class="col-md-12" id="parent-sticky">
-      <div
-        id="alertinfo"
-        class="alert alert-primary mt-3 mb-0 text-center fw-bold"
-        role="alert">
-        전국 관광지 정보
+      <div class="hotpl_create_title wow fadeInUp">
+        <div class="hotpl_create_title_text">전국 관광지 정보</div>
       </div>
+      <div style="margin-bottom: 50px"></div>
       <!-- 관광지 검색 start -->
       <div class="sticky">
         <br />
-        <form class="mb-3 d-flex" action="" id="search-form">
-          <select
-            id="search-area"
-            name="search-area"
-            class="form-select me-2 mr-2"
-            v-model="searchArea">
-            <option value="0">검색 할 지역 선택</option>
-            <option value="1">서울</option>
-            <option value="2">인천</option>
-            <option value="3">대전</option>
-            <option value="4">대구</option>
-            <option value="5">광주</option>
-            <option value="6">부산</option>
-            <option value="7">울산</option>
-            <option value="8">세종특별자치시</option>
-            <option value="31">경기도</option>
-            <option value="32">강원도</option>
-            <option value="33">충청북도</option>
-            <option value="34">충청남도</option>
-            <option value="35">경상북도</option>
-            <option value="36">경상남도</option>
-            <option value="37">전라북도</option>
-            <option value="38">전라남도</option>
-            <option value="39">제주도</option>
-          </select>
-          <select
-            id="search-content-id"
-            name="search-content-id"
-            class="form-select me-2"
-            v-model="searchContentId">
-            <option value="0">관광지 유형</option>
-            <option value="12">관광지</option>
-            <option value="14">문화시설</option>
-            <option value="15">축제공연행사</option>
-            <option value="25">여행코스</option>
-            <option value="28">레포츠</option>
-            <option value="32">숙박</option>
-            <option value="38">쇼핑</option>
-            <option value="39">음식점</option>
-          </select>
+        <form action="" id="search-form">
+          <div class="select_div">
+            <select
+              id="search-area"
+              name="search-area"
+              class="searchSelect"
+              v-model="searchArea">
+              <option value="0">검색 할 지역 선택</option>
+              <option value="1">서울</option>
+              <option value="2">인천</option>
+              <option value="3">대전</option>
+              <option value="4">대구</option>
+              <option value="5">광주</option>
+              <option value="6">부산</option>
+              <option value="7">울산</option>
+              <option value="8">세종특별자치시</option>
+              <option value="31">경기도</option>
+              <option value="32">강원도</option>
+              <option value="33">충청북도</option>
+              <option value="34">충청남도</option>
+              <option value="35">경상북도</option>
+              <option value="36">경상남도</option>
+              <option value="37">전라북도</option>
+              <option value="38">전라남도</option>
+              <option value="39">제주도</option>
+            </select>
+            <select
+              id="search-content-id"
+              name="search-content-id"
+              class="searchSelect"
+              v-model="searchContentId">
+              <option value="0">관광지 유형</option>
+              <option value="12">관광지</option>
+              <option value="14">문화시설</option>
+              <option value="15">축제공연행사</option>
+              <option value="25">여행코스</option>
+              <option value="28">레포츠</option>
+              <option value="32">숙박</option>
+              <option value="38">쇼핑</option>
+              <option value="39">음식점</option>
+            </select>
 
-          <select
-            id="table-type"
-            name="table-type"
-            class="form-select me-2"
-            v-model="tableType">
-            <option value="0">검색필터</option>
-            <option value="1">유명관광지</option>
-            <option value="2">핫플레이스</option>
-          </select>
+            <select
+              id="table-type"
+              name="table-type"
+              class="searchSelect"
+              v-model="tableType">
+              <option value="0">검색필터</option>
+              <option value="1">유명관광지</option>
+              <option value="2">핫플레이스</option>
+            </select>
+          </div>
+          <div style="text-align: center; margin-top: 10px">
+            <input
+              id="search-keyword"
+              class="searchInput"
+              name="search-keyword"
+              type="text"
+              placeholder="검색어"
+              aria-label="검색어"
+              v-model="searchKeyword" />
 
-          <input
-            id="search-keyword"
-            class="form-control me-2"
-            name="search-keyword"
-            type="text"
-            placeholder="검색어"
-            aria-label="검색어"
-            v-model="searchKeyword" />
-
-          <button
-            id="btn-search"
-            class="btn btn-outline-success"
-            type="button"
-            @click="searchTrips">
-            검색
-          </button>
+            <button
+              id="btn-search"
+              class="btn searchBtn"
+              type="button"
+              @click="searchTrips">
+              검색
+            </button>
+          </div>
         </form>
 
         <!-- kakao map start -->
@@ -161,6 +162,7 @@
         </b-row>
       </b-container>
     </b-modal>
+    <div style="margin-bottom: 100px"></div>
   </b-container>
 </template>
 
@@ -598,6 +600,13 @@ export default {
   background: #fff;
 }
 
+b-container {
+  font-family: "SUITE-Regular";
+}
+
+.select_div {
+  text-align: center;
+}
 .overlaybox {
   overflow: hidden;
   width: 300px;
@@ -615,5 +624,44 @@ ul {
 #overTitle {
   background: #ffd5e3;
   font-weight: bold;
+}
+
+.hotpl_create_title {
+  font-size: 25px;
+  padding-top: 50px;
+  text-align: center;
+  color: #7c7877;
+  font-family: "SUITE-Regular";
+}
+
+.hotpl_create_title_text {
+  width: 470px;
+  padding: 20px;
+  background-color: rgba(243, 243, 243, 0.6);
+  border-radius: 30px;
+  margin: auto;
+}
+
+.searchSelect {
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  margin: 0px 2px;
+}
+
+.searchInput {
+  margin-right: 5px;
+  width: 500px;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  display: inline;
+}
+
+.searchBtn {
+  padding: 10px 30px;
+  background-color: #c3e5ee;
 }
 </style>
