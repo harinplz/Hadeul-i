@@ -68,6 +68,7 @@ export default {
           key: "regtime",
           label: "작성날짜",
           sortable: false,
+          formatter: (value) => value.split(" ")[0],
         },
       ],
       perPage: 1,
