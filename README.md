@@ -21,7 +21,7 @@
 <br>
 
 ## ⏱️ 개발 기간
-* 2023.05.18(목) ~ 2023.05.26(목)
+* 2023.05.18(목) ~ 2023.05.25(목)
 
 <img src="https://github.com/Harinee68/algorithm_study/assets/62701446/47b9039f-2efb-42c6-8eee-401840ead999" width="600px">
 
