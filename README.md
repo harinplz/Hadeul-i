@@ -63,49 +63,48 @@
 
 ### 1. 메인 페이지
 <img src="./assets/1_mainpage.gif">
-<br><br>
+<br>
 
 ### 2. 회원가입 및 로그인
 <img src="./assets/2_login.gif"><br>
 *  JWT 토큰으로 로그인 처리
-<br><br>
+<br>
 
 ### 3. 커뮤니티
 <img src="./assets/3_community.gif"><br>
 * 자유롭게 의견 교환이 가능한 익명 커뮤니티 게시판
 * 전체 게시물 조회, 게시물 상세 조회, 등록, 수정, 삭제, 댓글 기능
-<br><br>
+<br>
 
 ### 4. 여행 계획
 <img src="./assets/4_tripRoute.gif"><br>
 * 여행 계획을 세울 수 있고, 다른 사람들의 계획도 볼 수 있는 게시판
 * 카카오 맵  API로 관광지 위치 조회 및 여행 경로 확인
 * 전체 여행 계획 조회, 상세 조회, 좋아요 기능
-<br><br>
+<br>
 
 ### 5. 핫플레이스
 <img src="./assets/5_hotplace.gif"><br>
 * 나만 알기 아까운 나만의 핫플레이스를 공유할 수 있는 게시판
 * 전체 게시물 조회, 게시물 등록, 상세 조회, 삭제, 검색, 좋아요 기능
-<br><br>
+<br>
 
 ### 6. 마이페이지
 <img src="./assets/6_mypage.gif"><br>
 * 회원 자신에 대한 활동 및 정보를 볼 수 있는 페이지
 * 회원 정보 수정, 삭제, 최근 등록한 게시물 확인 기능
-<br><br>
+<br>
 
 ### 7. 관광지 조회
 <img src="./assets/7_attractions.gif"><br>
 * <a href="https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15101578">한국관광공사_국문 관광정보 서비스_GW</a> 에서 제공되는 관광지에 대한 정보와 핫플레이스에서 관광지로 선정된 사용자 추천 관광지를 볼 수 있는 페이지
 * 전체 관광지 조회, 핫플레이스 관광지 조회, 관광지 상세 조회, 좋아요 기능
-<br><br>
+<br>
 
 ### 8. 관리자
-+ 회원 관리
+* 회원 관리
   <img src="./assets/8-1_userManage.gif"><br>
   * 관리자로 로그인 시, 회원 관리를 위한 페이지 제공
-<br><br>
-+ 사용자 추천 관광지 등록
-  <img src="./assets/8-2_userAttraction.gif"><br>
+* 사용자 추천 관광지 등록
+  <img src="./assets/8-2_userAttraction.gif"> <br>
   * 관리자로 로그인 시, 핫플레이스 게시물을 사용자 추천 관광지에 등록할 수 있는 기능
